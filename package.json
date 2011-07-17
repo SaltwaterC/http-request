@@ -1,0 +1,18 @@
+{
+	"name": "http-get",
+	"version": "0.1.0",
+	"main": "./lib/http-get.js",
+	"description": "Simple node.js HTTP / HTTPS client for downloading remote files",
+	"dependencies": {
+		"backport-0.4": ">=0.4.x",
+		"compressor": ">=0.1.x"
+	},
+	"engines": {
+		"node": ">=0.4.x"
+	},
+	"homepage": "https://github.com/SaltwaterC/http-get",
+	"author": {
+		"name": "Stefan Rusu",
+		"url": "http://www.saltwaterc.eu/"
+	}
+}
