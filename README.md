@@ -63,7 +63,7 @@ You may also use a HTTP proxy:
 
 ```javascript
 var options = {
-	url: 'http://localhost/foo.xml',
+	url: 'http://127.0.0.1/foo.xml',
 	proxy: {
 		host: '127.0.0.1',
 		port: 3128
