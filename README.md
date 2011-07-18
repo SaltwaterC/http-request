@@ -100,4 +100,25 @@ http.get(options, function (error, result) {
 
 The following responses are considered to be redirects if they have a response location header: 300, 301, 302, 303, 305, 307.
 
-All the errors that are returned after successful HTTP request with a status code different than 200 contain a code property indicating the response.statusCode.
+You may limit the buffered response body size:
+
+```javascript
+var options = {
+	url: 'http://localhost/foo.txt', // 1.2 MiB object
+	maxbody: 1048576 // 1 MiB max response body
+};
+
+http.get(options, function (error, result) {
+	if (error) {
+		console.error(error); // {/* ..., */ message: 'Large body detected.', code: 200 }
+	} else {
+		console.log(result);
+	}
+});
+```
+
+This is especially useful if you process batch data that isn't guarantee to have everything as expected.
+
+## Notice
+
+All the errors that are returned after successful HTTP request contain a code property indicating the response.statusCode.
