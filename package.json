@@ -1,6 +1,6 @@
 {
 	"name": "http-get",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"main": "./lib/http-get.js",
 	"description": "Simple node.js HTTP / HTTPS client for downloading remote files",
 	"dependencies": {
