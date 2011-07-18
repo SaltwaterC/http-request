@@ -119,6 +119,16 @@ http.get(options, function (error, result) {
 
 This is especially useful if you process batch data that isn't guarantee to have everything as expected.
 
+If the number of [default maximum sockets](http://nodejs.org/docs/latest/api/http.html#agent.maxSockets) value is too small, you may ajust it by calling the exported setMaxSockets method:
+
+```javascript
+http.setMaxSockets(16);
+
+for (...) {
+	http.get(...);
+}
+```
+
 ## Notice
 
 All the errors that are returned after successful HTTP request contain a code property indicating the response.statusCode.

@@ -1,3 +1,7 @@
+## v0.1.3
+ * Exposes setMaxSockets() for changing the http.Agent.defaultMaxSockets value.
+ * Fixes the lack of accept-encoding: gzip that was commented by mistake aka no transparent gzip support in v0.1.1 - v0.1.2.
+
 ## v0.1.2
  * Explicit node version < 0.5.0 in package.json as the compressor module segfaults under node v0.5.0.
 
