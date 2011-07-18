@@ -57,7 +57,7 @@ http.get(options, function (error, result) {
 });
 ```
 
-All the succesful responses return the headers property that contains the response HTTP headers object. You may control any request header via the options.headers object. If is undefined, the User-Agent header is automatically set by the library. The 'Accept-Encoding: gzip' request header is always defined as the library uses the [compressor](https://github.com/egorich239/node-compress) library to do transparent gzip decoding of the response body.
+All the successful responses return the headers property that contains the response HTTP headers object. You may control any request header via the options.headers object. If is undefined, the User-Agent header is automatically set by the library. The 'Accept-Encoding: gzip' request header is always defined as the library uses the [compressor](https://github.com/egorich239/node-compress) library to do transparent gzip decoding of the response body.
 
 You may also use a HTTP proxy:
 
