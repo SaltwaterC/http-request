@@ -99,3 +99,5 @@ http.get(options, function (error, result) {
 ```
 
 The following responses are considered to be redirects if they have a response location header: 300, 301, 302, 303, 305, 307.
+
+All the errors that are returned after successful HTTP request with a status code different than 200 contain a code property indicating the response.statusCode.
