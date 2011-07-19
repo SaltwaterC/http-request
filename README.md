@@ -57,7 +57,26 @@ http.get(options, function (error, result) {
 });
 ```
 
-All the successful responses return the headers property that contains the response HTTP headers object. You may control any request header via the options.headers object. If is undefined, the User-Agent header is automatically set by the library. The 'Accept-Encoding: gzip' request header is always defined as the library uses the [compressor](https://github.com/egorich239/node-compress) library to do transparent gzip decoding of the response body.
+All the successful responses return the headers property that contains the response HTTP headers object. You may control any request header via the options.headers object. If is undefined, the User-Agent header is automatically set by the library. The 'Accept-Encoding: gzip' request header is always defined by default as the library uses the [compressor](https://github.com/egorich239/node-compress) library to do transparent gzip decoding of the response body.
+
+If the body processing fails due to gzip decoding errors, the request is transparently reissued with the options.nogzip flag. This ensures the best compromise that even modern browsers like Firefox and Chrome don't implement. They simply bail out if the encoding is broken. http-get retries over plain text.
+
+You may disable on demand the gzip decoding, although you may leave this job to the library itself:
+
+```javascript
+var options = {
+	url: 'http://example.com/problematic/gzip/encoding.xml',
+	nogzip: true
+};
+
+http.get(options, function (error, result) {
+	if (error) {
+		console.error(error);
+	} else {
+		console.log('The XML document contents: ' + result.buffer);
+	}
+});
+```
 
 You may also use a HTTP proxy:
 
