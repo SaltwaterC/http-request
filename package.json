@@ -1,8 +1,8 @@
 {
 	"name": "http-get",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"main": "./lib/http-get.js",
-	"description": "Simple node.js HTTP / HTTPS client for downloading remote files",
+	"description": "Simple to use node.js HTTP / HTTPS client for downloading remote files. Supports transparent gzip decoding.",
 	"dependencies": {
 		"compressor": ">=0.1.x"
 	},
