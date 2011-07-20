@@ -1,3 +1,7 @@
+## v0.1.5
+ * node.js 0.4.10 specific build. Basically it removes the [backport-0.4](https://github.com/SaltwaterC/backport-0.4) dependency which is now obsolete.
+ * In case of HTTP failure, the error argument also contains a headers property that returns the raw response headers.
+
 ## v0.1.4
  * Added support for options.nogzip to disable the gzip encoding.
  * Made sure that if gzip fails, the request is sent again with options.nogzip enabled.

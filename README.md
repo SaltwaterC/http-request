@@ -1,6 +1,8 @@
 ## About
 
-Simple node.js HTTP / HTTPS client for downloading remote files. The client sends just GET requests for fetching the remote objects. Although the error reporting was implemented with care, it wasn't properly used with production data. Consider it a development preview. The production data smoke test will follow soon.
+Simple to use node.js HTTP / HTTPS client for downloading remote files. Supports transparent gzip decoding. The client sends just GET requests for fetching the remote objects. The error reporting is implemented with care. The module itself is used in production for background data processing of thousands of remote resources, therefore it is not your average HTTP client.
+
+However, in order to maintain the stability, you must follow exactly the system requirements. Due to various bugs in node.js < 0.4.10, currently v0.4.10 is the only supported version. The gzip decompression library crashes under node 0.5.x.
 
 ## Installation
 
@@ -24,7 +26,7 @@ http.get({url: 'http://localhost/foo.pdf'}, '/path/to/foo.pdf', function (error,
 
 If you need to use basic HTTP authentication, pass the user:pass information to the HTTP URL itself. The target file path may be relative. [path.resolve()](http://nodejs.org/docs/latest/api/path.html#path.resolve) is used to obtain the absolute path.
 
-You may buffer the file without saving it to the disk. Useful if you download something that need to be processed without the need for saving the file:
+You may buffer the file without saving it to the disk. Useful if you download something that need to be processed / dispatched without the need for saving the file:
 
 ```javascript
 http.get({url: 'http://localhost/foo.xml'}, function (error, result) {
@@ -36,7 +38,7 @@ http.get({url: 'http://localhost/foo.xml'}, function (error, result) {
 });
 ```
 
-Basically you need to pass the callback as the second argument of the get function instead of passing the file path. The buffered response mode is intended to be used only with textual data.
+Basically you need to pass the callback as the second argument of the get method instead of passing the file path. The buffered response mode is intended to be used only with textual data such as XML documents.
 
 Both usage modes return the HTTP status code as result.code. If you use cache validation headers, 304 responses may be received. In this case, the result argument does not contain the file or buffer properties:
 
@@ -100,7 +102,7 @@ http.get(options, function (error, result) {
 
 You may communicate with HTTPS enabled proxies, by passing options.proxy.https = true.
 
-In order to avoid redirect loops, the library has a hardcoded value that limits the recursive calls to 10 redirects. If you need to increase that value, you may pass the redirects property to the options object:
+In order to avoid the redirect loops, the library has a hardcoded value that limits the recursive calls to 10 redirects. If you need to increase that value, you may pass the redirects property to the options object:
 
 ```javascript
 var options = {
@@ -148,6 +150,8 @@ for (...) {
 }
 ```
 
+Please note that by calling http.setMaxSockets you actually modify the underlying undocumented property http.Agent.defaultMaxSockets. This change affects all the clients that use the HTTP library, including the HTTPS client.
+
 ## Notice
 
-All the errors that are returned after successful HTTP request contain a code property indicating the response.statusCode.
+All the errors that are returned after successful HTTP request contain a code property indicating the response.statusCode. They also contain a headers property that return the raw HTTP response headers.
