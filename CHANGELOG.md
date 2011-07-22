@@ -1,3 +1,6 @@
+## v0.1.6
+ * Internal changes to follow the [DRY](http://en.wikipedia.org/wiki/Don't_repeat_yourself) principle.
+
 ## v0.1.5
  * node.js 0.4.10 specific build. Basically it removes the [backport-0.4](https://github.com/SaltwaterC/backport-0.4) dependency which is now obsolete.
  * In case of HTTP failure, the error argument also contains a headers property that returns the raw response headers.
