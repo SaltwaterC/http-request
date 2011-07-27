@@ -18,5 +18,5 @@
 		"type": "git",
 		"url": "git://github.com/SaltwaterC/http-get.git"
 	},
-	"keywords": ["http", "https", "get", "download", "gzip"]
+	"keywords": ["http", "https", "get", "head", "download", "gzip"]
 }

@@ -1,5 +1,8 @@
 ## v0.1.6
  * Internal changes to follow the [DRY](http://en.wikipedia.org/wiki/Don't_repeat_yourself) principle.
+ * Added the response.url property of a successful response that comes after a redirect in order to return the final URL of the request.
+ * Added the head method for sending HEAD requests. It's nice to poke at the remote resource without bothering with the response body.
+ * Added the documentation as wiki pages which makes it more maintainable.
 
 ## v0.1.5
  * node.js 0.4.10 specific build. Basically it removes the [backport-0.4](https://github.com/SaltwaterC/backport-0.4) dependency which is now obsolete.
