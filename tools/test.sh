@@ -22,7 +22,9 @@ do
 	fi
 done
 
+echo ""
 echo "Failed tests: $FAIL"
-echo "Runned tests: $TOTAL"
+echo "Total tests: $TOTAL"
+echo ""
 
 exit 0
