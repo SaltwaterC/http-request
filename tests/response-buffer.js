@@ -4,18 +4,12 @@ var assert = require('assert');
 var common = require('./includes/common.js');
 
 var u = require('url');
-var h = require('http');
 
-var server = h.createServer(function (req, res) {
-	res.writeHead(200, {'content-type': 'text/plain'});
-	res.end('foo');
-});
-
-server.listen(common.port, common.host, function () {
+var server = common.createFooServer(function () {
 	var url = u.format({
 		protocol: 'http:',
-		hostname: common.host,
-		port: common.port,
+		hostname: common.options.host,
+		port: common.options.port,
 		path: '/'
 	});
 	http.get({url: url}, function (err, res) {

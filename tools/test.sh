@@ -6,10 +6,11 @@ TOTAL=0
 
 cd tests
 
-for TEST in `dir -d ./*`
+for TEST in `dir -d ./*.js`
 do
 	if [ -f $TEST ]
 	then
+		sync
 		echo "Running test: "`basename $TEST`
 		$NODE_BIN $TEST > /dev/null
 		EXIT_CODE=$?
