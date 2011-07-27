@@ -1,3 +1,7 @@
+## v0.1.7
+ * Internal change: simpler method for detecting a redirect.
+ * Unit testing coverage.
+
 ## v0.1.6
  * Internal changes to follow the [DRY](http://en.wikipedia.org/wiki/Don't_repeat_yourself) principle.
  * Added the response.url property of a successful response that comes after a redirect in order to return the final URL of the request.
