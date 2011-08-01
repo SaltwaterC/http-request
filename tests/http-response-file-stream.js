@@ -4,18 +4,11 @@ var assert = require('assert');
 var common = require('./includes/common.js');
 
 var fs = require('fs');
-var u = require('url');
 var p = require('path');
 
 var server = common.createFooServer(function () {
-	var url = u.format({
-		protocol: 'http:',
-		hostname: common.options.host,
-		port: common.options.port,
-		path: '/'
-	});
 	var path = p.resolve('foo.txt');
-	http.get({url: url}, path, function (err, res) {
+	http.get({url: common.options.url}, path, function (err, res) {
 		if (err) {
 			throw err;
 		}

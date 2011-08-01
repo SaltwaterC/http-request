@@ -1,3 +1,4 @@
+var u = require('url');
 var fs = require('fs');
 var p = require('path');
 var http = require('http');
@@ -7,6 +8,20 @@ var options = {
 	host: '127.0.0.1',
 	port: 42890
 };
+
+options.url = u.format({
+	protocol: 'http:',
+	hostname: options.host,
+	port: options.port,
+	path: '/'
+});
+
+options.urlSecure = u.format({
+	protocol: 'https:',
+	hostname: options.host,
+	port: options.port,
+	path: '/'
+});
 
 exports.options = options;
 

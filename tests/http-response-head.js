@@ -3,16 +3,8 @@ var http = require('../');
 var assert = require('assert');
 var common = require('./includes/common.js');
 
-var u = require('url');
-
 var server = common.createFooServer(function () {
-	var url = u.format({
-		protocol: 'http:',
-		hostname: common.options.host,
-		port: common.options.port,
-		path: '/'
-	});
-	http.head({url: url}, function (err, res) {
+	http.head({url: common.options.url}, function (err, res) {
 		if (err) {
 			throw err;
 		}

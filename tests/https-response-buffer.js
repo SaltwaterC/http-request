@@ -3,16 +3,8 @@ var http = require('../');
 var assert = require('assert');
 var common = require('./includes/common.js');
 
-var u = require('url');
-
 var server = common.createFooServerSecure(function () {
-	var url = u.format({
-		protocol: 'https:',
-		hostname: common.options.host,
-		port: common.options.port,
-		path: '/'
-	});
-	http.get({url: url}, function (err, res) {
+	http.get({url: common.options.urlSecure}, function (err, res) {
 		if (err) {
 			throw err;
 		}
