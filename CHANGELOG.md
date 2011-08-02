@@ -1,3 +1,6 @@
+## v0.2.1
+ * Simple maintenance release for cleaning up the junk from the npm package.
+
 ## v0.2
  * Internal change: simpler method for detecting a redirect.
  * In order to follow the node.js callback convention, in case of success, the error argument is null, not undefined. This may break some existing code if the evaluation is made against 'undefined'.
