@@ -2,7 +2,7 @@
 
 Simple to use node.js HTTP / HTTPS client for downloading remote files. Supports transparent gzip decoding.
 
-The client sends just GET requests for fetching the remote objects. You may send HEAD requests if you just need to check the availability of a remote resource. The error reporting is implemented with care. The module itself is used in production for background data processing of thousands of remote resources, therefore it is not your average HTTP client.
+The client sends just GET requests for fetching the remote objects. You may send HEAD requests if you just need to check the availability of a remote resource. The error reporting is implemented with care. The module itself is used in production for background data processing of thousands of remote resources, therefore it is not your average HTTP client. It is in use for both of the transfer modes: buffered responses or streamed to the disk responses.
 
 However, in order to maintain the stability, you must follow exactly the system requirements. Due to various bugs in node.js < 0.4.10, currently v0.4.10 is the only supported version. The gzip decompression library crashes under node 0.5.x.
 
