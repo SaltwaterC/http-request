@@ -1,2 +1,5 @@
+.project
+.settings/
+node_modules/
 tests/
 tools/
