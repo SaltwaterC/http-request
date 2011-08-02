@@ -1,7 +1,8 @@
+var hg = require('../');
+
 var assert = require('assert');
 var common = require('./includes/common.js');
 
-var hg = require('../');
 var http = require('http');
 
 var server = http.createServer(function (req, res) {
