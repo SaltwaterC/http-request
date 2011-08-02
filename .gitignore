@@ -1,3 +1,4 @@
-/node_modules
 /.settings
+/.project
+/node_modules
 /foo.txt
