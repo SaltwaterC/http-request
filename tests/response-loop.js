@@ -15,6 +15,11 @@ server.listen(common.options.port, common.options.host, function () {
 		assert.ok(err instanceof Error);
 		assert.deepEqual(err.message, 'Redirect loop detected after 10 requests.');
 		assert.deepEqual(err.code, 301);
-		server.close();
+		hg.head({url: common.options.url}, function (err, res) {
+			assert.ok(err instanceof Error);
+			assert.deepEqual(err.message, 'Redirect loop detected after 10 requests.');
+			assert.deepEqual(err.code, 301);
+			server.close();
+		});
 	});
 });

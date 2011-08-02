@@ -30,6 +30,11 @@ server.listen(common.options.port, common.options.host, function () {
 		assert.ifError(err);
 		assert.deepEqual(res.code, 200);
 		assert.deepEqual(res.url, url);
-		server.close();
+		hg.get({url: common.options.url}, function (err, res) {
+			assert.ifError(err);
+			assert.deepEqual(res.code, 200);
+			assert.deepEqual(res.url, url);
+			server.close();
+		});
 	});
 });
