@@ -7,12 +7,12 @@ var http = require('http');
 
 var assertions = function (err, res) {
 	assert.ok(err instanceof Error);
-	assert.deepEqual(err.message, 'Redirect loop detected after 10 requests.');
+	assert.deepEqual(err.message, 'Redirect response without location header.');
 	assert.deepEqual(err.code, 301);
 };
 
 var server = http.createServer(function (req, res) {
-	res.writeHead(301, {location: '/'});
+	res.writeHead(301);
 	res.end();
 });
 

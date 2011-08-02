@@ -6,6 +6,12 @@ var common = require('./includes/common.js');
 var u = require('url');
 var http = require('http');
 
+var assertions = function (err, res, url) {
+	assert.ifError(err);
+	assert.deepEqual(res.code, 200);
+	assert.deepEqual(res.url, url);
+};
+
 var server = http.createServer(function (req, res) {
 	switch (req.url) {
 		case '/foo':
@@ -20,20 +26,16 @@ var server = http.createServer(function (req, res) {
 });
 
 server.listen(common.options.port, common.options.host, function () {
+	var url = u.format({
+		protocol: 'http:',
+		hostname: common.options.host,
+		port: common.options.port,
+		pathname: '/foo'
+	});
 	hg.get({url: common.options.url}, function (err, res) {
-		var url = u.format({
-			protocol: 'http:',
-			hostname: common.options.host,
-			port: common.options.port,
-			pathname: '/foo'
-		});
-		assert.ifError(err);
-		assert.deepEqual(res.code, 200);
-		assert.deepEqual(res.url, url);
+		assertions(err, res, url);
 		hg.get({url: common.options.url}, function (err, res) {
-			assert.ifError(err);
-			assert.deepEqual(res.code, 200);
-			assert.deepEqual(res.url, url);
+			assertions(err, res, url);
 			server.close();
 		});
 	});
