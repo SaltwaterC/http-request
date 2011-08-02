@@ -127,3 +127,14 @@ var executeTests = function (assertions, testOptions, head, path) {
 };
 
 exports.executeTests = executeTests;
+
+var createLoopServer = function (cb) {
+	var server = http.createServer(function (req, res) {
+		res.writeHead(301, {location: '/'});
+		res.end();
+	});
+	server.listen(options.port, options.host, cb);
+	return server;
+};
+
+exports.createLoopServer = createLoopServer;
