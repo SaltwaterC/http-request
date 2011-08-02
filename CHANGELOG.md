@@ -2,6 +2,7 @@
  * Internal change: simpler method for detecting a redirect.
  * In order to follow the node.js callback convention, in case of success, the error argument is null, not undefined. This may break some existing code if the evaluation is made against 'undefined'.
  * Fixes the maxbody support as both the fail and the success code was executed in certain race conditions.
+ * Fixes the file stream support as both the fail and the success code was executed in certain race conditions.
  * Unit testing coverage.
 
 ## v0.1.6
