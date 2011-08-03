@@ -1,5 +1,5 @@
 ## v0.3
- * Dropped the compressor module in favor of gzbz2. More stable gzip support as the compressor module proved to completely hang the module in certain cases when it would not emit any of the end / close events.
+ * Dropped the [compressor](https://github.com/egorich239/node-compress) module in favor of [gzbz2](https://github.com/Woodya/node-gzbz2). More stable gzip support as the compressor module proved to completely hang the module in certain cases when it would not emit any of the end / close events.
  * Better interaction with the disk operations. The module makes use of [fsync(2)](http://linux.die.net/man/2/fsync).
 
 ## v0.2.1

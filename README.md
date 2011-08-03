@@ -1,6 +1,6 @@
 ## About
 
-Simple to use node.js HTTP / HTTPS client for downloading remote files. Supports transparent gzip decoding.
+Simple to use node.js HTTP / HTTPS client for downloading remote files. Supports transparent gzip decoding via [gzbz2](https://github.com/Woodya/node-gzbz2).
 
 The client sends just GET requests for fetching the remote objects. You may send HEAD requests if you just need to check the availability of a remote resource. The error reporting is implemented with care. The module itself is used in production for background data processing of thousands of remote resources, therefore it is not your average HTTP client. It is in use for both of the transfer modes: buffered responses or streamed to the disk responses.
 
