@@ -1,6 +1,7 @@
+var http = require('../');
+
 var fs = require('fs');
 var p = require('path');
-var exec = require('child_process').exec;
 
 var assert = require('assert');
 var common = require('./includes/common.js');
@@ -16,11 +17,14 @@ var fd = fs.openSync(path, 'w+');
 fs.closeSync(fd);
 fs.chmodSync(path, 0100);
 
-common.executeTests(function (err, res) {
-	assert.ok(err instanceof Error);
-	assert.equal(err.errno, 13);
-	assert.deepEqual(err.code, 'EACCES');
-}, {}, false, path);
+var server = common.createFooServer(false, function () {
+	http.get({url: common.options.url}, path, function (err, res) {
+		assert.ok(err instanceof Error);
+		assert.equal(err.errno, 13);
+		assert.deepEqual(err.code, 'EACCES');
+		server.close();
+	});
+});
 
 process.on('exit', function () {
 	fs.unlink(path, function (err) {
