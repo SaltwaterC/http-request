@@ -6,8 +6,6 @@ var p = require('path');
 var http = require('http');
 var https = require('https');
 
-var compressor = require('compressor');
-
 var options = {
 	host: '127.0.0.1',
 	port: 42890,
@@ -47,15 +45,10 @@ var createFooServer = function (secure, cb) {
 		if ( ! gzip) {
 			res.end('foo');
 		} else {
-			gzip = new compressor.GzipStream();
-			gzip.on('data', function (data) {
-				res.write(data);
-			});
-			gzip.on('end', function () {
-				res.end();
-			});
-			gzip.write('foo');
-			gzip.end();
+			res.write(new Buffer([0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+				0x00, 0x03, 0x4b, 0xcb, 0xcf, 0x07, 0x00, 0x21, 0x65, 0x73, 0x8c,
+				0x03, 0x00, 0x00, 0x00]));
+			res.end();
 		}
 	};
 	if (secure) {
