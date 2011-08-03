@@ -97,6 +97,7 @@ var executeTests = function (assertions, testOptions, head, path) {
 							server[index].close();
 						});
 					} else {
+						path = p.resolve('foo' + index + '.txt');
 						hg.get(options, path, function (err, res) {
 							assertions(err, res);
 							server[index].close();
