@@ -1,13 +1,13 @@
 {
 	"name": "http-get",
-	"version": "0.2.1",
+	"version": "0.3.0",
 	"main": "./lib/http-get.js",
 	"description": "Simple to use node.js HTTP / HTTPS client for downloading remote files. Supports transparent gzip decoding.",
 	"dependencies": {
-		"compressor": ">=0.1.x"
+		"gzbz2": ">=0.1.x"
 	},
 	"engines": {
-		"node": ">=0.4.10 <0.5.0"
+		"node": ">=0.4.10"
 	},
 	"homepage": "https://github.com/SaltwaterC/http-get",
 	"author": {
