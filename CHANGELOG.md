@@ -1,3 +1,6 @@
+## v0.3.2
+ * This release includes a patched version of the gzbz2/gunzipstream module in order to workaround the gz error -5. The rest of the gzip dependency is still taken from the upstream module.
+
 ## v0.3.1
  * The library calls the error code if the server prematurely closes the connection. In the future, if the accept-ranges header is defined into the response headers, the library should try to send subsequent requests in order to get the whole response.
 
