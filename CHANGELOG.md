@@ -1,6 +1,5 @@
 ## v0.3.3
  * Fixes the HEAD method that wronfully used http.get() / https.get().
- * Workaround for node.js issue [#1202](https://github.com/joyent/node/issues/1202).
 
 ## v0.3.2
  * This release includes a patched version of the gzbz2/gunzipstream module in order to workaround the gz error -5. The rest of the gzip dependency is still taken from the upstream module.

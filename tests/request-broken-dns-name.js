@@ -1,3 +1,6 @@
+console.error('Status: Ignored test');
+process.exit(0);
+
 var http = require('../');
 
 var assert = require('assert');
