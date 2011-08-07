@@ -8,17 +8,18 @@ var assertions = function (err, res) {
 	assert.deepEqual(err.code, 'EBADNAME');
 };
 
-console.error('Status: http.get() workaround not implemented.');
-/*
-http.get({url: 'http://.foo.bar/'}, function (err, res) {
-	assertions(err, res);
-});
-*/
-
 http.head({url: 'http://.foo.bar/'}, function (err, res) {
 	assertions(err, res);
 });
 
 http.head({url: 'https://.foo.bar/'}, function (err, res) {
+	assertions(err, res);
+});
+
+http.get({url: 'http://.foo.bar/'}, function (err, res) {
+	assertions(err, res);
+});
+
+http.get({url: 'https://.foo.bar/'}, function (err, res) {
 	assertions(err, res);
 });
