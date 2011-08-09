@@ -1,3 +1,6 @@
+## v0.3.4
+ * Internal optimisations.
+
 ## v0.3.3
  * Fixes the HEAD method that wronfully used http.get() / https.get().
  * Workaround for node.js issue [#1202](https://github.com/joyent/node/issues/1202).
