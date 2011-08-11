@@ -26,4 +26,9 @@ echo "Failed tests: $FAIL"
 echo "Total tests: $TOTAL"
 echo ""
 
-exit 0
+if [ $FAIL -eq 0 ]
+then
+	exit 0
+else
+	exit 1
+fi
