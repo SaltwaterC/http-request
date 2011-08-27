@@ -7,7 +7,10 @@ common.executeTests(function (err, res) {
 	assert.ifError(err);
 	assert.deepEqual(res.code, 200);
 	assert.deepEqual(res.headers['content-type'], 'text/plain');
-	assert.deepEqual(res.headers['content-encoding'], 'gzip');
+	try {
+		require('gzbz2');
+		assert.deepEqual(res.headers['content-encoding'], 'gzip');
+	} catch (e) {}
 	fs.stat(res.file, function (err) {
 		assert.ifError(err);
 		fs.readFile(res.file, function (err, data) {
