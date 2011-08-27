@@ -1,3 +1,6 @@
+## v0.3.5
+ * Makes gzbz2 to be an optional dependency. If it doesn't build, you can still use http-get.
+
 ## v0.3.4
  * Implemented the upstream proposed patch for the [gz.inflate() issue of node-gzbz2](https://github.com/Woodya/node-gzbz2/pull/1).
  * Removed the workaround for the node.js issue [#1202](https://github.com/joyent/node/issues/1202). node.js v0.4.11 is the minimal supported version by this release.
