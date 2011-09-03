@@ -19,6 +19,8 @@ options.url = u.format({
 	path: '/'
 });
 
+options.urlNoPrefix = options.host + ':' + options.port + '/';
+
 options.secureUrl = u.format({
 	protocol: 'https:',
 	hostname: options.host,

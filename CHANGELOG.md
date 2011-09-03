@@ -1,3 +1,7 @@
+## v0.3.6
+ * Improved the stability of the fsync(2) wrapper. The ocasional ENOENT errors should dissapear now.
+ * Fixes the auto-prefix functionality: if the http:// or https:// is missing, then http:// is automatically prepended. Now it specifically checks for http:// or https://.
+
 ## v0.3.5
  * Makes gzbz2 to be an optional dependency. If it doesn't build, you can still use http-get.
 
