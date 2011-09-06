@@ -6,6 +6,9 @@ var common = require('./includes/common.js');
 var u = require('url');
 var http = require('http');
 
+var callbackGet1 = false;
+var callbackGet2 = false;
+
 var assertions = function (err, res, url) {
 	assert.ifError(err);
 	assert.deepEqual(res.code, 200);
@@ -33,10 +36,17 @@ server.listen(common.options.port, common.options.host, function () {
 		pathname: '/foo'
 	});
 	hg.get({url: common.options.url}, function (err, res) {
+		callbackGet1 = true;
 		assertions(err, res, url);
 		hg.get({url: common.options.url}, function (err, res) {
+			callbackGet2 = true;
 			assertions(err, res, url);
 			server.close();
 		});
 	});
+});
+
+process.on('exit', function () {
+	assert.ok(callbackGet1);
+	assert.ok(callbackGet2);
 });

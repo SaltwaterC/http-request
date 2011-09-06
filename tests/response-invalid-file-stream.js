@@ -6,6 +6,8 @@ var p = require('path');
 var assert = require('assert');
 var common = require('./includes/common.js');
 
+var callback = false;
+
 var path = p.resolve('foo.txt');
 
 try {
@@ -19,6 +21,7 @@ fs.chmodSync(path, 0100);
 
 var server = common.createFooServer(false, function () {
 	http.get({url: common.options.url}, path, function (err, res) {
+		callback = true;
 		assert.ok(err instanceof Error);
 		assert.equal(err.errno, 13);
 		assert.deepEqual(err.code, 'EACCES');
@@ -29,5 +32,6 @@ var server = common.createFooServer(false, function () {
 process.on('exit', function () {
 	fs.unlink(path, function (err) {
 		assert.ifError(err);
+		assert.ok(callback);
 	});
 });
