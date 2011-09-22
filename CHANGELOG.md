@@ -1,3 +1,6 @@
+## v0.3.7
+ * Improves the stability of the gzip support. In some cases, broken servers prematurely close the connection for gzipped responses. The request is now reissued without the gzip support.
+
 ## v0.3.6
  * Improved the stability of the fsync(2) wrapper. The ocasional ENOENT errors should dissapear now.
  * Fixes the auto-prefix functionality: if the http:// or https:// is missing, then http:// is automatically prepended. Now it specifically checks for http:// or https://.
