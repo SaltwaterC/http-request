@@ -1,3 +1,6 @@
+## v0.3.8
+ * Fixes [#1](https://github.com/SaltwaterC/http-get/issues/1): Get with file does not callback.
+
 ## v0.3.7
  * Improves the stability of the gzip support. In some cases, broken servers prematurely close the connection for gzipped responses. The request is now reissued without the gzip support.
 
