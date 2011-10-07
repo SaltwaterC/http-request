@@ -1,3 +1,6 @@
+## v0.3.9
+ * Updates the gzbz2 dependency to v0.1.1. Removes the bundled patched version of gunzipstream.js since the upstream avoids the gunzip -5 errors.
+
 ## v0.3.8
  * Fixes [#1](https://github.com/SaltwaterC/http-get/issues/1): Get with file does not callback.
 

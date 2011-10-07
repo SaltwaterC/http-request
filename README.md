@@ -26,4 +26,4 @@ If you need gzip decoding support:
 
 ## Optional modules
 
- * gzbz2 for gzip decompression. It was reported that gzbz2 might not build successfully for some users, therefore it's now an optional dependency. However, it's still recommended to install gzbz2. This will be handled automatically when npm will eventually support [optionalDependencies](https://github.com/isaacs/npm/issues/995).
+ * gzbz2 v0.1.1+ for gzip decompression. It was reported that gzbz2 might not build successfully for some users, therefore it's now an optional dependency. However, it's still recommended to install gzbz2. This will be handled automatically when npm will eventually support [optionalDependencies](https://github.com/isaacs/npm/issues/995).
