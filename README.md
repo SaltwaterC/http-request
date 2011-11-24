@@ -1,4 +1,4 @@
-## About
+## About ![still maintained](http://stillmaintained.com/SaltwaterC/http-get.png)
 
 Simple to use node.js HTTP / HTTPS client for fetching remote resources. Supports transparent gzip decoding via [gzbz2](https://github.com/Woodya/node-gzbz2).
 
