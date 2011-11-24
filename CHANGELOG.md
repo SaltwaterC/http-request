@@ -1,3 +1,6 @@
+## v0.3.10
+ * Fixes a protocol breaking. The server may respond with gzip encoded content although not requested.
+
 ## v0.3.9
  * Updates the gzbz2 dependency to v0.1.1. Removes the bundled patched version of gunzipstream.js since the upstream avoids the gunzip -5 errors.
 
