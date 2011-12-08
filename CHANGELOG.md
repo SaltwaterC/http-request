@@ -1,3 +1,6 @@
+## v0.3.11
+ * Added options.timeout by [cmtt](https://github.com/cmtt).
+
 ## v0.3.10
  * Fixes a protocol breaking. The server may respond with gzip encoded content although not requested.
 
