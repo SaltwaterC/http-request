@@ -11,6 +11,12 @@
 		"name": "Stefan Rusu",
 		"url": "http://www.saltwaterc.eu/"
 	},
+	"contributors": [
+		{
+			"name": "cmtt",
+			"url": "https://github.com/cmtt"
+		}
+	],
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/SaltwaterC/http-get.git"
