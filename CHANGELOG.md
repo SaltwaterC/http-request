@@ -1,3 +1,6 @@
+## v0.3.12
+ * Makes sure options.timeout is disabled for node v0.4.x since request.setTimeout() is unavailable.
+
 ## v0.3.11
  * Added options.timeout by [cmtt](https://github.com/cmtt).
 
