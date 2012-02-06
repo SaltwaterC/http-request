@@ -23,10 +23,11 @@ If you need gzip decoding support:
 ## System Requirements
 
  * [node.js](http://nodejs.org/) v0.4.11+. If this version seems unreasonable, here are some reasons: [#1085](https://github.com/joyent/node/issues/1085), [#1304](https://github.com/joyent/node/issues/1304), [#1202](https://github.com/joyent/node/issues/1202).
+ * [node.js](http://nodejs.org/) v0.6.11+. If this version seems unreasonable, here is the reason: [#2688](https://github.com/joyent/node/pull/2688)
 
 ## Optional modules
 
- * gzbz2 v0.1.1+ for gzip decompression. It was reported that gzbz2 might not build successfully for some users, therefore it's now an optional dependency. However, it's still recommended to install gzbz2. This will be handled automatically when npm will eventually support [optionalDependencies](https://github.com/isaacs/npm/issues/995).
+ * gzbz2 v0.1.1+ for gzip decompression. It was reported that gzbz2 might not build successfully for some users, therefore it's now an optional dependency. However, it's still recommended to install gzbz2. This will be handled automatically when npm will eventually support [optionalDependencies](https://github.com/isaacs/npm/issues/995). Please notice that the support for gzbz2 will be dropped in the future. The native gzip support in node.js v0.6+ will take its place.
 
 ## Contributor
 
