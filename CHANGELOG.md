@@ -1,3 +1,7 @@
+## v0.3.13
+ * Made a v0.6 specific workaround where the request may be retried when the maxbody error is returned.
+ * Support for node v0.6.11+. Previous versions of node.js are broken due to [#2688](https://github.com/joyent/node/pull/2688).
+
 ## v0.3.12
  * Makes sure options.timeout is disabled for node v0.4.x since request.setTimeout() is unavailable.
 
