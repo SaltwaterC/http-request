@@ -1,3 +1,9 @@
+## v0.4
+ * [BREAKS COMPAT] node.js v0.6.11+ support. Drops support for node.js v0.4.11+.
+ * Deprecated options.nogzip in favor of options.nocompress.
+ * Native node.js zlib support. Includes both gzip and deflate transparent decompression.
+ * New options.noua for tuning off the default client User-Agent header.
+
 ## v0.3.13
  * Made a v0.6 specific workaround where the request may be retried when the maxbody error is returned.
  * Support for node v0.6.11+. Previous versions of node.js are broken due to [#2688](https://github.com/joyent/node/pull/2688).
