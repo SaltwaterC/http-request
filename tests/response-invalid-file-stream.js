@@ -23,7 +23,6 @@ var server = common.createFooServer(false, function () {
 	http.get({url: common.options.url}, path, function (err, res) {
 		callback = true;
 		assert.ok(err instanceof Error);
-		assert.equal(err.errno, 13);
 		assert.deepEqual(err.code, 'EACCES');
 		server.close();
 	});

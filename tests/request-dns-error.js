@@ -7,7 +7,6 @@ var callbackHead = false;
 
 var assertions = function (err, res) {
 	assert.ok(err instanceof Error);
-	assert.equal(err.errno, 4);
 	assert.deepEqual(err.code, 'ENOTFOUND');
 };
 
