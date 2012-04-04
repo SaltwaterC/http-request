@@ -1,3 +1,6 @@
+## v0.3.14
+ * New option: progress for passing a callback indicating the download progress.
+
 ## v0.3.13
  * Made a v0.6 specific workaround where the request may be retried when the maxbody error is returned.
  * Support for node v0.6.11+. Previous versions of node.js are broken due to [#2688](https://github.com/joyent/node/pull/2688).
