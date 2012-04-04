@@ -1,5 +1,6 @@
 ## v0.3.14
- * New option: progress for passing a callback indicating the download progress.
+ * New option: progress for passing a callback indicating the download progress. [#8](https://github.com/SaltwaterC/http-get/issues/8)
+ * The 4xx errors attach the body of the HTTP(S) response, if possible. [#7](https://github.com/SaltwaterC/http-get/issues/7)
 
 ## v0.3.13
  * Made a v0.6 specific workaround where the request may be retried when the maxbody error is returned.
