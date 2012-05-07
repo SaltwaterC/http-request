@@ -4,5 +4,7 @@ all:
 publish: all
 	/usr/bin/env npm publish
 
+tests: test
+check: test
 test:
-	/bin/sh tools/test.sh
+	tools/test.sh

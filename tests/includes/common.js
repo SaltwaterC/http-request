@@ -16,7 +16,14 @@ options.url = u.format({
 	protocol: 'http:',
 	hostname: options.host,
 	port: options.port,
-	path: '/'
+	pathname: '/'
+});
+
+options.url404 = u.format({
+	protocol: 'http:',
+	hostname: options.host,
+	port: options.port,
+	pathname: '/404'
 });
 
 options.urlNoPrefix = options.host + ':' + options.port + '/';
@@ -25,7 +32,7 @@ options.secureUrl = u.format({
 	protocol: 'https:',
 	hostname: options.host,
 	port: options.securePort,
-	path: '/'
+	pathname: '/'
 });
 
 options.gzipBuffer = new Buffer([0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -47,7 +54,19 @@ var createFooServer = function (secure, cb) {
 				res.setHeader('content-encoding', 'gzip');
 			}
 		}
-		res.writeHead(200, {'content-type': 'text/plain'});
+		
+		switch (req.url) {
+			case '/404':
+				res.writeHead(404, {'content-type': 'text/plain'});
+				res.write('Not Found');
+				res.end();
+				return;
+			break;
+			
+			default:
+				res.writeHead(200, {'content-type': 'text/plain'});
+			break;
+		}
 		
 		if (req.method != 'HEAD') {
 			if ( ! gzip) {

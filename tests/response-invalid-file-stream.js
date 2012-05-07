@@ -17,7 +17,7 @@ try {
 
 var fd = fs.openSync(path, 'w+');
 fs.closeSync(fd);
-fs.chmodSync(path, 0100);
+fs.chmodSync(path, "0100");
 
 var server = common.createFooServer(false, function () {
 	http.get({url: common.options.url}, path, function (err, res) {

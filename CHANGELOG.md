@@ -1,8 +1,16 @@
 ## v0.4
- * [BREAKS COMPAT] node.js v0.6.11+ support. Drops support for node.js v0.4.11+.
- * Deprecated options.nogzip in favor of options.nocompress.
+ * [BREAKS COMPAT] node.js v0.6.11+ support. Drops support for node.js v0.4. [#3](https://github.com/SaltwaterC/http-get/issues/3)
+ * New option: bufferType for specifying the fact that the library should return the buffers as [Buffer](http://nodejs.org/api/buffer.html) instance instead of String instance.
+ * New option: encoding for specifying the encoding of the returned buffers, when returning the buffered data as string. Defaults to 'utf8'. [#5](https://github.com/SaltwaterC/http-get/issues/5)
  * Native node.js zlib support. Includes both gzip and deflate transparent decompression.
- * New options.noua for tuning off the default client User-Agent header.
+ * Deprecated options.nogzip in favor of options.nocompress.
+ * New option: noua for tuning off the default client User-Agent header.
+ * New option: progress for passing a callback indicating the download progress. [#8](https://github.com/SaltwaterC/http-get/issues/8)
+ * The 4xx errors attach the body of the HTTP(S) response, if possible. [#7](https://github.com/SaltwaterC/http-get/issues/7)
+
+## v0.3.14
+ * New option: progress for passing a callback indicating the download progress. [#8](https://github.com/SaltwaterC/http-get/issues/8)
+ * The 4xx errors attach the body of the HTTP(S) response, if possible. [#7](https://github.com/SaltwaterC/http-get/issues/7)
 
 ## v0.3.13
  * Made a v0.6 specific workaround where the request may be retried when the maxbody error is returned.
