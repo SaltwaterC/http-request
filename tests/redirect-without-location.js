@@ -10,7 +10,7 @@ var callbackHead = false;
 
 var assertions = function (err, res) {
 	assert.ok(err instanceof Error);
-	assert.deepEqual(err.message, 'Redirect response without location header.');
+	assert.deepEqual(err.message, 'Redirect response without the Location header.');
 	assert.deepEqual(err.code, 301);
 };
 
