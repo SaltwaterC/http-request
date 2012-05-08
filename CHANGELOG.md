@@ -4,9 +4,10 @@
  * New option: encoding for specifying the encoding of the returned buffers, when returning the buffered data as string. Defaults to 'utf8'. [#5](https://github.com/SaltwaterC/http-get/issues/5)
  * Native node.js zlib support. Includes both gzip and deflate transparent decompression. Available only for node.js v0.6.18+ due to bugs into the zlib bindings [#3230](https://github.com/joyent/node/issues/3230).
  * Deprecated options.nogzip in favor of options.nocompress.
- * New option: noua for tuning off the default client User-Agent header.
+ * New option: noua for tuning off the default User-Agent header.
  * New option: progress for passing a callback indicating the download progress. [#8](https://github.com/SaltwaterC/http-get/issues/8)
  * The 4xx errors attach the body of the HTTP(S) response, if possible. [#7](https://github.com/SaltwaterC/http-get/issues/7)
+ * If the Last-Modified header is set, then for the file downloads it keeps the timestamp as the mtime value. [#6](https://github.com/SaltwaterC/http-get/issues/6)
 
 ## v0.3.14
  * New option: progress for passing a callback indicating the download progress. [#8](https://github.com/SaltwaterC/http-get/issues/8)
