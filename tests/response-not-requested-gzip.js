@@ -1,5 +1,7 @@
 var hg = require('../');
 
+var semver = require('semver');
+
 var assert = require('assert');
 var common = require('./includes/common.js');
 
@@ -20,8 +22,12 @@ server.listen(common.options.port, common.options.host, function () {
 		nocompress: true
 	}, function (err, res) {
 		callback = true;
-		assert.ok(err instanceof Error);
-		assert.deepEqual(err.message, 'The server sent gzip content without being requested.');
+		if (semver.satisfies(process.version, '>=0.6.18')) {
+			assert.ifError(err);
+		} else {
+			assert.ok(err instanceof Error);
+			assert.deepEqual(err.message, 'The server sent gzip content without being requested.');
+		}
 		server.close();
 	});
 });
