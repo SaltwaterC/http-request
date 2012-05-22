@@ -10,8 +10,9 @@ common.executeTests(function (err, res) {
 		assert.deepEqual(res.headers['content-type'], 'text/plain');
 		assert.deepEqual(res.buffer, 'foo');
 		assert.notEqual(res.headers['content-encoding'], 'gzip');
+		assert.notEqual(res.headers['content-encoding'], 'deflate');
 	},{
-		nogzip: true
+		nocompress: true
 });
 
 process.on('exit', function () {

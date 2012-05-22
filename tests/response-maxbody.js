@@ -5,6 +5,7 @@ var callback = [false, false];
 var index = 0;
 
 common.executeTests(function (err, res) {
+		console.log(err, res);
 		callback[index] = true;
 		index++;
 		assert.ok(err instanceof Error);
