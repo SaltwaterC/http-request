@@ -3,6 +3,7 @@ var hg = require('../');
 var semver = require('semver');
 
 var assert = require('assert');
+var zlib = require('zlib');
 var common = require('./includes/common.js');
 
 var http = require('http');
@@ -12,8 +13,14 @@ var callback = false;
 var server = http.createServer(function (req, res) {
 	res.setHeader('content-encoding', 'gzip');
 	res.writeHead(200, {'content-type': 'text/plain'});
-	res.write(common.options.gzipBuffer);
-	res.end();
+	zlib.gzip('foo', function (err, compressed) {
+		if ( ! err) {
+			res.write(compressed);
+		} else {
+			res.writeHead(500, {'content-type': 'text/plain'});
+		}
+		res.end();
+	});
 });
 
 server.listen(common.options.port, common.options.host, function () {

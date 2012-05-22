@@ -6,6 +6,7 @@
  * Deprecated options.nogzip in favor of options.nocompress.
  * New option: noua for tuning off the default User-Agent header.
  * New option: progress for passing a callback indicating the download progress. [#8](https://github.com/SaltwaterC/http-get/issues/8)
+ * New option: debug for reporting the protocol violations that are silently dropped. For node.js 0.6.18+ the gzip / deflate content is decoded even when the client did not send the accept-encoding header. With this option, this situation is reported as warning in STDERR.
  * The 4xx errors attach the body of the HTTP(S) response, if possible. [#7](https://github.com/SaltwaterC/http-get/issues/7)
  * If the Last-Modified header is set, then for the file downloads it keeps the timestamp as the mtime value. [#6](https://github.com/SaltwaterC/http-get/issues/6)
 

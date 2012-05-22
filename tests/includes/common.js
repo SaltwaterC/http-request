@@ -5,6 +5,7 @@ var fs = require('fs');
 var p = require('path');
 var http = require('http');
 var https = require('https');
+var zlib = require('zlib');
 
 var options = {
 	host: '127.0.0.1',
@@ -35,15 +36,12 @@ options.secureUrl = u.format({
 	pathname: '/'
 });
 
-options.gzipBuffer = new Buffer([0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-					0x00, 0x03, 0x4b, 0xcb, 0xcf, 0x07, 0x00, 0x21, 0x65, 0x73, 0x8c,
-					0x03, 0x00, 0x00, 0x00]);
-
 exports.options = options;
 
 var createFooServer = function (secure, cb) {
 	var srvCb = function (req, res) {
 		var gzip = false;
+		var deflate = false;
 		if (req.headers.foo) {
 			res.setHeader('foo', req.headers.foo);
 		}
@@ -52,14 +50,39 @@ var createFooServer = function (secure, cb) {
 			if (accept.indexOf('gzip') != -1) {
 				gzip = true;
 				res.setHeader('content-encoding', 'gzip');
+			} else if (accept.indexOf('deflate') != -1) {
+				deflate = true;
 			}
 		}
 		
 		switch (req.url) {
 			case '/404':
 				res.writeHead(404, {'content-type': 'text/plain'});
-				res.write('Not Found');
-				res.end();
+				if ( ! gzip && ! deflate) {
+					res.write('Not Found');
+					res.end();
+				} else {
+					if (gzip) {
+						zlib.gzip('Not Found', function (err, compressed) {
+							if ( ! err) {
+								res.write(compressed);
+							} else {
+								res.writeHead(500, {'content-type': 'text/plain'});
+							}
+							res.end();
+						});
+					}
+					if (deflate) {
+						zlib.deflate('Not Found', function (err, compressed) {
+							if ( ! err) {
+								res.write(compressed);
+							} else {
+								res.writeHead(500, {'content-type': 'text/plain'});
+							}
+							res.end();
+						});
+					}
+				}
 				return;
 			break;
 			
@@ -69,14 +92,34 @@ var createFooServer = function (secure, cb) {
 		}
 		
 		if (req.method != 'HEAD') {
-			if ( ! gzip) {
+			if ( ! gzip && ! deflate) {
 				res.write('foo');
+				res.end();
 			} else {
-				res.write(options.gzipBuffer);
+				if (gzip) {
+					zlib.gzip('foo', function (err, compressed) {
+						if ( ! err) {
+							res.write(compressed);
+						} else {
+							res.writeHead(500, {'content-type': 'text/plain'});
+						}
+						res.end();
+					});
+				}
+				if (deflate) {
+					zlib.deflate('foo', function (err, compressed) {
+						if ( ! err) {
+							res.write(compressed);
+						} else {
+							res.writeHead(500, {'content-type': 'text/plain'});
+						}
+						res.end();
+					});
+				}
 			}
+		} else {
+			res.end();
 		}
-		
-		res.end();
 	};
 	if (secure) {
 		var server = https.createServer({
@@ -96,10 +139,10 @@ exports.createFooServer = createFooServer;
 
 var merge = function (obj1, obj2) {
 	var obj3 = {};
-	for (attrname in obj1) {
+	for (var attrname in obj1) {
 		obj3[attrname] = obj1[attrname];
 	}
-	for (attrname in obj2) {
+	for (var attrname in obj2) {
 		obj3[attrname] = obj2[attrname];
 	}
 	return obj3;

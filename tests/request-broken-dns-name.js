@@ -1,5 +1,3 @@
-process.exit(0); // XXX ignores this test till a proper node v0.6.11 is available
-
 var http = require('../');
 
 var assert = require('assert');
