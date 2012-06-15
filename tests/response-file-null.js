@@ -10,7 +10,7 @@ var server = common.createFooServer(false, function () {
 		callback = true;
 		assert.ifError(err);
 		if (process.platform === 'win32') {
-			assert.deepEqual('NUL:', res.file);
+			assert.deepEqual('NUL', res.file);
 		} else {
 			assert.deepEqual('/dev/null', res.file);
 		}
