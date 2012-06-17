@@ -9,11 +9,8 @@ var server = common.createFooServer(false, function () {
 	http.get({url: common.options.url}, null, function (err, res) {
 		callback = true;
 		assert.ifError(err);
-		if (process.platform === 'win32') {
-			assert.deepEqual('NUL', res.file);
-		} else {
-			assert.deepEqual('/dev/null', res.file);
-		}
+		assert.deepEqual(200, res.code);
+		assert.ok(res.headers);
 		server.close();
 	});
 });

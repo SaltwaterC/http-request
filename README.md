@@ -28,3 +28,4 @@ node.js v0.4 is **NOT** supported due to lack of zlib bindings. Only http-get v0
 ## Contributor
 
  * [cmtt](https://github.com/cmtt) - options.timeout
+ * [elarcent](https://github.com/elarcent) - HTTP Basic auth fix

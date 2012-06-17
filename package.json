@@ -1,6 +1,6 @@
 {
 	"name": "http-get",
-	"version": "0.4.0",
+	"version": "0.4.1",
 	"main": "./lib/http-get.js",
 	"description": "Simple to use node.js HTTP / HTTPS client for downloading remote files. Supports transparent gzip / deflate decoding.",
 	"dependencies": {
@@ -18,6 +18,10 @@
 		{
 			"name": "cmtt",
 			"url": "https://github.com/cmtt"
+		},
+		{
+			"name": "elarcent",
+			"url": "https://github.com/elarcent"
 		}
 	],
 	"repository": {

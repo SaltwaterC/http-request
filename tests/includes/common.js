@@ -27,6 +27,14 @@ options.url404 = u.format({
 	pathname: '/404'
 });
 
+options.urlAuth = u.format({
+	protocol: 'http:',
+	hostname: options.host,
+	port: options.port,
+	pathname: '/auth',
+	auth: 'user:pass'
+});
+
 options.urlNoPrefix = options.host + ':' + options.port + '/';
 
 options.secureUrl = u.format({
@@ -42,9 +50,11 @@ var createFooServer = function (secure, cb) {
 	var srvCb = function (req, res) {
 		var gzip = false;
 		var deflate = false;
+		
 		if (req.headers.foo) {
 			res.setHeader('foo', req.headers.foo);
 		}
+		
 		if (req.headers['accept-encoding']) {
 			var accept = req.headers['accept-encoding'].split(',');
 			if (accept.indexOf('gzip') != -1) {
@@ -58,6 +68,7 @@ var createFooServer = function (secure, cb) {
 		switch (req.url) {
 			case '/404':
 				res.writeHead(404, {'content-type': 'text/plain'});
+				
 				if ( ! gzip && ! deflate) {
 					res.write('Not Found');
 					res.end();
@@ -72,6 +83,7 @@ var createFooServer = function (secure, cb) {
 							res.end();
 						});
 					}
+					
 					if (deflate) {
 						zlib.deflate('Not Found', function (err, compressed) {
 							if ( ! err) {
@@ -84,6 +96,48 @@ var createFooServer = function (secure, cb) {
 					}
 				}
 				return;
+			break;
+			
+			case '/auth':
+				res.writeHead(200, {'content-type': 'application/json'});
+				
+				// a pretti basic HTTP Basic Auth parser :)
+				var authorization = req.headers['authorization'] || '';
+				var token = authorization.split(/\s+/).pop() || '';
+				var auth = new Buffer(token, 'base64').toString();
+				auth = auth.split(/:/);
+				
+				var response = JSON.stringify({
+					username: auth[0],
+					password: auth[1]
+				});
+				
+				if ( ! gzip && ! deflate) {
+					res.write(response);
+					res.end();
+				} else {
+					if (gzip) {
+						zlib.gzip(response, function (err, compressed) {
+							if ( ! err) {
+								res.write(compressed);
+							} else {
+								res.writeHead(500, {'content-type': 'text/plain'});
+							}
+							res.end();
+						});
+					}
+					
+					if (deflate) {
+						zlib.deflate(response, function (err, compressed) {
+							if ( ! err) {
+								res.write(compressed);
+							} else {
+								res.writeHead(500, {'content-type': 'text/plain'});
+							}
+							res.end();
+						});
+					}
+				}
 			break;
 			
 			default:
