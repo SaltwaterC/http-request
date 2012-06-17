@@ -1,3 +1,8 @@
+## v0.4.1
+ * Passing null as the file argument to http.get turns off saving the response body.
+ * Fixes the HTTP Basic authentication support. [#9](https://github.com/SaltwaterC/http-get/issues/9)
+ * Attaches the HTTP(S) response body to the error argument, if possible, for 203 status codes.
+
 ## v0.4
  * [BREAKS COMPAT] node.js v0.6.11+ support. Drops support for node.js v0.4. [#3](https://github.com/SaltwaterC/http-get/issues/3)
  * New option: bufferType for specifying the fact that the library should return the buffers as [Buffer](http://nodejs.org/api/buffer.html) instance instead of String instance.
