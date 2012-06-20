@@ -20,6 +20,13 @@ options.url = u.format({
 	pathname: '/'
 });
 
+options.urlRedirect = u.format({
+	protocol: 'http:',
+	hostname: options.host,
+	port: options.port,
+	pathname: '/redirect'
+});
+
 options.url404 = u.format({
 	protocol: 'http:',
 	hostname: options.host,
@@ -138,6 +145,10 @@ var createFooServer = function (secure, cb) {
 						});
 					}
 				}
+			break;
+			
+			case '/redirect':
+				res.writeHead(302, {location: options.url});
 			break;
 			
 			default:

@@ -23,7 +23,7 @@ Either manually clone this repository into your node_modules directory, or the r
 
 This library is not recommended under node.js v0.6.17 due to [this issue](https://groups.google.com/forum/#!topic/nodejs/6euYfwMmx1Y).
 
-node.js v0.4 is **NOT** supported due to lack of zlib bindings. Only http-get v0.3 versions supports node.js v0.4.
+node.js v0.4 is **NOT** supported due to lack of zlib bindings. node.js v0.4 is only supported by http-get v0.3 versions.
 
 ## Contributor
 
