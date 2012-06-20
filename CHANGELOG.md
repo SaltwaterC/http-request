@@ -1,3 +1,6 @@
+## v0.4.2
+ * Fixes the null as file argument when the response is a redirect. The body of the response was buffered instead of being discarded.
+
 ## v0.4.1
  * Passing null as the file argument to http.get turns off saving the response body.
  * Fixes the HTTP Basic authentication support. [#9](https://github.com/SaltwaterC/http-get/issues/9)
