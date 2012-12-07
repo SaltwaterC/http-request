@@ -15,7 +15,7 @@ common.executeTests(function (err, res) {
 		assert.deepEqual(err.code, 200);
 	},
 	{
-		maxbody: 2
+		maxBody: 2
 });
 
 process.on('exit', function () {

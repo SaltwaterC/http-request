@@ -17,11 +17,11 @@ var server = http.createServer(function (req, res) {
 server.listen(common.options.port, common.options.host, function () {
 	hg.get({
 		url: common.options.url,
-		maxbody: 'foo'
+		maxBody: 'foo'
 	}, function (err, res) {
 		callback = true;
 		assert.ok(err instanceof Error);
-		assert.deepEqual(err.message, 'Invalid options.maxbody specification.');
+		assert.deepEqual(err.message, 'Invalid options.maxBody specification.');
 		server.close();
 	});
 });

@@ -2,6 +2,7 @@
  * Fixes the broken handling of buffered responses when the request is retried with options.nocompress. [#11](https://github.com/SaltwaterC/http-get/pull/11)
  * Enables passing a String as URL instead of the options Object. Internally this is handled as options = {url: options}.
  * Deprecated options.nocompress in favor of options.noCompress. Makes the API to be consistent.
+ * Deprecated options.maxbody in favor of options.maxBody. Same reason.
  * Uses the native node.js event emitter.
  * The 206 response is handled as success. Enables the usage of range requests.
  * jslint compliant.
