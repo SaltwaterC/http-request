@@ -1,3 +1,5 @@
+'use strict';
+
 var http = require('../');
 
 var fs = require('fs');
@@ -10,22 +12,36 @@ var callback = false;
 
 var path = p.resolve('foo.txt');
 
-try {
-	fs.statSync(path);
-	fs.unlinkSync(path);
-} catch (e) {}
-
-var fd = fs.openSync(path, 'w+');
-fs.closeSync(fd);
-fs.chmodSync(path, "0100");
-
-var server = common.createFooServer(false, function () {
-	http.get({url: common.options.url}, path, function (err, res) {
-		callback = true;
-		assert.ok(err instanceof Error);
-		assert.deepEqual(err.code, 'EACCES');
-		server.close();
+var createFile = function () {
+	fs.open(path, 'w+', function (err, fd) {
+		assert.ifError(err);
+		fs.close(fd, function (err) {
+			assert.ifError(err);
+			fs.chmod(path, '0100', function (err) {
+				assert.ifError(err);
+				
+				var server = common.createFooServer(false, function () {
+					http.get({url: common.options.url}, path, function (err, res) {
+						callback = true;
+						assert.ok(err instanceof Error);
+						assert.deepEqual(err.code, 'EACCES');
+						server.close();
+					});
+				});
+			});
+		});
 	});
+};
+
+fs.stat(path, function (err, stats) {
+	if ( ! err) {
+		fs.unlink(path, function (err, res) {
+			assert.ifError(err);
+			createFile();
+		});
+	} else {
+		createFile();
+	}
 });
 
 process.on('exit', function () {

@@ -1,3 +1,5 @@
+'use strict';
+
 var http = require('../');
 
 var assert = require('assert');
@@ -25,7 +27,10 @@ var server = common.createFooServer(false, function () {
 });
 
 process.on('exit', function () {
-	for (var i in callback) {
-		assert.ok(callback[i]);
+	var i;
+	for (i in callback) {
+		if (callback.hasOwnProperty(i)) {
+			assert.ok(callback[i]);
+		}
 	}
 });

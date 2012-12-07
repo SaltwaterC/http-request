@@ -1,9 +1,13 @@
+'use strict';
+
 var http = require('../');
 
 var assert = require('assert');
 
-var callbackGet = false;
-var callbackHead = false;
+var callback = {
+	get: false,
+	head: false
+};
 
 var assertions = function (err, res) {
 	assert.ok(err instanceof Error);
@@ -11,16 +15,20 @@ var assertions = function (err, res) {
 };
 
 http.get({}, function (err, res) {
-	callbackGet = true;
+	callback.get = true;
 	assertions(err, res);
 });
 
 http.head({}, function (err, res) {
-	callbackHead = true;
+	callback.head = true;
 	assertions(err, res);
 });
 
 process.on('exit', function () {
-	assert.ok(callbackGet);
-	assert.ok(callbackHead);
+	var i;
+	for (i in callback) {
+		if (callback.hasOwnProperty(i)) {
+			assert.ok(callback[i]);
+		}
+	}
 });

@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs');
 
 var assert = require('assert');
@@ -25,7 +27,10 @@ common.executeTests(function (err, res) {
 }, {}, false, true);
 
 process.on('exit', function () {
-	for (var i in callback) {
-		assert.ok(callback[i]);
+	var i;
+	for (i in callback) {
+		if (callback.hasOwnProperty(i)) {
+			assert.ok(callback[i]);
+		}
 	}
 });

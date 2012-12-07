@@ -1,35 +1,41 @@
+'use strict';
+
 var http = require('../');
 
 var assert = require('assert');
 
-var callbackGet1 = false;
-var callbackGet2 = false;
-var callbackHead1 = false;
-var callbackHead2 = false;
+var callback = {
+	get1: false,
+	get2: false,
+	head1: false,
+	head2: false
+};
 
 http.get({url: 'http://.foo.bar/'}, function (err, res) {
-	callbackGet1 = true;
+	callback.get1 = true;
 	assert.ok(err instanceof Error);
 });
 
 http.get({url: 'https://.foo.bar/'}, function (err, res) {
-	callbackGet2 = true;
+	callback.get2 = true;
 	assert.ok(err instanceof Error);
 });
 
 http.head({url: 'http://.foo.bar/'}, function (err, res) {
-	callbackHead1 = true;
+	callback.head1 = true;
 	assert.ok(err instanceof Error);
 });
 
 http.head({url: 'https://.foo.bar/'}, function (err, res) {
-	callbackHead2 = true;
+	callback.head2 = true;
 	assert.ok(err instanceof Error);
 });
 
 process.on('exit', function () {
-	assert.ok(callbackGet1);
-	assert.ok(callbackGet2);
-	assert.ok(callbackHead1);
-	assert.ok(callbackHead2);
+	var i;
+	for (i in callback) {
+		if (callback.hasOwnProperty(i)) {
+			assert.ok(callback[i]);
+		}
+	}
 });

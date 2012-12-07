@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 var common = require('./includes/common.js');
 

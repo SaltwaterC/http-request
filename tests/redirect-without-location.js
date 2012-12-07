@@ -1,3 +1,5 @@
+'use strict';
+
 var hg = require('../');
 
 var assert = require('assert');
@@ -5,8 +7,10 @@ var common = require('./includes/common.js');
 
 var http = require('http');
 
-var callbackGet = false;
-var callbackHead = false;
+var callback = {
+	get: false,
+	head: false
+};
 
 var assertions = function (err, res) {
 	assert.ok(err instanceof Error);
@@ -21,10 +25,10 @@ var server = http.createServer(function (req, res) {
 
 server.listen(common.options.port, common.options.host, function () {
 	hg.get({url: common.options.url}, function (err, res) {
-		callbackGet = true;
+		callback.get = true;
 		assertions(err, res);
 		hg.head({url: common.options.url}, function (err, res) {
-			callbackHead = true;
+			callback.head = true;
 			assertions(err, res);
 			server.close();
 		});
@@ -32,6 +36,10 @@ server.listen(common.options.port, common.options.host, function () {
 });
 
 process.on('exit', function () {
-	assert.ok(callbackGet);
-	assert.ok(callbackHead);
+	var i;
+	for (i in callback) {
+		if (callback.hasOwnProperty(i)) {
+			assert.ok(callback[i]);
+		}
+	}
 });

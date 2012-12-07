@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 var common = require('./includes/common.js');
 
@@ -14,7 +16,10 @@ common.executeTests(function (err, res) {
 });
 
 process.on('exit', function () {
-	for (var i in callback) {
-		assert.ok(callback[i]);
+	var i;
+	for (i in callback) {
+		if (callback.hasOwnProperty(i)) {
+			assert.ok(callback[i]);
+		}
 	}
 });

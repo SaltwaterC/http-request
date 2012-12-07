@@ -1,3 +1,5 @@
+'use strict';
+
 var hg = require('../');
 
 var u = require('url');
@@ -20,7 +22,7 @@ var server = common.createFooServer(false, function () {
 		var urlAuth = url.auth.split(/:/);
 		
 		assert.deepEqual(auth.username, urlAuth[0]);
-		assert.deepEqual(auth.password, urlAuth[1])
+		assert.deepEqual(auth.password, urlAuth[1]);
 		
 		server.close();
 	});	

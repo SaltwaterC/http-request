@@ -1,3 +1,5 @@
+'use strict';
+
 var http = require('../');
 
 var assert = require('assert');

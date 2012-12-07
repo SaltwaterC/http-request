@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 var common = require('./includes/common.js');
 
@@ -12,7 +14,7 @@ common.executeTests(function (err, res) {
 		assert.notEqual(res.headers['content-encoding'], 'gzip');
 		assert.notEqual(res.headers['content-encoding'], 'deflate');
 	},{
-		nocompress: true
+		noCompress: true
 });
 
 process.on('exit', function () {

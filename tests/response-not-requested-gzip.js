@@ -1,3 +1,5 @@
+'use strict';
+
 var hg = require('../');
 
 var semver = require('semver');
@@ -26,7 +28,7 @@ var server = http.createServer(function (req, res) {
 server.listen(common.options.port, common.options.host, function () {
 	hg.get({
 		url: common.options.url,
-		nocompress: true
+		noCompress: true
 	}, function (err, res) {
 		callback = true;
 		if (semver.satisfies(process.version, '>=0.6.18')) {

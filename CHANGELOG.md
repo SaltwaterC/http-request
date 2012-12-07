@@ -1,3 +1,11 @@
+## v0.4.3
+ * Fixes the broken handling of buffered responses when the request is retried with options.nocompress. [#11](https://github.com/SaltwaterC/http-get/pull/11)
+ * Enables passing a String as URL instead of the options Object. Internally this is handled as options = {url: options}.
+ * Deprecated options.nocompress in favor of options.noCompress. Makes the API to be consistent.
+ * Uses the native node.js event emitter.
+ * The 206 response is handled as success. Enables the usage of range requests.
+ * jslint compliant.
+
 ## v0.4.2
  * Fixes the null as file argument when the response is a redirect. The body of the response was buffered instead of being discarded.
 
