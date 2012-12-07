@@ -1,3 +1,6 @@
+.PHONY: all
+.DEFAULT: all
+
 all:
 	/usr/bin/env npm install
 
@@ -9,5 +12,5 @@ publish: all
 
 tests: test
 check: test
-test: lint
+test: all lint
 	tools/test.sh
