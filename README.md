@@ -25,7 +25,7 @@ This library is not recommended under node.js v0.6.17 due to [this issue](https:
 
 node.js v0.4 is **NOT** supported due to lack of zlib bindings. node.js v0.4 is only supported by the http-get v0.3 versions.
 
-## Contributor
+## Contributors
 
  * [cmtt](https://github.com/cmtt) - options.timeout, fixed the broken handling of buffered response when retrying the request with options.nocompress
  * [elarcent](https://github.com/elarcent) - HTTP Basic auth fix
