@@ -1,7 +1,7 @@
 ## v0.5
  * [MAY BREAK COMPAT] Added mandatory certificate validation for the HTTPS client. The library bundles its own ca-bundle.crt as provided by Mozilla. Own Certificate Authority information may be provided via options.ca. It may be disabled it via options.noSslValidation. It breaks the clients that use HTTPS URLs with servers that use self signed certificates, or where the certificate information is wrong or expired.
  * Fixes the broken handling of buffered responses when the request is retried with options.noCompress. [#11](https://github.com/SaltwaterC/http-get/pull/11)
- * Enables passing a String as URL instead of the options Object. Internally this is handled as options = {url: options}. However, this won't be usable without warnings for buffered responses until the migration to Buffer is fully complete.
+ * Enables passing a String as URL instead of the options Object. Internally this is handled as `options = {url: options};`. However, this won't be usable without warnings for buffered responses until the migration to Buffer is fully complete.
  * Deprecated options.nocompress in favor of options.noCompress. Makes the API to be consistent.
  * Deprecated options.maxbody in favor of options.maxBody.
  * Deprecated options.noua in favor of options.noUserAgent. More explicit for the reader.
