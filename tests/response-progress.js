@@ -11,14 +11,16 @@ common.executeTests(function (err, res) {
 		assert.ifError(err);
 		assert.deepEqual(res.code, 200);
 		assert.deepEqual(res.headers['content-type'], 'text/plain');
-		assert.deepEqual(res.buffer, 'foo');
+		assert.deepEqual(res.buffer.toString(), 'foo');
 	},{
 		progress: function (current, total) {
 			progress = true;
 			assert.deepEqual(current, 3);
 			// the test server does not return the Content-Length header
 			assert.deepEqual(total, 0);
-		}
+		},
+		bufferType: 'buffer',
+		noSslVerifier: true
 });
 
 process.on('exit', function () {

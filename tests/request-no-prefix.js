@@ -12,12 +12,13 @@ var callback = false;
 var server = common.createFooServer(false, function () {
 	hg.get({
 		url: common.options.urlNoPrefix,
+		bufferType: 'buffer'
 	}, function (err, res) {
 		callback = true;
 		assert.ifError(err);
 		assert.deepEqual(res.code, 200);
 		assert.deepEqual(res.headers['content-type'], 'text/plain');
-		assert.deepEqual(res.buffer, 'foo');
+		assert.deepEqual(res.buffer.toString(), 'foo');
 		server.close();
 	});
 });

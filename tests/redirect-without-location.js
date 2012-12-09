@@ -24,7 +24,7 @@ var server = http.createServer(function (req, res) {
 });
 
 server.listen(common.options.port, common.options.host, function () {
-	hg.get({url: common.options.url}, function (err, res) {
+	hg.get({url: common.options.url, bufferType: 'buffer'}, function (err, res) {
 		callback.get = true;
 		assertions(err, res);
 		hg.head({url: common.options.url}, function (err, res) {

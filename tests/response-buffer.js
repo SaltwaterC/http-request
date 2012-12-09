@@ -12,7 +12,10 @@ common.executeTests(function (err, res) {
 	assert.ifError(err);
 	assert.deepEqual(res.code, 200);
 	assert.deepEqual(res.headers['content-type'], 'text/plain');
-	assert.deepEqual(res.buffer, 'foo');
+	assert.deepEqual(res.buffer.toString(), 'foo');
+}, {
+	bufferType: 'buffer',
+	noSslVerifier: true
 });
 
 process.on('exit', function () {

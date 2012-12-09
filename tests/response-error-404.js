@@ -8,10 +8,10 @@ var common = require('./includes/common.js');
 var callback = false;
 
 var server = common.createFooServer(false, function () {
-	http.get({url: common.options.url404}, function (err, res) {
+	http.get({url: common.options.url404, bufferType: 'buffer'}, function (err, res) {
 		callback = true;
 		assert.ok(err instanceof Error);
-		assert.deepEqual(err.document, 'Not Found');
+		assert.deepEqual(err.document.toString(), 'Not Found');
 		assert.deepEqual(err.largeDocument, false);
 		server.close();
 	});

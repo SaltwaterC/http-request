@@ -12,7 +12,9 @@ common.executeTests(function (err, res) {
 	assert.ifError(err);
 	assert.deepEqual(res.code, 200);
 	assert.deepEqual(res.headers['content-type'], 'text/plain');
-}, {}, true);
+}, {
+	noSslVerifier: true
+}, true);
 
 process.on('exit', function () {
 	var i;

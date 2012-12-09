@@ -28,7 +28,8 @@ var server = http.createServer(function (req, res) {
 server.listen(common.options.port, common.options.host, function () {
 	hg.get({
 		url: common.options.url,
-		noCompress: true
+		noCompress: true,
+		bufferType: 'buffer'
 	}, function (err, res) {
 		callback = true;
 		if (semver.satisfies(process.version, '>=0.6.18')) {

@@ -14,7 +14,7 @@ var assertions = function (err, res) {
 	assert.deepEqual(err.code, 'ENOTFOUND');
 };
 
-http.get({url: 'http://foo.bar/'}, function (err, res) {
+http.get({url: 'http://foo.bar/', bufferType: 'buffer'}, function (err, res) {
 	callback.get = true;
 	assertions(err, res);
 });

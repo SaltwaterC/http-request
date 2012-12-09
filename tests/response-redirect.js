@@ -8,8 +8,10 @@ var common = require('./includes/common.js');
 var u = require('url');
 var http = require('http');
 
-var callbackGet1 = false;
-var callbackGet2 = false;
+var callback = {
+	get1: false,
+	get2: false
+};
 
 var assertions = function (err, res, url) {
 	assert.ifError(err);
@@ -37,11 +39,11 @@ server.listen(common.options.port, common.options.host, function () {
 		port: common.options.port,
 		pathname: '/foo'
 	});
-	hg.get({url: common.options.url}, function (err, res) {
-		callbackGet1 = true;
+	hg.get({url: common.options.url, bufferType: 'buffer'}, function (err, res) {
+		callback.get1 = true;
 		assertions(err, res, url);
-		hg.get({url: common.options.url}, function (err, res) {
-			callbackGet2 = true;
+		hg.get({url: common.options.url, bufferType: 'buffer'}, function (err, res) {
+			callback.get2 = true;
 			assertions(err, res, url);
 			server.close();
 		});
@@ -49,6 +51,10 @@ server.listen(common.options.port, common.options.host, function () {
 });
 
 process.on('exit', function () {
-	assert.ok(callbackGet1);
-	assert.ok(callbackGet2);
+	var i;
+	for (i in callback) {
+		if (callback.hasOwnProperty(i)) {
+			assert.ok(callback[i]);
+		}
+	}
 });

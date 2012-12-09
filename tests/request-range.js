@@ -11,13 +11,14 @@ var server = common.createFooServer(false, function () {
 		headers: {
 			range: 'bytes=0-1'
 		},
-		noCompress: true
+		noCompress: true,
+		bufferType: 'buffer'
 	};
 	
 	http.get(options, function (err, res) {
 		assert.ifError(err);
 		assert.ok(res.headers['content-range']);
-		assert.deepEqual(res.buffer, 'ba');
+		assert.deepEqual(res.buffer.toString(), 'ba');
 		
 		server.close();
 	});

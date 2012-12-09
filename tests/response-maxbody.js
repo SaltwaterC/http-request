@@ -15,7 +15,9 @@ common.executeTests(function (err, res) {
 		assert.deepEqual(err.code, 200);
 	},
 	{
-		maxBody: 2
+		maxBody: 2,
+		bufferType: 'buffer',
+		noSslVerifier: true
 });
 
 process.on('exit', function () {

@@ -21,7 +21,7 @@ var createFile = function () {
 				assert.ifError(err);
 				
 				var server = common.createFooServer(false, function () {
-					http.get({url: common.options.url}, path, function (err, res) {
+					http.get({url: common.options.url, bufferType: 'buffer'}, path, function (err, res) {
 						callback = true;
 						assert.ok(err instanceof Error);
 						assert.deepEqual(err.code, 'EACCES');

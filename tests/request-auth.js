@@ -11,12 +11,12 @@ var common = require('./includes/common.js');
 var callback = false;
 
 var server = common.createFooServer(false, function () {
-	hg.get({url: common.options.urlAuth}, function (err, res) {
+	hg.get({url: common.options.urlAuth, bufferType: 'buffer'}, function (err, res) {
 		callback = true;
 		
 		assert.ifError(err);
 		assert.deepEqual(200, res.code);
-		var auth = JSON.parse(res.buffer);
+		var auth = JSON.parse(res.buffer.toString());
 		
 		var url = u.parse(common.options.urlAuth);
 		var urlAuth = url.auth.split(/:/);

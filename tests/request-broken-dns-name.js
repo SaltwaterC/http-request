@@ -11,12 +11,12 @@ var callback = {
 	head2: false
 };
 
-http.get({url: 'http://.foo.bar/'}, function (err, res) {
+http.get({url: 'http://.foo.bar/', bufferType: 'buffer'}, function (err, res) {
 	callback.get1 = true;
 	assert.ok(err instanceof Error);
 });
 
-http.get({url: 'https://.foo.bar/'}, function (err, res) {
+http.get({url: 'https://.foo.bar/', bufferType: 'buffer'}, function (err, res) {
 	callback.get2 = true;
 	assert.ok(err instanceof Error);
 });

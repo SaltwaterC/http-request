@@ -1,12 +1,15 @@
 ## v0.5
- * Fixes the broken handling of buffered responses when the request is retried with options.nocompress. [#11](https://github.com/SaltwaterC/http-get/pull/11)
- * Enables passing a String as URL instead of the options Object. Internally this is handled as options = {url: options}.
+ * [MAY BREAK COMPAT] Added mandatory certificate validation for the HTTPS client. The library bundles its own ca-bundle.crt as provided by Mozilla. Own Certificate Authority information may be provided via options.ca. It may be disabled it via options.noSslValidation. It breaks the clients that use HTTPS URLs with servers that use self signed certificates, or where the certificate information is wrong or expired.
+ * Fixes the broken handling of buffered responses when the request is retried with options.noCompress. [#11](https://github.com/SaltwaterC/http-get/pull/11)
+ * Enables passing a String as URL instead of the options Object. Internally this is handled as options = {url: options}. However, this won't be usable without warnings for buffered responses until the migration to Buffer is fully complete.
  * Deprecated options.nocompress in favor of options.noCompress. Makes the API to be consistent.
  * Deprecated options.maxbody in favor of options.maxBody.
- * Deprecated options.noua in favor of options.noUserAgent.
+ * Deprecated options.noua in favor of options.noUserAgent. More explicit for the reader.
  * Deprecated options.redirects in favot of options.maxRedirects.
+ * Deprecated options.bufferType = 'string', althoug keeping it as default in order to notify the users of this library to switch to the Buffer implementation. Also deprecates options.encoding since it doesn't make any sense if the buffer is passed as Buffer instance.
  * Uses the native node.js event emitter.
- * The 206 response is handled as success. Enables the usage of range requests.
+ * The 206 response is handled as success. Enables the usage of range requests for fetching partial objects.
+ * Added options.stream flag in order to pass a Readable Stream instead of Buffer, the HTTP / HTTPS response Object or the zlib decoded stream for encoded responses. The Readable Stream is passed in paused state so you won't miss data events.
  * jslint compliant.
 
 ## v0.4.2

@@ -24,7 +24,10 @@ common.executeTests(function (err, res) {
 			});
 		});
 	});
-}, {}, false, true);
+}, {
+	bufferType: 'buffer',
+	noSslVerifier: true
+}, false, true);
 
 process.on('exit', function () {
 	var i;
