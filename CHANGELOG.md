@@ -1,3 +1,6 @@
+## v0.5.1
+ * Updates the bundled Certificate data from Mozilla to v1.87.
+
 ## v0.5
  * [MAY BREAK COMPAT] Added mandatory certificate validation for the HTTPS client. The library bundles its own ca-bundle.crt as provided by Mozilla. Own Certificate Authority information may be provided via options.ca. It may be disabled it via options.noSslValidation. It breaks the clients that use HTTPS URLs with servers that use self signed certificates, or where the certificate information is wrong or expired.
  * Fixes the broken handling of buffered responses when the request is retried with options.noCompress. [#11](https://github.com/SaltwaterC/http-get/pull/11)
