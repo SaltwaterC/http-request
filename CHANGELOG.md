@@ -1,3 +1,6 @@
+## v0.5.4
+ * Fixing the URL fragment handling. Fragments should not be passed from the user agent to the server. [#14](https://github.com/SaltwaterC/http-get/issues/14)
+
 ## v0.5.3
  * The url property is attached to the response only when there's a redirect, as the documentation states. Previously, it was returned for all requests due to faulty logic implemented in the input validator. Simplified the internal handling of the request counter for the loop detector.
  * Surpresses the deprecation warnings when the download target is a file path. [#12](https://github.com/SaltwaterC/http-get/issues/12)
