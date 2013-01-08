@@ -25,7 +25,6 @@ common.executeTests(function (err, res) {
 		});
 	});
 }, {
-	bufferType: 'buffer',
 	noSslVerifier: true
 }, false, true);
 

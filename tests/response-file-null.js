@@ -11,12 +11,12 @@ var callback = {
 };
 
 var server = common.createFooServer(false, function () {
-	http.get({url: common.options.url, bufferType: 'buffer'}, null, function (err, res) {
+	http.get({url: common.options.url}, null, function (err, res) {
 		callback.direct = true;
 		assert.ifError(err);
 		assert.deepEqual(200, res.code);
 		assert.ok(res.headers);
-		http.get({url: common.options.urlRedirect, bufferType: 'buffer'}, null, function (err, res) {
+		http.get({url: common.options.urlRedirect}, null, function (err, res) {
 			callback.redirect = true;
 			assert.ifError(err);
 			assert.deepEqual(200, res.code);
