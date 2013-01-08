@@ -1,3 +1,6 @@
+## v0.5.2
+ * Returns proper response when using streams. [#13](https://github.com/SaltwaterC/http-get/pull/13)
+
 ## v0.5.1
  * Updates the bundled Certificate data from Mozilla to v1.87.
 
