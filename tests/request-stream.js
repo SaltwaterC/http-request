@@ -32,6 +32,7 @@ server.listen(common.options.port, common.options.host, function () {
 		var count = 0;
 		
 		assert.ifError(err);
+		assert.strictEqual(res.code, 200);
 		assert.deepEqual(res.headers['content-type'], 'application/octet-stream');
 		assert.deepEqual(res.headers['content-length'], 10485760);
 		
