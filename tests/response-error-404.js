@@ -13,6 +13,7 @@ var server = common.createFooServer(false, function () {
 		assert.ok(err instanceof Error);
 		assert.deepEqual(err.document.toString(), 'Not Found');
 		assert.deepEqual(err.largeDocument, false);
+		assert.deepEqual(err.url, common.options.url404);
 		server.close();
 	});
 });

@@ -16,6 +16,7 @@ var assertions = function (err, res) {
 	assert.ok(err instanceof Error);
 	assert.deepEqual(err.message, 'Redirect response without the Location header.');
 	assert.deepEqual(err.code, 301);
+	assert.deepEqual(err.url, common.options.url);
 };
 
 var server = http.createServer(function (req, res) {

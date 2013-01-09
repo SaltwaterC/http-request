@@ -16,6 +16,7 @@ var assertions = function (err, res) {
 	assert.ok(err instanceof Error);
 	assert.deepEqual(err.message, 'Redirect loop detected after 10 requests.');
 	assert.deepEqual(err.code, 301);
+	assert.deepEqual(err.url, common.options.url);
 };
 
 var server = http.createServer(function (req, res) {

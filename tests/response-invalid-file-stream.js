@@ -25,6 +25,7 @@ var createFile = function () {
 						callback = true;
 						assert.ok(err instanceof Error);
 						assert.deepEqual(err.code, 'EACCES');
+						assert.deepEqual(err.url, common.options.url);
 						server.close();
 					});
 				});

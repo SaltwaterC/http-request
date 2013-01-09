@@ -13,6 +13,14 @@ common.executeTests(function (err, res) {
 		assert.ok(err instanceof Error);
 		assert.deepEqual(err.message, 'Large body detected.');
 		assert.deepEqual(err.code, 200);
+		
+		if (index === 1) {
+			assert.deepEqual(err.url, common.options.url);
+		}
+		
+		if (index === 2) {
+			assert.deepEqual(err.url, common.options.secureUrl);
+		}
 	},
 	{
 		maxBody: 2,

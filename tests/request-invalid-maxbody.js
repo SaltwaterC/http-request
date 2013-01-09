@@ -22,6 +22,7 @@ server.listen(common.options.port, common.options.host, function () {
 		callback = true;
 		assert.ok(err instanceof Error);
 		assert.deepEqual(err.message, 'Invalid options.maxBody specification.');
+		assert.deepEqual(err.url, common.options.url);
 		server.close();
 	});
 });

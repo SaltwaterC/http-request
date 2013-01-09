@@ -1,3 +1,6 @@
+## v0.5.5
+ * An url property is attached to the error argument which is passed to the callback if error is set. [#15](https://github.com/SaltwaterC/http-get/issues/15)
+
 ## v0.5.4
  * Fixing the URL fragment handling. Fragments should not be passed from the user agent to the server. [#14](https://github.com/SaltwaterC/http-get/issues/14)
 

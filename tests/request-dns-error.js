@@ -12,6 +12,7 @@ var callback = {
 var assertions = function (err, res) {
 	assert.ok(err instanceof Error);
 	assert.deepEqual(err.code, 'ENOTFOUND');
+	assert.deepEqual(err.url, 'http://foo.bar/');
 };
 
 http.get({url: 'http://foo.bar/', bufferType: 'buffer'}, function (err, res) {

@@ -14,21 +14,25 @@ var callback = {
 http.get({url: 'http://.foo.bar/', bufferType: 'buffer'}, function (err, res) {
 	callback.get1 = true;
 	assert.ok(err instanceof Error);
+	assert.deepEqual(err.url, 'http://.foo.bar/');
 });
 
 http.get({url: 'https://.foo.bar/', bufferType: 'buffer'}, function (err, res) {
 	callback.get2 = true;
 	assert.ok(err instanceof Error);
+	assert.deepEqual(err.url, 'https://.foo.bar/');
 });
 
 http.head({url: 'http://.foo.bar/'}, function (err, res) {
 	callback.head1 = true;
 	assert.ok(err instanceof Error);
+	assert.deepEqual(err.url, 'http://.foo.bar/');
 });
 
 http.head({url: 'https://.foo.bar/'}, function (err, res) {
 	callback.head2 = true;
 	assert.ok(err instanceof Error);
+	assert.deepEqual(err.url, 'https://.foo.bar/');
 });
 
 process.on('exit', function () {

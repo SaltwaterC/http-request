@@ -37,6 +37,7 @@ server.listen(common.options.port, common.options.host, function () {
 		} else {
 			assert.ok(err instanceof Error);
 			assert.deepEqual(err.message, 'The server sent gzip content without being requested.');
+			assert.deepEqual(err.url, common.options.url);
 		}
 		server.close();
 	});
