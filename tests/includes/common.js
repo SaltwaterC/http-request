@@ -6,8 +6,10 @@ var u = require('url');
 var fs = require('fs');
 var p = require('path');
 var zlib = require('zlib');
+var util = require('util');
 var http = require('http');
 var https = require('https');
+var assert = require('assert');
 
 var options = {
 	host: '127.0.0.1',
@@ -120,48 +122,6 @@ var createFooServer = function (secure, cb) {
 				res.write('ba');
 				res.end();
 				return;
-			
-			case '/auth':
-				res.writeHead(200, {'content-type': 'application/json'});
-				
-				// a pretty basic HTTP Basic Auth parser :)
-				var authorization = req.headers.authorization || '';
-				var token = authorization.split(/\s+/).pop() || '';
-				var auth = new Buffer(token, 'base64').toString();
-				auth = auth.split(/:/);
-				
-				var response = JSON.stringify({
-					username: auth[0],
-					password: auth[1]
-				});
-				
-				if ( ! gzip && ! deflate) {
-					res.write(response);
-					res.end();
-				} else {
-					if (gzip) {
-						zlib.gzip(response, function (err, compressed) {
-							if ( ! err) {
-								res.write(compressed);
-							} else {
-								res.writeHead(500, {'content-type': 'text/plain'});
-							}
-							res.end();
-						});
-					}
-					
-					if (deflate) {
-						zlib.deflate(response, function (err, compressed) {
-							if ( ! err) {
-								res.write(compressed);
-							} else {
-								res.writeHead(500, {'content-type': 'text/plain'});
-							}
-							res.end();
-						});
-					}
-				}
-			break;
 			
 			case '/redirect':
 				res.writeHead(302, {location: options.url});
@@ -317,3 +277,43 @@ var executeTests = function (assertions, testOptions, head, path) {
 };
 
 exports.executeTests = executeTests;
+
+/**
+ * The test teardown method
+ * @param {Object} callbacks
+ */
+exports.teardown = function (callbacks) {
+	assert.ok(callbacks instanceof Object);
+	process.on('exit', function (code) {
+		var i;
+		for (i in callbacks) {
+			if (callbacks.hasOwnProperty(i)) {
+				assert.strictEqual(callbacks[i], 1);
+				util.log(util.format('callback %s executed succesfully', i));
+			}
+		}
+		util.log('exiting with code ' + code);
+	});
+};
+
+/**
+ * The looking for clients that send the Accept-Encoding header
+ * @param {Object} headers
+ */
+exports.resEnc = function (req, res) {
+	if (req.headers['accept-encoding']) {
+		var accept = req.headers['accept-encoding'].split(',');
+		
+		if (accept.indexOf('gzip') !== -1) {
+			res.setHeader('content-encoding', 'gzip');
+			return 'gzip';
+		}
+		
+		if (accept.indexOf('deflate') !== -1) {
+			res.setHeader('content-encoding', 'deflate');
+			return 'deflate';
+		}
+	}
+	
+	return null;
+};
