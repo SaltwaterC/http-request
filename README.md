@@ -1,4 +1,4 @@
-## About ![still maintained](http://stillmaintained.com/SaltwaterC/http-get.png)
+## About [![build status](https://secure.travis-ci.org/SaltwaterC/http-get.png)](http://travis-ci.org/SaltwaterC/http-get) ![still maintained](http://stillmaintained.com/SaltwaterC/http-get.png)
 
 Simple to use node.js HTTP / HTTPS client for fetching remote resources. Supports transparent gzip / deflate decoding.
 
