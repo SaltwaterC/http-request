@@ -1,35 +1,30 @@
 'use strict';
 
-var http = require('../');
+var client = require('../');
 
 var assert = require('assert');
 
-var callback = {
-	get: false,
-	head: false
+var common = require('./includes/common.js');
+
+var callbacks = {
+	get: 0,
+	head: 0
 };
 
 var assertions = function (err, res) {
 	assert.ok(err instanceof Error);
-	assert.deepEqual(err.code, 'ENOTFOUND');
-	assert.deepEqual(err.url, 'http://foo.bar/');
+	assert.strictEqual(err.code, 'ENOTFOUND');
+	assert.strictEqual(err.url, 'http://foo.bar/');
 };
 
-http.get({url: 'http://foo.bar/', bufferType: 'buffer'}, function (err, res) {
-	callback.get = true;
+client.get({url: 'http://foo.bar/', bufferType: 'buffer'}, function (err, res) {
+	callbacks.get++;
 	assertions(err, res);
 });
 
-http.head({url: 'http://foo.bar/'}, function (err, res) {
-	callback.head = true;
+client.head({url: 'http://foo.bar/'}, function (err, res) {
+	callbacks.head++;
 	assertions(err, res);
 });
 
-process.on('exit', function () {
-	var i;
-	for (i in callback) {
-		if (callback.hasOwnProperty(i)) {
-			assert.ok(callback[i]);
-		}
-	}
-});
+common.teardown(callbacks);

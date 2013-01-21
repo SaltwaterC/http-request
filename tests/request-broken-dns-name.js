@@ -1,45 +1,40 @@
 'use strict';
 
-var http = require('../');
+var client = require('../');
 
 var assert = require('assert');
 
-var callback = {
-	get1: false,
-	get2: false,
-	head1: false,
-	head2: false
+var common = require('./includes/common.js');
+
+var callbacks = {
+	get1: 0,
+	get2: 0,
+	head1: 0,
+	head2: 0
 };
 
-http.get({url: 'http://.foo.bar/', bufferType: 'buffer'}, function (err, res) {
-	callback.get1 = true;
+client.get({url: 'http://.foo.bar/', bufferType: 'buffer'}, function (err, res) {
+	callbacks.get1++;
 	assert.ok(err instanceof Error);
-	assert.deepEqual(err.url, 'http://.foo.bar/');
+	assert.strictEqual(err.url, 'http://.foo.bar/');
 });
 
-http.get({url: 'https://.foo.bar/', bufferType: 'buffer'}, function (err, res) {
-	callback.get2 = true;
+client.get({url: 'https://.foo.bar/', bufferType: 'buffer'}, function (err, res) {
+	callbacks.get2++;
 	assert.ok(err instanceof Error);
-	assert.deepEqual(err.url, 'https://.foo.bar/');
+	assert.strictEqual(err.url, 'https://.foo.bar/');
 });
 
-http.head({url: 'http://.foo.bar/'}, function (err, res) {
-	callback.head1 = true;
+client.head({url: 'http://.foo.bar/'}, function (err, res) {
+	callbacks.head1++;
 	assert.ok(err instanceof Error);
-	assert.deepEqual(err.url, 'http://.foo.bar/');
+	assert.strictEqual(err.url, 'http://.foo.bar/');
 });
 
-http.head({url: 'https://.foo.bar/'}, function (err, res) {
-	callback.head2 = true;
+client.head({url: 'https://.foo.bar/'}, function (err, res) {
+	callbacks.head2++;
 	assert.ok(err instanceof Error);
-	assert.deepEqual(err.url, 'https://.foo.bar/');
+	assert.strictEqual(err.url, 'https://.foo.bar/');
 });
 
-process.on('exit', function () {
-	var i;
-	for (i in callback) {
-		if (callback.hasOwnProperty(i)) {
-			assert.ok(callback[i]);
-		}
-	}
-});
+common.teardown(callbacks);

@@ -1,29 +1,40 @@
 'use strict';
 
+var client = require('../');
+
+var http = require('http');
+var https = require('https');
 var assert = require('assert');
+
 var common = require('./includes/common.js');
 
-var callback = false;
-var progress = false;
+var callbacks = {
+	get: 0,
+	progress: 0
+};
 
-common.executeTests(function (err, res) {
-		callback = true;
-		assert.ifError(err);
-		assert.deepEqual(res.code, 200);
-		assert.deepEqual(res.headers['content-type'], 'text/plain');
-		assert.deepEqual(res.buffer.toString(), 'foo');
-	},{
-		progress: function (current, total) {
-			progress = true;
-			assert.deepEqual(current, 3);
-			// the test server does not return the Content-Length header
-			assert.deepEqual(total, 0);
-		},
+var server = http.createServer(function (req, res) {
+	common.response(req, res);
+}).listen(common.options.port, function () {
+	client.get({
+		url: common.options.url,
 		bufferType: 'buffer',
-		noSslVerifier: true
+		progress: function (current, total) {
+			callbacks.progress++;
+			assert.strictEqual(current, 3);
+			// the test server does not return the Content-Length header
+			assert.strictEqual(total, 0);
+		}
+	}, function (err, res) {
+		callbacks.get++;
+		
+		assert.ifError(err);
+		assert.strictEqual(res.code, 200);
+		assert.strictEqual(res.headers['content-type'], 'text/plain');
+		assert.strictEqual(res.buffer.toString(), 'foo');
+		
+		server.close();
+	});
 });
 
-process.on('exit', function () {
-	assert.ok(callback);
-	assert.ok(progress);
-});
+common.teardown(callbacks);

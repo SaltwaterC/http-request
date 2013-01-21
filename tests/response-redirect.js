@@ -1,60 +1,63 @@
 'use strict';
 
-var hg = require('../');
-
-var assert = require('assert');
-var common = require('./includes/common.js');
+var client = require('../');
 
 var u = require('url');
 var http = require('http');
+var assert = require('assert');
 
-var callback = {
-	get1: false,
-	get2: false
+var common = require('./includes/common.js');
+
+var callbacks = {
+	get: 0,
+	head: 0
 };
 
-var assertions = function (err, res, url) {
-	assert.ifError(err);
-	assert.deepEqual(res.code, 200);
-	assert.deepEqual(res.url, url);
-};
+var assertions, requests = 2;
 
 var server = http.createServer(function (req, res) {
 	switch (req.url) {
 		case '/foo':
-			res.writeHead(200);
+			common.response(req, res);
 		break;
 		
 		default:
 			res.writeHead(301, {location: '/foo'});
+			res.end();
 		break;
 	}
-	res.end();
-});
-
-server.listen(common.options.port, common.options.host, function () {
+}).listen(common.options.port, function () {
 	var url = u.format({
 		protocol: 'http:',
 		hostname: common.options.host,
 		port: common.options.port,
 		pathname: '/foo'
 	});
-	hg.get({url: common.options.url, bufferType: 'buffer'}, function (err, res) {
-		callback.get1 = true;
+	
+	client.get({
+		url: common.options.url,
+		bufferType: 'buffer'
+	}, function (err, res) {
+		callbacks.get++;
 		assertions(err, res, url);
-		hg.get({url: common.options.url, bufferType: 'buffer'}, function (err, res) {
-			callback.get2 = true;
-			assertions(err, res, url);
-			server.close();
-		});
+	});
+	
+	client.head(common.options.url, function (err, res) {
+		callbacks.head++;
+		assertions(err, res, url);
 	});
 });
 
-process.on('exit', function () {
-	var i;
-	for (i in callback) {
-		if (callback.hasOwnProperty(i)) {
-			assert.ok(callback[i]);
-		}
+assertions = function (err, res, url) {
+	requests--;
+		
+	if (requests === 0) {
+		server.close();
 	}
-});
+	
+	assert.ifError(err);
+	assert.strictEqual(res.code, 200);
+	assert.strictEqual(res.url, url);
+};
+
+common.teardown(callbacks);

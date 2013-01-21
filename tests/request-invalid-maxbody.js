@@ -1,13 +1,15 @@
 'use strict';
 
-var hg = require('../');
-
-var assert = require('assert');
-var common = require('./includes/common.js');
+var client = require('../');
 
 var http = require('http');
+var assert = require('assert');
 
-var callback = false;
+var common = require('./includes/common.js');
+
+var callbacks = {
+	get: 0
+};
 
 var server = http.createServer(function (req, res) {
 	res.writeHead(200);
@@ -15,18 +17,18 @@ var server = http.createServer(function (req, res) {
 });
 
 server.listen(common.options.port, common.options.host, function () {
-	hg.get({
+	client.get({
 		url: common.options.url,
 		maxBody: 'foo'
 	}, function (err, res) {
-		callback = true;
+		callbacks.get++;
+		
 		assert.ok(err instanceof Error);
-		assert.deepEqual(err.message, 'Invalid options.maxBody specification.');
-		assert.deepEqual(err.url, common.options.url);
+		assert.strictEqual(err.message, 'Invalid options.maxBody specification.');
+		assert.strictEqual(err.url, common.options.url);
+		
 		server.close();
 	});
 });
 
-process.on('exit', function () {
-	assert.ok(callback);
-});
+common.teardown(callbacks);

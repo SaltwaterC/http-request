@@ -3,7 +3,6 @@
 var client = require('../');
 
 var u = require('url');
-var zlib = require('zlib');
 var util = require('util');
 var http = require('http');
 var assert = require('assert');
@@ -19,51 +18,18 @@ var callbacks = {
 var asserts, requests = 3;
 
 var server = http.createServer(function (req, res) {
-	var encoding = common.resEnc(req, res);
-	res.writeHead(200, {'content-type': 'application/json'});
-	
 	// a pretty basic HTTP Basic Auth parser :)
 	var authorization = req.headers.authorization || '';
 	var token = authorization.split(/\s+/).pop() || '';
 	var auth = new Buffer(token, 'base64').toString();
 	auth = auth.split(/:/);
 	
-	var response = JSON.stringify({
+	var content = JSON.stringify({
 		username: auth[0],
 		password: auth[1]
 	});
 	
-	switch (encoding) {
-		case 'gzip':
-			util.log('basic-auth sending response for gzip');
-			zlib.gzip(response, function (err, compressed) {
-				if ( ! err) {
-					res.write(compressed);
-				} else {
-					res.writeHead(500, {'content-type': 'text/plain'});
-				}
-				res.end();
-			});
-		break;
-		
-		case 'deflate':
-			util.log('basic auth sending response for deflate');
-			zlib.deflate(response, function (err, compressed) {
-				if ( ! err) {
-					res.write(compressed);
-				} else {
-					res.writeHead(500, {'content-type': 'text/plain'});
-				}
-				res.end();
-			});
-		break;
-		
-		default:
-			util.log('basic-auth sending response for plain');
-			res.write(response);
-			res.end();
-		break;
-	}
+	common.response(req, res, content, 'application/json');
 }).listen(common.options.port, function () {
 	client.get({
 		url: common.options.urlAuth,
@@ -108,14 +74,14 @@ asserts = function (err, res) {
 	}
 	
 	assert.ifError(err);
-	assert.deepEqual(200, res.code);
+	assert.strictEqual(200, res.code);
 	var auth = JSON.parse(res.buffer.toString());
 	
 	var url = u.parse(common.options.urlAuth);
 	var urlAuth = url.auth.split(/:/);
 	
-	assert.deepEqual(auth.username, urlAuth[0]);
-	assert.deepEqual(auth.password, urlAuth[1]);
+	assert.strictEqual(auth.username, urlAuth[0]);
+	assert.strictEqual(auth.password, urlAuth[1]);
 };
 
 common.teardown(callbacks);

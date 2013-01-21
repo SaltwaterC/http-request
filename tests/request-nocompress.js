@@ -1,24 +1,38 @@
 'use strict';
 
+var client = require('../');
+
+var util = require('util');
+var http = require('http');
 var assert = require('assert');
+
 var common = require('./includes/common.js');
 
-var callback = false;
+var callbacks = {
+	get: 0
+};
 
-common.executeTests(function (err, res) {
-	callback = true;
-	assert.ifError(err);
-	assert.deepEqual(res.code, 200);
-	assert.deepEqual(res.headers['content-type'], 'text/plain');
-	assert.deepEqual(res.buffer.toString(), 'foo');
-	assert.notEqual(res.headers['content-encoding'], 'gzip');
-	assert.notEqual(res.headers['content-encoding'], 'deflate');
-},{
-	noCompress: true,
-	bufferType: 'buffer',
-	noSslVerifier: true
+var server = http.createServer(function (req, res) {
+	common.response(req, res);
+}).listen(common.options.port, function () {
+	client.get({
+		url: common.options.url,
+		noCompress: true,
+		bufferType: 'buffer'
+	}, function (err, res) {
+		callbacks.get++;
+		
+		util.log('nocompress getting back response from foo server');
+		
+		assert.ifError(err);
+		assert.strictEqual(res.code, 200);
+		assert.strictEqual(res.headers['content-type'], 'text/plain');
+		assert.strictEqual(res.buffer.toString(), 'foo');
+		assert.notEqual(res.headers['content-encoding'], 'gzip');
+		assert.notEqual(res.headers['content-encoding'], 'deflate');
+		
+		server.close();
+	});
 });
 
-process.on('exit', function () {
-	assert.ok(callback);
-});
+common.teardown(callbacks);
