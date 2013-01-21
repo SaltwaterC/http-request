@@ -1,43 +1,49 @@
 'use strict';
 
-var http = require('../');
+var client = require('../');
 
+var http = require('http');
 var util = require('util');
 var assert = require('assert');
 
 var common = require('./includes/common.js');
 
-var callback = {
-	direct: false,
-	redirect: false
+var callbacks = {
+	direct: 0,
+	redirect: 0
 };
 
-var server = common.createFooServer(false, function () {
-	util.log('sending the request');
-	http.get({url: common.options.url}, null, function (err, res) {
-		util.log('recieving the response');
-		callback.direct = true;
-		assert.ifError(err);
-		assert.deepEqual(200, res.code);
-		assert.ok(res.headers);
-		util.log('sending the second request');
-		http.get({url: common.options.urlRedirect}, null, function (err, res) {
-			util.log('recieving the second response');
-			callback.redirect = true;
-			assert.ifError(err);
-			assert.deepEqual(200, res.code);
-			assert.ok(res.headers);
-			util.log('closing the foo server');
-			server.close();
-		});
+var asserts, requests = 2;
+
+var server = http.createServer(function (req, res) {
+	if (req.url === '/redirect') {
+		res.writeHead(302, {location: common.options.url});
+		res.end();
+	} else {
+		common.response(req, res);
+	}
+}).listen(common.options.port, function () {
+	client.get({url: common.options.url}, null, function (err, res) {
+		callbacks.direct++;
+		asserts(err, res);
+	});
+	
+	client.get({url: common.options.url + 'redirect'}, null, function (err, res) {
+		callbacks.redirect++;
+		asserts(err, res);
 	});
 });
 
-process.on('exit', function () {
-	var i;
-	for (i in callback) {
-		if (callback.hasOwnProperty(i)) {
-			assert.ok(callback[i]);
-		}
+asserts = function (err, res) {
+	requests--;
+		
+	if (requests === 0) {
+		server.close();
 	}
-});
+	
+	assert.ifError(err);
+	assert.strictEqual(200, res.code);
+	assert.ok(res.headers);
+};
+
+common.teardown(callbacks);

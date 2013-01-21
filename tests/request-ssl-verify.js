@@ -1,29 +1,31 @@
 'use strict';
 
-var http = require('../');
+var client = require('../');
 
+var https = require('https');
 var assert = require('assert');
+
 var common = require('./includes/common.js');
 
-var callback = false;
-
-var opt = {
-	url: common.options.secureUrl,
-	bufferType: 'buffer',
-	headers: {
-		host: 'http-get.lan'
-	},
-	ca: [require('./includes/ca.js')]
+var callbacks = {
+	get: 0
 };
 
-var server = common.createFooServer(true, function () {
-	http.get(opt, function (err, res) {
-		callback = true;
+var secureServer = https.createServer(common.options.secureServer, function (req, res) {
+	common.response(req, res);
+}).listen(common.options.securePort, function () {
+	client.get({
+		url: common.options.secureUrl,
+		bufferType: 'buffer',
+		headers: {
+			host: 'http-get.lan'
+		},
+		ca: [require('./includes/ca.js')]
+	}, function (err, res) {
+		callbacks.get++;
 		assert.ifError(err);
-		server.close();
+		secureServer.close();
 	});
 });
 
-process.on('exit', function () {
-	assert.ok(callback);
-});
+common.teardown(callbacks);

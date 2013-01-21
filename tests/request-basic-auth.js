@@ -18,7 +18,7 @@ var callbacks = {
 var asserts, requests = 3;
 
 var server = http.createServer(function (req, res) {
-	// a pretty basic HTTP Basic Auth parser :)
+	// basic HTTP Basic Auth parser
 	var authorization = req.headers.authorization || '';
 	var token = authorization.split(/\s+/).pop() || '';
 	var auth = new Buffer(token, 'base64').toString();

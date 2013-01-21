@@ -17,7 +17,7 @@ var server = http.createServer(function (req, res) {
 	res.end();
 }).listen(common.options.port, function () {
 	client.get({
-		url: common.options.urlRange,
+		url: common.options.url,
 		headers: {
 			range: 'bytes=0-1'
 		},

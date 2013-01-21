@@ -1,46 +1,48 @@
 'use strict';
 
-var hg = require('../');
-
-var assert = require('assert');
-var common = require('./includes/common.js');
+var client = require('../');
 
 var http = require('http');
+var assert = require('assert');
 
-var callback = {
-	get: false,
-	head: false
+var common = require('./includes/common.js');
+
+var callbacks = {
+	get: 0,
+	head: 0
 };
 
-var assertions = function (err, res) {
-	assert.ok(err instanceof Error);
-	assert.deepEqual(err.message, 'Redirect loop detected after 10 requests.');
-	assert.deepEqual(err.code, 301);
-	assert.deepEqual(err.url, common.options.url);
-};
+var assertions, requests = 2;
 
 var server = http.createServer(function (req, res) {
 	res.writeHead(301, {location: '/'});
 	res.end();
-});
-
-server.listen(common.options.port, common.options.host, function () {
-	hg.get({url: common.options.url, bufferType: 'buffer'}, function (err, res) {
-		callback.get = true;
+}).listen(common.options.port, function () {
+	client.get({
+		url: common.options.url,
+		bufferType: 'buffer'
+	}, function (err, res) {
+		callbacks.get++;
 		assertions(err, res);
-		hg.head({url: common.options.url}, function (err, res) {
-			callback.head = true;
-			assertions(err, res);
-			server.close();
-		});
+	});
+	
+	client.head(common.options.url, function (err, res) {
+		callbacks.head++;
+		assertions(err, res);
 	});
 });
 
-process.on('exit', function () {
-	var i;
-	for (i in callback) {
-		if (callback.hasOwnProperty(i)) {
-			assert.ok(callback[i]);
-		}
+assertions = function (err, res) {
+	requests--;
+		
+	if (requests === 0) {
+		server.close();
 	}
-});
+		
+	assert.ok(err instanceof Error);
+	assert.strictEqual(err.message, 'Redirect loop detected after 10 requests.');
+	assert.strictEqual(err.code, 301);
+	assert.strictEqual(err.url, common.options.url);
+};
+
+common.teardown(callbacks);

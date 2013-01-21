@@ -1,23 +1,33 @@
 'use strict';
 
-var http = require('../');
+var client = require('../');
 
+var http = require('http');
 var assert = require('assert');
+
 var common = require('./includes/common.js');
 
-var callback = false;
+var callbacks = {
+	get: 0
+};
 
-var server = common.createFooServer(false, function () {
-	http.get({url: common.options.url404, bufferType: 'buffer'}, function (err, res) {
-		callback = true;
+var server = http.createServer(function (req, res) {
+	res.writeHead(404, {'content-type': 'text/plain'});
+	res.end('Not Found');
+}).listen(common.options.port, function () {
+	client.get({
+		url: common.options.url,
+		bufferType: 'buffer'
+	}, function (err, res) {
+		callbacks.get++;
+		
 		assert.ok(err instanceof Error);
-		assert.deepEqual(err.document.toString(), 'Not Found');
-		assert.deepEqual(err.largeDocument, false);
-		assert.deepEqual(err.url, common.options.url404);
+		assert.strictEqual(err.document.toString(), 'Not Found');
+		assert.strictEqual(err.largeDocument, false);
+		assert.strictEqual(err.url, common.options.url);
+		
 		server.close();
 	});
 });
 
-process.on('exit', function () {
-	assert.ok(callback);
-});
+common.teardown(callbacks);

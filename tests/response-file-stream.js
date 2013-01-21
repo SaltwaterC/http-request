@@ -1,38 +1,44 @@
 'use strict';
 
-var fs = require('fs');
+var client = require('../');
 
+var fs = require('fs');
+var http = require('http');
 var assert = require('assert');
+
 var common = require('./includes/common.js');
 
-var callback = [false, false];
-var index = 0;
+var file = 'bar.txt';
 
-common.executeTests(function (err, res) {
-	callback[index] = true;
-	index++;
-	assert.ifError(err);
-	assert.deepEqual(res.code, 200);
-	assert.deepEqual(res.headers['content-type'], 'text/plain');
-	fs.stat(res.file, function (err) {
+var callbacks = {
+	get: 0
+};
+
+var server = http.createServer(function (req, res) {
+	common.response(req, res);
+}).listen(common.options.port, function () {
+	client.get(common.options.url, file, function (err, res) {
+		callbacks.get++;
+		
 		assert.ifError(err);
-		fs.readFile(res.file, function (err, data) {
+		assert.strictEqual(res.code, 200);
+		assert.strictEqual(res.headers['content-type'], 'text/plain');
+		
+		server.close();
+		
+		fs.stat(res.file, function (err) {
 			assert.ifError(err);
-			assert.deepEqual(data.toString(), 'foo');
-			fs.unlink(res.file, function (err) {
+			
+			fs.readFile(res.file, function (err, data) {
 				assert.ifError(err);
+				assert.strictEqual(data.toString(), 'foo');
+				
+				fs.unlink(res.file, function (err) {
+					assert.ifError(err);
+				});
 			});
 		});
 	});
-}, {
-	noSslVerifier: true
-}, false, true);
-
-process.on('exit', function () {
-	var i;
-	for (i in callback) {
-		if (callback.hasOwnProperty(i)) {
-			assert.ok(callback[i]);
-		}
-	}
 });
+
+common.teardown(callbacks);

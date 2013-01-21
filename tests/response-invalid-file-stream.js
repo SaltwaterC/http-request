@@ -1,16 +1,19 @@
 'use strict';
 
-var http = require('../');
+var client = require('../');
 
 var fs = require('fs');
 var p = require('path');
-
+var http = require('http');
 var assert = require('assert');
+
 var common = require('./includes/common.js');
 
-var callback = false;
-
 var path = p.resolve('foo.txt');
+
+var callbacks = {
+	get: 0
+};
 
 var createFile = function () {
 	fs.open(path, 'w+', function (err, fd) {
@@ -20,13 +23,21 @@ var createFile = function () {
 			fs.chmod(path, '0100', function (err) {
 				assert.ifError(err);
 				
-				var server = common.createFooServer(false, function () {
-					http.get({url: common.options.url, bufferType: 'buffer'}, path, function (err, res) {
-						callback = true;
+				var server = http.createServer(function (req, res) {
+					common.response(req, res);
+				}).listen(common.options.port, function () {
+					client.get(common.options.url, path, function (err, res) {
+						callbacks.get++;
+						
 						assert.ok(err instanceof Error);
-						assert.deepEqual(err.code, 'EACCES');
-						assert.deepEqual(err.url, common.options.url);
+						assert.strictEqual(err.code, 'EACCES');
+						assert.strictEqual(err.url, common.options.url);
+						
 						server.close();
+						
+						fs.unlink(path, function (err) {
+							assert.ifError(err);
+						});
 					});
 				});
 			});
@@ -45,9 +56,4 @@ fs.stat(path, function (err, stats) {
 	}
 });
 
-process.on('exit', function () {
-	fs.unlink(path, function (err) {
-		assert.ifError(err);
-		assert.ok(callback);
-	});
-});
+common.teardown(callbacks);

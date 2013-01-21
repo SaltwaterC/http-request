@@ -1,16 +1,17 @@
 'use strict';
 
-var hg = require('../');
-
-var semver = require('semver');
-
-var assert = require('assert');
-var zlib = require('zlib');
-var common = require('./includes/common.js');
+var client = require('../');
 
 var http = require('http');
+var zlib = require('zlib');
+var semver = require('semver');
+var assert = require('assert');
 
-var callback = false;
+var common = require('./includes/common.js');
+
+var callbacks = {
+	get: 0
+};
 
 var server = http.createServer(function (req, res) {
 	res.setHeader('content-encoding', 'gzip');
@@ -23,26 +24,24 @@ var server = http.createServer(function (req, res) {
 		}
 		res.end();
 	});
-});
-
-server.listen(common.options.port, common.options.host, function () {
-	hg.get({
+}).listen(common.options.port, function () {
+	client.get({
 		url: common.options.url,
-		noCompress: true,
-		bufferType: 'buffer'
+		bufferType: 'buffer',
+		noCompress: true
 	}, function (err, res) {
-		callback = true;
+		callbacks.get++;
+		
 		if (semver.satisfies(process.version, '>=0.6.18')) {
 			assert.ifError(err);
 		} else {
 			assert.ok(err instanceof Error);
-			assert.deepEqual(err.message, 'The server sent gzip content without being requested.');
-			assert.deepEqual(err.url, common.options.url);
+			assert.strictEqual(err.message, 'The server sent gzip content without being requested.');
+			assert.strictEqual(err.url, common.options.url);
 		}
+		
 		server.close();
 	});
 });
 
-process.on('exit', function () {
-	assert.ok(callback);
-});
+common.teardown(callbacks);

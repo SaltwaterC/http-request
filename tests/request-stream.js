@@ -1,11 +1,16 @@
 'use strict';
 
-var hg = require('../');
-var common = require('./includes/common.js');
+var client = require('../');
 
 var fs = require('fs');
 var http = require('http');
 var assert = require('assert');
+
+var common = require('./includes/common.js');
+
+var callbacks = {
+	get: 0
+};
 
 var server = http.createServer(function (req, res) {
 	res.writeHead(200, {
@@ -22,18 +27,17 @@ var server = http.createServer(function (req, res) {
 	rs.on('end', function () {
 		res.end();
 	});
-});
-
-server.listen(common.options.port, common.options.host, function () {
-	hg.get({
+}).listen(common.options.port, function () {
+	client.get({
 		url: common.options.url,
 		stream: true
 	}, function (err, res) {
+		callbacks.get++;
 		var count = 0;
 		
 		assert.ifError(err);
 		assert.strictEqual(res.code, 200);
-		assert.deepEqual(res.headers['content-type'], 'application/octet-stream');
+		assert.strictEqual(res.headers['content-type'], 'application/octet-stream');
 		assert.deepEqual(res.headers['content-length'], 10485760);
 		
 		res.stream.on('data', function (data) {
@@ -41,7 +45,7 @@ server.listen(common.options.port, common.options.host, function () {
 		});
 		
 		res.stream.on('end', function () {
-			assert.deepEqual(count, 10485760);
+			assert.strictEqual(count, 10485760);
 			server.close();
 		});
 		
@@ -53,3 +57,5 @@ server.listen(common.options.port, common.options.host, function () {
 		res.stream.resume();
 	});
 });
+
+common.teardown(callbacks);

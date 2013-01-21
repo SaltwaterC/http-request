@@ -1,34 +1,29 @@
 'use strict';
 
-var http = require('../');
+var client = require('../');
 
 var assert = require('assert');
 
-var callback = {
-	get: false,
-	head: false
+var common = require('./includes/common.js');
+
+var callbacks = {
+	get: 0,
+	head: 0
 };
 
 var assertions = function (err, res) {
 	assert.ok(err instanceof Error);
-	assert.deepEqual(err.message, 'The options object requires an input URL value.');
+	assert.strictEqual(err.message, 'The options object requires an input URL value.');
 };
 
-http.get({}, function (err, res) {
-	callback.get = true;
+client.get({}, function (err, res) {
+	callbacks.get++;
 	assertions(err, res);
 });
 
-http.head({}, function (err, res) {
-	callback.head = true;
+client.head({}, function (err, res) {
+	callbacks.head++;
 	assertions(err, res);
 });
 
-process.on('exit', function () {
-	var i;
-	for (i in callback) {
-		if (callback.hasOwnProperty(i)) {
-			assert.ok(callback[i]);
-		}
-	}
-});
+common.teardown(callbacks);

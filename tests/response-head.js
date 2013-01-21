@@ -1,26 +1,29 @@
 'use strict';
 
+var client = require('../');
+
+var http = require('http');
 var assert = require('assert');
+
 var common = require('./includes/common.js');
 
-var callback = [false, false];
-var index = 0;
+var callbacks = {
+	head: 0
+};
 
-common.executeTests(function (err, res) {
-	callback[index] = true;
-	index++;
-	assert.ifError(err);
-	assert.deepEqual(res.code, 200);
-	assert.deepEqual(res.headers['content-type'], 'text/plain');
-}, {
-	noSslVerifier: true
-}, true);
-
-process.on('exit', function () {
-	var i;
-	for (i in callback) {
-		if (callback.hasOwnProperty(i)) {
-			assert.ok(callback[i]);
-		}
-	}
+var server = http.createServer(function (req, res) {
+	res.writeHead(200, {'content-type': 'text/plain'});
+	res.end();
+}).listen(common.options.port, function () {
+	client.head(common.options.url, function (err, res) {
+		callbacks.head++;
+		
+		assert.ifError(err);
+		assert.strictEqual(res.code, 200);
+		assert.strictEqual(res.headers['content-type'], 'text/plain');
+		
+		server.close();
+	});
 });
+
+common.teardown(callbacks);

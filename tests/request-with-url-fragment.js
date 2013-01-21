@@ -1,32 +1,30 @@
 'use strict';
 
-var hg = require('../');
-
-var assert = require('assert');
-var common = require('./includes/common.js');
+var client = require('../');
 
 var u = require('url');
 var http = require('http');
+var assert = require('assert');
 
-var callback = false;
+var common = require('./includes/common.js');
+
+var callbacks = {
+	get: 0
+};
 
 var server = http.createServer(function (req, res) {
 	res.writeHead(200, {'content-type': 'text/plain'});
 	res.end();
 	
-	assert.deepEqual(req.url, u.parse(common.options.url).pathname);
-});
-
-server.listen(common.options.port, common.options.host, function () {
-	hg.get({
+	assert.strictEqual(req.url, u.parse(common.options.url).pathname);
+}).listen(common.options.port, function () {
+	client.get({
 		url: common.options.url + '#fragment',
 		bufferType: 'buffer'
 	}, function (err, res) {
-		callback = true;
+		callbacks.get++;
 		server.close();
 	});
 });
 
-process.on('exit', function () {
-	assert.ok(callback);
-});
+common.teardown(callbacks);
