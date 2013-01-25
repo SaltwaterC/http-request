@@ -1,5 +1,6 @@
 ## v0.5.6
  * Accept-Encoding is now user definable, even with the lack of options.noCompress.
+ * Deprecated node.js v0.8.4 and lower for HTTPS. The absolute minimum supported version will be node.js v0.8.5.
 
 ## v0.5.5
  * An url property is attached to the error argument which is passed to the callback if error is set. [#15](https://github.com/SaltwaterC/http-get/issues/15)
