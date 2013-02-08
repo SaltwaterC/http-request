@@ -77,7 +77,7 @@ asserts = function (err, res) {
 	assert.strictEqual(200, res.code);
 	var auth = JSON.parse(res.buffer.toString());
 	
-	var url = u.parse(common.options.urlAuth);
+	var url = client.parseUrl(common.options.urlAuth); // http.parseUrl - undocumented, therefore don't rely on it
 	var urlAuth = url.auth.split(/:/);
 	
 	assert.strictEqual(auth.username, urlAuth[0]);

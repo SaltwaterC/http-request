@@ -4,6 +4,7 @@ var u = require('url');
 var zlib = require('zlib');
 var util = require('util');
 var assert = require('assert');
+var semver = require('semver');
 
 var options = {
 	host: '127.0.0.1',
@@ -27,12 +28,15 @@ options.secureUrl = u.format({
 	pathname: '/'
 });
 
+options.authUser = 'user@example.com';
+options.authPass = 'pass word';
+
 options.urlAuth = u.format({
 	protocol: 'http:',
 	hostname: options.host,
 	port: options.port,
 	pathname: '/auth',
-	auth: 'user:pass'
+	auth: options.authUser + ':' + options.authPass
 });
 
 options.secureServer = {

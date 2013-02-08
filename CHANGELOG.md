@@ -1,3 +1,6 @@
+## v0.5.7
+ * Fixes the broken HTTP Authentication support for node.js v0.6.x. The node.js core url.parse does not decode the URL encoding of the username and password.
+
 ## v0.5.6
  * Accept-Encoding is now user definable, even with the lack of options.noCompress.
  * Deprecated node.js v0.8.4 and lower for HTTPS. The absolute minimum supported version will be node.js v0.8.5.
