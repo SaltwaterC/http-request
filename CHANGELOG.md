@@ -1,3 +1,6 @@
+## v0.5.8
+ * Fixes the event loop hanging due to the new implementation of Streams in node.js v0.10. The "edge cases" of the "old mode" Steam implementation miss a simple case where a client does not need to actually consume a stream (eg: a HEAD request). The node.js http.js client is implemented as Readable Stream, hence the issue.
+
 ## v0.5.7
  * Fixes the broken HTTP Authentication support for node.js v0.6.x. The node.js core url.parse does not decode the URL encoding of the username and password.
 

@@ -13,7 +13,7 @@ var callbacks = {
 	redirect: 0
 };
 
-var asserts, requests = 2;
+var assertions, requests = 2;
 
 var server = http.createServer(function (req, res) {
 	if (req.url === '/redirect') {
@@ -24,21 +24,24 @@ var server = http.createServer(function (req, res) {
 	}
 }).listen(common.options.port, function () {
 	client.get({url: common.options.url}, null, function (err, res) {
+		util.log('http.get direct');
 		callbacks.direct++;
-		asserts(err, res);
+		assertions(err, res);
 	});
 	
 	client.get({url: common.options.url + 'redirect'}, null, function (err, res) {
+		util.log('http.get redirect');
 		callbacks.redirect++;
-		asserts(err, res);
+		assertions(err, res);
 	});
 });
 
-asserts = function (err, res) {
+assertions = function (err, res) {
 	requests--;
 		
 	if (requests === 0) {
 		server.close();
+		util.log('http.createServer.close');
 	}
 	
 	assert.ifError(err);
