@@ -4,7 +4,6 @@ var u = require('url');
 var zlib = require('zlib');
 var util = require('util');
 var assert = require('assert');
-var semver = require('semver');
 
 var options = {
 	host: '127.0.0.1',

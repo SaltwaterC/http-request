@@ -17,12 +17,12 @@ var assertions = function (err, res) {
 	assert.strictEqual(err.url, 'http://foo.bar/');
 };
 
-client.get({url: 'http://foo.bar/', bufferType: 'buffer'}, function (err, res) {
+client.get('http://foo.bar/', function (err, res) {
 	callbacks.get++;
 	assertions(err, res);
 });
 
-client.head({url: 'http://foo.bar/'}, function (err, res) {
+client.head('http://foo.bar/', function (err, res) {
 	callbacks.head++;
 	assertions(err, res);
 });

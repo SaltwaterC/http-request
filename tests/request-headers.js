@@ -25,7 +25,6 @@ var clientOptions = {
 	headers: {
 		foo: 'bar',
 	},
-	bufferType: 'buffer',
 	noSslVerifier: true
 };
 

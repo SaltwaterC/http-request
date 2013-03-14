@@ -16,7 +16,6 @@ var server = http.createServer(function (req, res) {
 }).listen(common.options.port, function () {
 	client.get({
 		url: common.options.url,
-		bufferType: 'buffer',
 		maxBody: 2
 	}, function (err, res) {
 		callbacks.get++;

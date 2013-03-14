@@ -13,13 +13,13 @@ var callbacks = {
 	head2: 0
 };
 
-client.get({url: 'http://.foo.bar/', bufferType: 'buffer'}, function (err, res) {
+client.get('http://.foo.bar/', function (err, res) {
 	callbacks.get1++;
 	assert.ok(err instanceof Error);
 	assert.strictEqual(err.url, 'http://.foo.bar/');
 });
 
-client.get({url: 'https://.foo.bar/', bufferType: 'buffer'}, function (err, res) {
+client.get('https://.foo.bar/', function (err, res) {
 	callbacks.get2++;
 	assert.ok(err instanceof Error);
 	assert.strictEqual(err.url, 'https://.foo.bar/');

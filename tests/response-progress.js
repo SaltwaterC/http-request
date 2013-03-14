@@ -18,7 +18,6 @@ var server = http.createServer(function (req, res) {
 }).listen(common.options.port, function () {
 	client.get({
 		url: common.options.url,
-		bufferType: 'buffer',
 		progress: function (current, total) {
 			callbacks.progress++;
 			assert.strictEqual(current, 3);

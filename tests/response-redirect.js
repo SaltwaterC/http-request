@@ -34,10 +34,7 @@ var server = http.createServer(function (req, res) {
 		pathname: '/foo'
 	});
 	
-	client.get({
-		url: common.options.url,
-		bufferType: 'buffer'
-	}, function (err, res) {
+	client.get(common.options.url, function (err, res) {
 		callbacks.get++;
 		assertions(err, res, url);
 	});

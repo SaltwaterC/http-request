@@ -16,7 +16,6 @@ var secureServer = https.createServer(common.options.secureServer, function (req
 }).listen(common.options.securePort, function () {
 	client.get({
 		url: common.options.secureUrl,
-		bufferType: 'buffer',
 		headers: {
 			host: 'http-get.lan'
 		},

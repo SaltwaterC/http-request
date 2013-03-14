@@ -20,10 +20,7 @@ var server = http.createServer(function (req, res) {
 	res.end();
 	util.log('http server response');
 }).listen(common.options.port, function () {
-	client.get({
-		url: common.options.url,
-		bufferType: 'buffer'
-	}, function (err, res) {
+	client.get(common.options.url, function (err, res) {
 		util.log('http.get');
 		callbacks.get++;
 		assertions(err, res);

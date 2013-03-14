@@ -21,8 +21,7 @@ var server = http.createServer(function (req, res) {
 		headers: {
 			range: 'bytes=0-1'
 		},
-		noCompress: true,
-		bufferType: 'buffer'
+		noCompress: true
 	}, function (err, res) {
 		callbacks.get++;
 		

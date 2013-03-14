@@ -18,7 +18,6 @@ var server = http.createServer(function (req, res) {
 	client.get({
 		url: common.options.url,
 		noCompress: true,
-		bufferType: 'buffer'
 	}, function (err, res) {
 		callbacks.get++;
 		

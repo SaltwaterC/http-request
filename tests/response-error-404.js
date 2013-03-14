@@ -15,10 +15,7 @@ var server = http.createServer(function (req, res) {
 	res.writeHead(404, {'content-type': 'text/plain'});
 	res.end('Not Found');
 }).listen(common.options.port, function () {
-	client.get({
-		url: common.options.url,
-		bufferType: 'buffer'
-	}, function (err, res) {
+	client.get(common.options.url, function (err, res) {
 		callbacks.get++;
 		
 		assert.ok(err instanceof Error);

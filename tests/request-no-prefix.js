@@ -14,10 +14,7 @@ var callbacks = {
 var server = http.createServer(function (req, res) {
 	common.response(req, res);
 }).listen(common.options.port, function () {
-	client.get({
-		url: common.options.urlNoPrefix,
-		bufferType: 'buffer'
-	}, function (err, res) {
+	client.get(common.options.urlNoPrefix, function (err, res) {
 		callbacks.get++;
 		
 		assert.ifError(err);
