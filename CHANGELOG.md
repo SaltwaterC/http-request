@@ -1,3 +1,6 @@
+## v0.5.9
+ * Changes the internal buffering concatenation to a much faster implementation: Buffer.concat by using the buffer-concat module for node.js v0.6.
+
 ## v0.5.8
  * Fixes the event loop hanging due to the new implementation of Streams in node.js v0.10. The "edge cases" of the "old mode" Steam implementation miss a simple case where a client does not need to actually consume a stream (eg: a HEAD request). The node.js http.js client is implemented as Readable Stream, hence the issue.
 
