@@ -13,7 +13,7 @@ var callbacks = {
 	https: 0
 };
 
-var asserts = function (err, res) {
+var assertions = function (err, res) {
 	assert.ifError(err);
 	assert.strictEqual(res.code, 200);
 	assert.strictEqual(res.headers['content-type'], 'text/plain');
@@ -42,7 +42,7 @@ var server = http.createServer(function (req, res) {
 	clientOptions.url = common.options.url;
 	client.get(clientOptions, function (err, res) {
 		callbacks.http++;
-		asserts(err, res);
+		assertions(err, res);
 		server.close();
 	});
 });
@@ -53,7 +53,7 @@ var secureServer = https.createServer(common.options.secureServer, function (req
 	clientOptions.url = common.options.secureUrl;
 	client.get(clientOptions, function (err, res) {
 		callbacks.https++;
-		asserts(err, res);
+		assertions(err, res);
 		secureServer.close();
 	});
 });
