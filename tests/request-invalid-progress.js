@@ -14,14 +14,14 @@ var callbacks = {
 process.nextTick(function () {
 	client.get({
 		url: common.options.url,
-		maxBody: 'foo'
+		progress: 'foo'
 	}, function (err, res) {});
 });
 
 process.on('uncaughtException', function (err) {
 	callbacks.exception++;
 	assert.ok(err instanceof Error);
-	assert.strictEqual(err.message, 'Invalid options.maxBody specification. Expecting a proper integer value.');
+	assert.strictEqual(err.message, 'Expecting a function as progress callback.');
 });
 
 common.teardown(callbacks);

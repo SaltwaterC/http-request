@@ -1,5 +1,7 @@
 ## v0.6.0-dev
  * Client rewritten almost from scratch.
+ * Strict about user errors. They are considered unrecoverable aka won't fix without changing the code, hence they throw.
+ * Fix: the 203 status code is handled as success (as it should).
 
 ## v0.5.9
  * Changes the internal buffering concatenation to a much faster implementation: Buffer.concat by using the buffer-concat module for node.js v0.6.
