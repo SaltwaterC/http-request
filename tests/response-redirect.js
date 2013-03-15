@@ -3,6 +3,7 @@
 var client = require('../');
 
 var u = require('url');
+var util = require('util');
 var http = require('http');
 var assert = require('assert');
 
@@ -35,11 +36,13 @@ var server = http.createServer(function (req, res) {
 	});
 	
 	client.get(common.options.url, function (err, res) {
+		util.log('http.get');
 		callbacks.get++;
 		assertions(err, res, url);
 	});
 	
 	client.head(common.options.url, function (err, res) {
+		util.log('http.head');
 		callbacks.head++;
 		assertions(err, res, url);
 	});
@@ -47,9 +50,10 @@ var server = http.createServer(function (req, res) {
 
 assertions = function (err, res, url) {
 	requests--;
-		
+	
 	if (requests === 0) {
 		server.close();
+		util.log('http.createServer.close');
 	}
 	
 	assert.ifError(err);

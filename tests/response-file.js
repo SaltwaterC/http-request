@@ -3,6 +3,7 @@
 var client = require('../');
 
 var fs = require('fs');
+var util = require('util');
 var http = require('http');
 var assert = require('assert');
 
@@ -18,6 +19,7 @@ var server = http.createServer(function (req, res) {
 	common.response(req, res);
 }).listen(common.options.port, function () {
 	client.get(common.options.url, file, function (err, res) {
+		util.log('http.get');
 		callbacks.get++;
 		
 		assert.ifError(err);

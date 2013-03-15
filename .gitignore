@@ -3,3 +3,4 @@
 node_modules/
 *.komodoproject
 tests/foo.txt
+tests/bar.txt
