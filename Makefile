@@ -21,3 +21,6 @@ test: all lint
 
 doc:
 	jsdoc --destination docs lib README.md
+	cd docs
+	git commit --all --message "Auto generated documentation"
+	git push origin gh-pages
