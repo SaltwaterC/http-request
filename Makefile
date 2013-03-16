@@ -18,3 +18,6 @@ tests: test
 check: test
 test: all lint
 	tools/test.sh
+
+doc:
+	jsdoc --recurse --destination doc lib
