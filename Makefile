@@ -20,4 +20,4 @@ test: all lint
 	tools/test.sh
 
 doc:
-	jsdoc --recurse --destination doc lib
+	jsdoc --destination docs lib README.md
