@@ -4,7 +4,6 @@ var client = require('../');
 
 var http = require('http');
 var zlib = require('zlib');
-var semver = require('semver');
 var assert = require('assert');
 
 var common = require('./includes/common.js');
@@ -30,15 +29,7 @@ var server = http.createServer(function (req, res) {
 		noCompress: true
 	}, function (err, res) {
 		callbacks.get++;
-		
-		if (semver.satisfies(process.version, '>=0.6.18')) {
-			assert.ifError(err);
-		} else {
-			assert.ok(err instanceof Error);
-			assert.strictEqual(err.message, 'The server sent gzip content without being requested.');
-			assert.strictEqual(err.url, common.options.url);
-		}
-		
+		assert.ifError(err);
 		server.close();
 	});
 });
