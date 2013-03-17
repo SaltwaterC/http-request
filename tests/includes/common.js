@@ -7,8 +7,8 @@ var assert = require('assert');
 
 var options = {
 	host: '127.0.0.1',
-	port: 42890,
-	securePort: 42891
+	port: process.env.HTTP_REQUEST_HTTP || 42890,
+	securePort: process.env.HTTP_REQUEST_HTTPS || 42891
 };
 
 options.urlNoPrefix = options.host + ':' + options.port + '/';
