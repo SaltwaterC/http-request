@@ -6,6 +6,9 @@
 	"engines": {
 		"node": ">=0.8.5"
 	},
+	"devDependencies": {
+		"chai": ">= 1.5.0"
+	},
 	"homepage": "https://github.com/SaltwaterC/http-get",
 	"author": {
 		"name": "Stefan Rusu",
