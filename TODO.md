@@ -12,3 +12,5 @@
  * Remove the unices dependency in request-stream (use a cross platform implementation for the source of createReadStream)
  * Implement & test the request reissuing when the gzip / deflate encoding fails to decode
  * Test the mtime implementation
+ * Test noSslVerifier
+ 

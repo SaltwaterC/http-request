@@ -125,8 +125,8 @@ Response.prototype.write = function (body) {
 	}
 };
 
-exports.createHttpServer = function () {
-	return http.createServer(function (req, res) {
+exports.createServer = function (module, options) {
+	var callback = function (req, res) {
 		var response = new Response(req, res);
 		switch (req.url) {
 			case '/redirect-without-location':
@@ -137,9 +137,41 @@ exports.createHttpServer = function () {
 				});
 			break;
 			
+			case '/basic-auth':
+				// basic HTTP Basic Auth parser
+				var authorization = req.headers.authorization || '';
+				var token = authorization.split(/\s+/).pop() || '';
+				var auth = new Buffer(token, 'base64').toString();
+				auth = auth.split(/:/);
+				
+				var body = JSON.stringify({
+					username: auth[0],
+					password: auth[1]
+				});
+				
+				response.send({
+					type: 'application/json',
+					body: body
+				});
+			break;
+			
+			case '/header-reflect':
+				if (req.headers.foo) {
+					res.setHeader('foo', req.headers.foo);
+				}
+				
+				response.send();
+			break;
+			
 			default:
 				response.send();
 			break;
 		}
-	});
+	};
+	
+	if (options) {
+		return module.createServer(options, callback);
+	}
+	
+	return module.createServer(callback);
 };
