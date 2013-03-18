@@ -8,6 +8,7 @@
  * Implement & test the socket timeout
  * Test the noUserAgent implementation
  * Implement & test the debug flag
- * Remove the *nix dependency in request-stream (use a cross platform implementation for the source of createReadStream)
+ * Remove the unices dependency in request-stream (use a cross platform implementation for the source of createReadStream)
  * Implement & test the request reissuing when the gzip / deflate encoding fails to decode
+ * Test the mtime implementation
  
