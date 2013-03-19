@@ -184,6 +184,20 @@ describe('HTTP GET method tests', function () {
 		});
 	});
 	
+	describe('GET without protocol prefix', function () {
+		it('should work fine by prepending http:// to the URL', function (done) {
+			client.get('127.0.0.1:' + common.options.port + '/', function (err, res) {
+				assert.isNull(err, 'we have an error');
+				
+				assert.strictEqual(res.code, 200, 'the HTTP status code is OK');
+				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the proper buffer');
+				
+				done();
+			});
+		});
+	});
+	
 	after(function () {
 		server.close();
 	});
