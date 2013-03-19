@@ -198,6 +198,28 @@ describe('HTTP GET method tests', function () {
 		});
 	});
 	
+	describe('GET ranged content', function () {
+		it('should return just part of the content', function (done) {
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/',
+				headers: {
+					range: 'bytes=0-5'
+				},
+				noCompress: true
+			}, function (err, res) {
+				assert.isNull(err, 'we have an error');
+				
+				assert.strictEqual(res.code, 206, 'we have the proper status code');
+				assert.isDefined(res.headers['content-length'], 'we have a Content-Lenght');
+				assert.strictEqual(res.headers['content-range'], '0-5/11', 'we have the proper value for the Content-Range response header');
+				
+				assert.strictEqual(res.buffer.toString(), 'Hello', 'we have the proper partial content');
+				
+				done();
+			});
+		});
+	});
+	
 	after(function () {
 		server.close();
 	});

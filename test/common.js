@@ -77,12 +77,23 @@ Response.prototype.send = function (content) {
 		}
 	}
 	
+	if (this.req.headers.range) {
+		var range = this.req.headers.range.split('=');
+		range = range[1].split('-');
+		
+		this.res.setHeader('content-range', range[0] + '-' + range[1] + '/' + content.body.length);
+		
+		content.code = 206;
+		content.body = content.body.substring(range[0], range[1]);
+	}
+	
 	var self = this;
 	
 	switch (this.encoding()) {
 		case 'gzip':
 			zlib.gzip(content.body, function (err, compressed) {
 				if ( ! err) {
+					self.res.setHeader('content-length', compressed.length);
 					self.res.setHeader('content-encoding', 'gzip');
 					self.res.writeHead(content.code, {'content-type': content.type});
 					self.write(compressed);
@@ -96,6 +107,7 @@ Response.prototype.send = function (content) {
 		case 'deflate':
 			zlib.deflate(content.body, function (err, compressed) {
 				if ( ! err) {
+					self.res.setHeader('content-length', compressed.length);
 					self.res.setHeader('content-encoding', 'deflate');
 					self.res.writeHead(content.code, {'content-type': content.type});
 					self.write(compressed);
@@ -107,6 +119,7 @@ Response.prototype.send = function (content) {
 		break;
 		
 		default:
+			self.res.setHeader('content-length', content.body.length);
 			self.res.writeHead(content.code, {'content-type': content.type});
 			self.write(content.body);
 			self.res.end();
