@@ -424,8 +424,6 @@ describe('HTTP GET method tests', function () {
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
 				assert.strictEqual(res.headers['content-length'], '11', 'we got the proper size for the data');
 				
-				
-				
 				res.stream.on('data', function (data) {
 					count += data.length;
 				});
@@ -458,8 +456,6 @@ describe('HTTP GET method tests', function () {
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
 				assert.strictEqual(res.headers['content-length'], '31', 'we got the proper size for the compressed data');
 				
-				
-				
 				res.stream.on('data', function (data) {
 					count += data.length;
 				});
@@ -475,6 +471,39 @@ describe('HTTP GET method tests', function () {
 				});
 				
 				res.response.resume();
+			});
+		});
+	});
+	
+	describe('GET with error passed to the completion callback by the fs module', function () {
+		it('should pass back an error from the fs module', function (done) {
+			var path = 'world.txt';
+			
+			fs.open(path, 'w+', function (err, fd) {
+				assert.isNull(err, 'we have an error');
+				
+				fs.close(fd, function (err) {
+					assert.isNull(err, 'we have an error');
+					
+					fs.chmod(path, '0100', function (err) {
+						assert.isNull(err, 'we have an error');
+						
+						var url = 'http://127.0.0.1:' + common.options.port + '/';
+						client.get(url, path, function (err, res) {
+							assert.instanceOf(err, Error, 'the error is an instance of Error');
+							assert.strictEqual(err.code, 'EACCES', 'we have the proper error code');
+							assert.strictEqual(err.url, url);
+							
+							assert.isUndefined(res, 'we have a response');
+							
+							fs.unlink(path, function (err) {
+								assert.isNull(err);
+								
+								done();
+							});
+						});
+					});
+				});
 			});
 		});
 	});
