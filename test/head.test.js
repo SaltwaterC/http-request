@@ -219,6 +219,18 @@ describe('HTTP HEAD method tests', function () {
 		});
 	});
 	
+	describe('HEAD with URL fragment', function () {
+		it('should not send the URL fragment to the server', function (done) {
+			client.get('http://127.0.0.1:' + common.options.port + '/path-reflect#fragment', function (err, res) {
+				assert.isNull(err, 'we have an error');
+				
+				assert.strictEqual(res.headers.path, '/path-reflect', 'we should not get back the fragment');
+				
+				done();
+			});
+		});
+	});
+	
 	after(function () {
 		server.close();
 		secureServer.close();

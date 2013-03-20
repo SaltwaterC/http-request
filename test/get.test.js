@@ -383,6 +383,102 @@ describe('HTTP GET method tests', function () {
 		});
 	});
 	
+	describe('GET response saved to file', function () {
+		it('should save the response body to a file', function (done) {
+			client.get('http://127.0.0.1:' + common.options.port + '/', 'hello.txt', function (err, res) {
+				assert.isNull(err, 'we have an error');
+				
+				assert.strictEqual(res.code, 200);
+				assert.strictEqual(res.headers['content-type'], 'text/plain');
+				
+				fs.stat(res.file, function (err) {
+					assert.isNull(err, 'we have an error');
+					
+					fs.readFile(res.file, function (err, data) {
+						assert.isNull(err, 'we have an error');
+						
+						assert.strictEqual(data.toString(), 'Hello World');
+						
+						fs.unlink(res.file, function (err) {
+							assert.isNull(err);
+							
+							done();
+						});
+					});
+				});
+			});
+		});
+	});
+	
+	describe('GET stream passed to client', function () {
+		it('should pass back a readable stream to the client', function (done) {
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/',
+				stream: true,
+				noCompress: true
+			}, function (err, res) {
+				var count = 0;
+				
+				assert.isNull(err, 'we have an error');
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.headers['content-length'], '11', 'we got the proper size for the data');
+				
+				
+				
+				res.stream.on('data', function (data) {
+					count += data.length;
+				});
+				
+				res.stream.on('end', function () {
+					assert.strictEqual(count, 11, 'we have the proper size for the stream');
+					
+					done();
+				});
+				
+				res.stream.on('error', function (err) {
+					assert.isNull(err, 'we have an error');
+				});
+				
+				res.response.resume();
+			});
+		});
+	});
+	
+	describe('GET with gzip compressed stream passed to client', function () {
+		it('should pass back a decompressed readable stream to the client', function (done) {
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/',
+				stream: true
+			}, function (err, res) {
+				var count = 0;
+				
+				assert.isNull(err, 'we have an error');
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.headers['content-length'], '31', 'we got the proper size for the compressed data');
+				
+				
+				
+				res.stream.on('data', function (data) {
+					count += data.length;
+				});
+				
+				res.stream.on('end', function () {
+					assert.strictEqual(count, 11, 'we have the proper size for the decompressed stream');
+					
+					done();
+				});
+				
+				res.stream.on('error', function (err) {
+					assert.isNull(err, 'we have an error');
+				});
+				
+				res.response.resume();
+			});
+		});
+	});
+	
 	after(function () {
 		server.close();
 		secureServer.close();

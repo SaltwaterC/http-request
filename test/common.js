@@ -189,6 +189,7 @@ Response.prototype.write = function (body) {
 var createServer = function (module, options) {
 	var callback = function (req, res) {
 		var response = new Response(req, res);
+		
 		switch (req.url) {
 			case '/redirect':
 				response.send({
@@ -257,6 +258,16 @@ var createServer = function (module, options) {
 					code: 200,
 					body: 'Hello World'
 				}, 'gzip');
+			break;
+			
+			case '/path-reflect':
+				response.send({
+					code: 200,
+					body: 'Hello World',
+					headers: {
+						path: req.url
+					}
+				});
 			break;
 			
 			default:
