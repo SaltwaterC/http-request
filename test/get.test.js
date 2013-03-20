@@ -9,14 +9,12 @@ var u = require('url');
 var assert = require('chai').assert;
 
 describe('HTTP GET method tests', function () {
-	var server;
+	var server, secureServer;
 	
 	before(function (done) {
-		server = common.createServer(require('http'));
-		
-		server.listen(common.options.port, function () {
-			done();
-		});
+		var servers = common.createServers(done);
+		server = servers.server;
+		secureServer = servers.secureServer;
 	});
 	
 	describe('GET Hello World Buffer - plain', function () {
@@ -220,7 +218,68 @@ describe('HTTP GET method tests', function () {
 		});
 	});
 	
+	describe('GET with redirect', function () {
+		it('should redirect succesfully', function (done) {
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/redirect',
+				noCompress: true
+			}, function (err, res) {
+				assert.isNull(err, 'we have an error');
+				
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.url, 'http://127.0.0.1:' + common.options.port + '/', 'we got the proper URL back');
+				
+				done();
+			});
+		});
+	});
+	
+	describe('GET with progress callback', function () {
+		it('should call the progress callback', function (done) {
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/',
+				progress: function (current, total) {
+					// there's a single data event
+					// the Hello World is compressed with gzip
+					// but larger than the payload
+					
+					assert.strictEqual(current, 31);
+					assert.strictEqual(total, 31);
+				}
+			}, function (err, res) {
+				assert.isNull(err, 'we have an error');
+				
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got back the proper buffer');
+				
+				done();
+			});
+		});
+	});
+	
+	describe('GET over HTTPS with SSL validation', function () {
+		it('should verify succesfully the connection', function (done) {
+			client.get({
+				url: 'https://127.0.0.1:' + common.options.securePort + '/',
+				headers: {
+					host: 'http-get.lan'
+				},
+				ca: [require('./ca.js')]
+			}, function (err, res) {
+				assert.isNull(err);
+				
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got back the proper buffer');
+				
+				done();
+			});
+		});
+	});
+	
 	after(function () {
 		server.close();
+		secureServer.close();
 	});
 });

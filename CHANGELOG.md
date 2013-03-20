@@ -2,6 +2,7 @@
  * Client rewritten almost from scratch for including broader HTTP support. Renamed to http-request to indicate this change.
  * Strict about user errors. They are considered unrecoverable aka won't fix without changing the code, hence they throw. Passing these to the completion callback has only one outcome: to conceal bugs.
  * Removed the support for HTTPS proxies since there's no way to do it properly which opens a door for MITM attacks.
+ * The progress callback option is now available for all response handlers (file, buffer, stream).
  * Fix: the 203 status code is handled as success (as it should).
 
 ## v0.5.9

@@ -8,14 +8,12 @@ var common = require('./common.js');
 var assert = require('chai').assert;
 
 describe('HTTP HEAD method tests', function () {
-	var server;
+	var server, secureServer;
 	
 	before(function (done) {
-		server = common.createServer(require('http'));
-		
-		server.listen(common.options.port, function () {
-			done();
-		});
+		var servers = common.createServers(done);
+		server = servers.server;
+		secureServer = servers.secureServer;
 	});
 	
 	describe('HEAD Hello World - plain', function () {
@@ -143,6 +141,41 @@ describe('HTTP HEAD method tests', function () {
 				assert.isNull(err, 'we have an error');
 				
 				assert.strictEqual(res.code, 200, 'the HTTP status code is OK');
+				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				
+				done();
+			});
+		});
+	});
+	
+	describe('HEAD with redirect', function () {
+		it('should redirect succesfully', function (done) {
+			client.head({
+				url: 'http://127.0.0.1:' + common.options.port + '/redirect',
+				noCompress: true
+			}, function (err, res) {
+				assert.isNull(err, 'we have an error');
+				
+				assert.strictEqual(res.code, 200);
+				assert.strictEqual(res.url, 'http://127.0.0.1:' + common.options.port + '/');
+				
+				done();
+			});
+		});
+	});
+	
+	describe('HEAD over HTTPS with SSL validation', function () {
+		it('should verify succesfully the connection', function (done) {
+			client.head({
+				url: 'https://127.0.0.1:' + common.options.securePort + '/',
+				headers: {
+					host: 'http-get.lan'
+				},
+				ca: [require('./ca.js')]
+			}, function (err, res) {
+				assert.isNull(err);
+				
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
 				
 				done();
