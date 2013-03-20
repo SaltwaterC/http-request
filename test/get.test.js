@@ -330,6 +330,25 @@ describe('HTTP GET method tests', function () {
 		});
 	});
 	
+	describe('GET with maxBody limit', function () {
+		it('should detect that the buffer is overflowing the user limit', function (done) {
+			var url = 'http://127.0.0.1:' + common.options.port + '/';
+			client.get({
+				url: url,
+				maxBody: 2
+			}, function (err, res) {
+				assert.instanceOf(err, Error, 'the error is an instance of Error');
+				assert.strictEqual(err.message, 'Large body detected.', 'the proper message is passed back to the client');
+				assert.strictEqual(err.code, 200, 'the error code is equal to the code of the HTTP response');
+				assert.strictEqual(err.url, url, 'the error object has the proper URL');
+				
+				assert.isUndefined(res, 'we have a response');
+				
+				done();
+			});
+		});
+	});
+	
 	after(function () {
 		server.close();
 		secureServer.close();
