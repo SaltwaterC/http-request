@@ -90,6 +90,8 @@ describe('HTTP HEAD method tests', function () {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
 				assert.strictEqual(err.url, 'http://.foo.bar/');
 				
+				assert.isUndefined(res, 'we have a response');
+				
 				done();
 			});
 		});
@@ -100,6 +102,8 @@ describe('HTTP HEAD method tests', function () {
 			client.head('https://.foo.bar/', function (err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
 				assert.strictEqual(err.url, 'https://.foo.bar/');
+				
+				assert.isUndefined(res, 'we have a response');
 				
 				done();
 			});
@@ -112,6 +116,8 @@ describe('HTTP HEAD method tests', function () {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
 				assert.strictEqual(err.code, 'ENOTFOUND');
 				assert.strictEqual(err.url, 'http://foo.bar/');
+				
+				assert.isUndefined(res, 'we have a response');
 				
 				done();
 			});
@@ -183,8 +189,39 @@ describe('HTTP HEAD method tests', function () {
 		});
 	});
 	
+	describe('HEAD without url', function () {
+		it('should throw an error', function (done) {
+			var throws = function () {
+				client.head({}, function (err, res) {
+				});
+			};
+			
+			assert.throws(throws, Error, 'The options object requires an input URL value.');
+			
+			done();
+		});
+	});
+	
+	describe('HEAD with redirect loop', function () {
+		it('should detect the condition and pass the error argument to the completion callback', function (done) {
+			var url = 'http://127.0.0.1:' + common.options.port + '/redirect-loop';
+			
+			client.head(url, function (err, res) {
+				assert.instanceOf(err, Error, 'the error is an instance of Error');
+				assert.strictEqual(err.message, 'Redirect loop detected after 10 requests.', 'the proper message is passed back to the user');
+				assert.strictEqual(err.code, 301, 'the error code is equal to the code of the HTTP response');
+				assert.strictEqual(err.url, url, 'the error object has the proper URL');
+				
+				assert.isUndefined(res, 'we have a response');
+				
+				done();
+			});
+		});
+	});
+	
 	after(function () {
 		server.close();
+		secureServer.close();
 	});
 	
 });

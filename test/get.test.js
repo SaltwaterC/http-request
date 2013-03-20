@@ -102,6 +102,8 @@ describe('HTTP GET method tests', function () {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
 				assert.strictEqual(err.url, 'http://.foo.bar/');
 				
+				assert.isUndefined(res, 'we have a response');
+				
 				done();
 			});
 		});
@@ -112,6 +114,8 @@ describe('HTTP GET method tests', function () {
 			client.get('https://.foo.bar/', function (err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
 				assert.strictEqual(err.url, 'https://.foo.bar/');
+				
+				assert.isUndefined(res, 'we have a response');
 				
 				done();
 			});
@@ -124,6 +128,8 @@ describe('HTTP GET method tests', function () {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
 				assert.strictEqual(err.code, 'ENOTFOUND');
 				assert.strictEqual(err.url, 'http://foo.bar/');
+				
+				assert.isUndefined(res, 'we have a response');
 				
 				done();
 			});
@@ -272,6 +278,52 @@ describe('HTTP GET method tests', function () {
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got back the proper buffer');
+				
+				done();
+			});
+		});
+	});
+	
+	describe('GET without url', function () {
+		it('should throw an error', function (done) {
+			var throws = function () {
+				client.get({}, function (err, res) {
+				});
+			};
+			
+			assert.throws(throws, Error, 'The options object requires an input URL value.');
+			
+			done();
+		});
+	});
+	
+	describe('GET 404', function () {
+		it('should buffer the error document', function (done) {
+			var url = 'http://127.0.0.1:' + common.options.port + '/not-found';
+			client.get(url, function (err, res) {
+				assert.instanceOf(err, Error, 'the error is an instance of Error');
+				assert.strictEqual(err.document.toString(), 'Not Found', 'we got back the proper error document');
+				assert.strictEqual(err.largeDocument, false, 'no error document overflow');
+				assert.strictEqual(err.url, url, 'the error object has the proper URL');
+				
+				assert.isUndefined(res, 'we have a response');
+				
+				done();
+			});
+		});
+	});
+	
+	describe('GET with redirect loop', function () {
+		it('should detect the condition and pass the error argument to the completion callback', function (done) {
+			var url = 'http://127.0.0.1:' + common.options.port + '/redirect-loop';
+			
+			client.get(url, function (err, res) {
+				assert.instanceOf(err, Error, 'the error is an instance of Error');
+				assert.strictEqual(err.message, 'Redirect loop detected after 10 requests.', 'the proper message is passed back to the user');
+				assert.strictEqual(err.code, 301, 'the error code is equal to the code of the HTTP response');
+				assert.strictEqual(err.url, url, 'the error object has the proper URL');
+				
+				assert.isUndefined(res, 'we have a response');
 				
 				done();
 			});

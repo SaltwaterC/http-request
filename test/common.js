@@ -201,7 +201,7 @@ var createServer = function (module, options) {
 				response.send({
 					code: 301,
 					type: 'text/plain',
-					body: ''
+					body: 'Redirect without location'
 				});
 			break;
 			
@@ -229,6 +229,23 @@ var createServer = function (module, options) {
 				}
 				
 				response.send();
+			break;
+			
+			case '/not-found':
+				response.send({
+					code: 404,
+					body: 'Not Found'
+				});
+			break;
+			
+			case '/redirect-loop':
+				response.send({
+					code: 301,
+					headers: {
+						location: '/redirect-loop'
+					},
+					body: 'It\'s spinnin'
+				});
 			break;
 			
 			default:
