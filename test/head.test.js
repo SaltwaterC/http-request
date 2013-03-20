@@ -25,7 +25,7 @@ describe('HTTP HEAD method tests', function () {
 				assert.isNull(err, 'we have an error');
 				
 				assert.strictEqual(res.code, 200, 'the status is success');
-				assert.typeOf(res.headers, 'object', 'there is a headers object');
+				assert.isObject(res.headers, 'there is a headers object');
 				assert.isUndefined(res.headers['content-encoding'], 'the content must not be encoded');
 				
 				done();

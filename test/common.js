@@ -64,7 +64,11 @@ var Response = function (req, res) {
  *
  * @returns {Mixed} The encoding sent to the client
  */
-Response.prototype.encoding = function () {
+Response.prototype.encoding = function (forceEncoding) {
+	if (forceEncoding) {
+		return forceEncoding;
+	}
+	
 	if (this.req.headers['accept-encoding']) {
 		var accept = this.req.headers['accept-encoding'].split(',');
 		
@@ -87,7 +91,7 @@ Response.prototype.encoding = function () {
  * @param {String} content.body The HTTP response body content
  * @param {String} content.type The content MIME type
  */
-Response.prototype.send = function (content) {
+Response.prototype.send = function (content, forceEncoding) {
 	if (typeof content !== 'object') {
 		content = {};
 	}
@@ -126,7 +130,7 @@ Response.prototype.send = function (content) {
 	
 	var self = this;
 	
-	switch (this.encoding()) {
+	switch (this.encoding(forceEncoding)) {
 		case 'gzip':
 			zlib.gzip(content.body, function (err, compressed) {
 				if ( ! err) {
@@ -190,10 +194,20 @@ var createServer = function (module, options) {
 				response.send({
 					code: 301,
 					type: 'text/plain',
-					body: '',
+					body: 'Go Home!',
 					headers: {
 						location: '/'
 					}
+				});
+			break;
+			
+			case '/redirect-loop':
+				response.send({
+					code: 301,
+					headers: {
+						location: '/redirect-loop'
+					},
+					body: 'It\'s spinnin'
 				});
 			break;
 			
@@ -238,14 +252,11 @@ var createServer = function (module, options) {
 				});
 			break;
 			
-			case '/redirect-loop':
+			case '/force-gzip':
 				response.send({
-					code: 301,
-					headers: {
-						location: '/redirect-loop'
-					},
-					body: 'It\'s spinnin'
-				});
+					code: 200,
+					body: 'Hello World'
+				}, 'gzip');
 			break;
 			
 			default:

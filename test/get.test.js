@@ -6,6 +6,7 @@ var client = require('../');
 var common = require('./common.js');
 
 var u = require('url');
+var fs = require('fs');
 var assert = require('chai').assert;
 
 describe('HTTP GET method tests', function () {
@@ -26,7 +27,7 @@ describe('HTTP GET method tests', function () {
 				assert.isNull(err, 'we have an error');
 				
 				assert.strictEqual(res.code, 200, 'the status is success');
-				assert.typeOf(res.headers, 'object', 'there is a headers object');
+				assert.isObject(res.headers, 'there is a headers object');
 				assert.isUndefined(res.headers['content-encoding'], 'the content must not be encoded');
 				assert.instanceOf(res.buffer, Buffer, 'the buffer is an instance of Buffer');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we  got back the proper string');
@@ -343,6 +344,39 @@ describe('HTTP GET method tests', function () {
 				assert.strictEqual(err.url, url, 'the error object has the proper URL');
 				
 				assert.isUndefined(res, 'we have a response');
+				
+				done();
+			});
+		});
+	});
+	
+	describe('GET with null argument for the file argument', function () {
+		it('should simulate writing the file /dev/null in a cross platform way', function (done) {
+			client.get('http://127.0.0.1:' + common.options.port + '/redirect', null, function (err, res) {
+				assert.isNull(err, 'we have an error');
+				
+				assert.strictEqual(res.code, 200, 'the status is success');
+				assert.isObject(res.headers, 'there is a headers object');
+				
+				// regression test for the fix from v0.4.2
+				assert.isUndefined(res.buffer, 'there is no buffered data');
+				
+				done();
+			});
+		});
+	});
+	
+	describe('GET with gzipped response without being requested', function () {
+		it('should return gzipped content without being requested', function (done) {
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/force-gzip',
+				noCompress: true
+			}, function (err, res) {
+				assert.isNull(err, 'we have an error');
+				
+				assert.strictEqual(res.code, 200, 'the HTTP status code is OK');
+				assert.strictEqual(res.headers['content-encoding'], 'gzip', 'we got back gzip even though it was not requested');
+				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got back the proper buffer');
 				
 				done();
 			});
