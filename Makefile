@@ -7,6 +7,7 @@ all:
 ca-bundler:
 	@cd ca-bundle && ../tools/mk-ca-bundle.pl
 	@tools/mk-ca-bundle.js
+	$(MAKE) beautify
 
 lint:
 	@tools/lint.sh
