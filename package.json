@@ -1,51 +1,48 @@
 {
-	"name": "http-request",
-	"version": "0.6.0-dev",
-	"main": "./lib/main.js",
-	"description": "General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding.",
-	"engines": {
-		"node": ">=0.8.5"
-	},
-	"devDependencies": {
-		"chai": ">= 1.5.0"
-	},
-	"homepage": "https://github.com/SaltwaterC/http-get",
-	"author": {
-		"name": "Stefan Rusu",
-		"url": "http://www.saltwaterc.eu/"
-	},
-	"contributors": [
-		{
-			"name": "cmtt",
-			"url": "https://github.com/cmtt"
-		},
-		{
-			"name": "elarcent",
-			"url": "https://github.com/elarcent"
-		},
-		{
-			"name": "Gil Pedersen",
-			"url": "https://github.com/kanongil"
-		}
-	],
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/SaltwaterC/http-get.git"
-	},
-	"keywords": [
-		"http",
-		"https",
-		"get",
-		"head",
-		"post",
-		"put",
-		"delete",
-		"download",
-		"upload",
-		"gzip",
-		"deflate"
-	],
-	"scripts": {
-		"test": "make test"
-	}
+    "name": "http-request",
+    "version": "0.6.0-dev",
+    "main": "./lib/main.js",
+    "description": "General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding.",
+    "engines": {
+        "node": ">=0.8.5"
+    },
+    "devDependencies": {
+        "chai": ">= 1.5.0"
+    },
+    "homepage": "https://github.com/SaltwaterC/http-get",
+    "author": {
+        "name": "Stefan Rusu",
+        "url": "http://www.saltwaterc.eu/"
+    },
+    "contributors": [{
+            "name": "cmtt",
+            "url": "https://github.com/cmtt"
+        }, {
+            "name": "elarcent",
+            "url": "https://github.com/elarcent"
+        }, {
+            "name": "Gil Pedersen",
+            "url": "https://github.com/kanongil"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/SaltwaterC/http-get.git"
+    },
+    "keywords": [
+            "http",
+            "https",
+            "get",
+            "head",
+            "post",
+            "put",
+            "delete",
+            "download",
+            "upload",
+            "gzip",
+            "deflate"
+    ],
+    "scripts": {
+        "test": "make test"
+    }
 }
