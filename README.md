@@ -1,4 +1,4 @@
-## About ![build status](https://secure.travis-ci.org/SaltwaterC/http-get.png?branch=master)
+# http-request ![build status](https://secure.travis-ci.org/SaltwaterC/http-get.png?branch=master)
 
 General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding.
 
