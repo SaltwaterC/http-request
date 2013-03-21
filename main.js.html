@@ -44,8 +44,8 @@ var Request = require('./request.js');
  * @param {Object} options The options Object taken by the {@link module:request~Request} constructor
  * @returns {Request} A new instance of the {@link module:request~Request} class
  */
-exports.createHttpClient = function (options) {
-	return new Request(options);
+exports.createHttpClient = function(options) {
+    return new Request(options);
 };
 
 /**
@@ -57,57 +57,60 @@ exports.createHttpClient = function (options) {
  * @param {Error} callback.error The Error instance that bubbles up to the user code
  * @param {Object} callback.stdResponse A standard response object passed by {@link module:request~Request#stdResult}
  */
-exports.get = function (options, file, callback) {
-	if ( ! callback) {
-		callback = file;
-		file = false;
-	}
-	
-	options = tools.shortHand(options, 'get');
-	tools.checkCallback(callback);
-	
-	var request = new Request(options);
-	
-	request.send(function (err, res) {
-		if (err) {
-			callback(err);
-		} else {
-			if (options.stream === true) {
-				callback(null, request.stdResult());
-			} else {
-				switch (file) {
-					case false: // buffer
-						request.saveBuffer(function (err, buf) {
-							if (err) {
-								callback(err);
-							} else {
-								callback(null, request.stdResult());
-							}
-						});
-					break;
-					
-					case null: // simulate writing to /dev/null, carefully under node.js v0.10
-						callback(null, request.stdResult());
-						res.response.resume();
-					break;
-					
-					default: // save to file
-						if (typeof file !== 'string') {
-							throw tools.formatError('Expecting a file path for saving the object from URL: %s.', options.url);
-						}
-						
-						request.saveFile(file, function (err, res) {
-							if (err) {
-								callback(err);
-							} else {
-								callback(null, request.stdResult());
-							}
-						});
-					break;
-				}
-			}
-		}
-	});
+exports.get = function(options, file, callback) {
+    if (!callback) {
+        callback = file;
+        file = false;
+    }
+
+    options = tools.shortHand(options, 'get');
+    tools.checkCallback(callback);
+
+    var request = new Request(options);
+
+    request.send(function(err, res) {
+        if (err) {
+            callback(err);
+        } else {
+            if (options.stream === true) {
+                callback(null, request.stdResult());
+            } else {
+                switch (file) {
+                    case false:
+                        // buffer
+                        request.saveBuffer(function(err, buf) {
+                            if (err) {
+                                callback(err);
+                            } else {
+                                callback(null, request.stdResult());
+                            }
+                        });
+                        break;
+
+                    case null:
+                        // simulate writing to /dev/null, carefully under node.js v0.10
+                        callback(null, request.stdResult());
+                        res.response.resume();
+                        break;
+
+                    default:
+                        // save to file
+                        if (typeof file !== 'string') {
+                            throw tools.formatError('Expecting a file path for saving the object from URL: %s.', options.url);
+                        }
+
+                        request.saveFile(file, function(err, res) {
+                            if (err) {
+                                callback(err);
+                            } else {
+                                callback(null, request.stdResult());
+                            }
+                        });
+                        break;
+                }
+            }
+        }
+    });
 };
 
 /**
@@ -119,20 +122,20 @@ exports.get = function (options, file, callback) {
  * @param {Error} callback.error The Error instance that bubbles up to the user code
  * @param {Object} callback.stdResponse A standard response object passed by {@link module:request~Request#stdResult}
  */
-exports.head = function (options, callback) {
-	options = tools.shortHand(options, 'head');
-	tools.checkCallback(callback);
-	
-	var request = new Request(options);
-	
-	request.send(function (err, res) {
-		if (err) {
-			callback(err);
-		} else {
-			callback(null, request.stdResult());
-			res.response.resume();
-		}
-	});
+exports.head = function(options, callback) {
+    options = tools.shortHand(options, 'head');
+    tools.checkCallback(callback);
+
+    var request = new Request(options);
+
+    request.send(function(err, res) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null, request.stdResult());
+            res.response.resume();
+        }
+    });
 };
 </code></pre>
         </article>
@@ -150,7 +153,7 @@ exports.head = function (options, callback) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Sat Mar 16 2013 23:32:42 GMT+0200 (EET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Thu Mar 21 2013 16:45:46 GMT+0200 (EET)
 </footer>
 
 <script> prettyPrint(); </script>
