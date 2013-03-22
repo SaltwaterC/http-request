@@ -305,6 +305,7 @@ describe('HTTP GET method tests', function() {
                 assert.strictEqual(err.document.toString(), 'Not Found', 'we got back the proper error document');
                 assert.strictEqual(err.largeDocument, false, 'no error document overflow');
                 assert.strictEqual(err.url, url, 'the error object has the proper URL');
+                assert.strictEqual(err.headers['content-encoding'], 'gzip');
 
                 assert.isUndefined(res, 'we have a response');
 
@@ -503,6 +504,25 @@ describe('HTTP GET method tests', function() {
                         });
                     });
                 });
+            });
+        });
+    });
+
+    describe('GET with overflowing error document', function() {
+        it('should detect the situation and act accordingly', function(done) {
+            client.get({
+                url: 'http://127.0.0.1:' + common.options.port + '/big-error',
+                noCompress: true
+            }, function(err, res) {
+                assert.instanceOf(err, Error, 'the error is an instance of Error');
+
+                assert.strictEqual(err.code, 404, 'we got back the proper status code');
+                assert.strictEqual(err.largeDocument, true, 'we detect the overflowing error document');
+                assert.strictEqual(err.noDocument, false, 'we detect that there was a document, but could not be buffered');
+                assert.strictEqual(err.headers['content-length'], '1048577', 'we got the content length of the overflowing error document');
+                assert.strictEqual(err.url, 'http://127.0.0.1:' + common.options.port + '/big-error', 'we got back the proper error URL');
+
+                done();
             });
         });
     });

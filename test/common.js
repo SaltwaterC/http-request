@@ -263,6 +263,13 @@ var createServer = function(module, options) {
                 });
                 break;
 
+            case '/big-error':
+                response.send({
+                    code: 404,
+                    body: new Buffer(1048577).toString()
+                });
+                break;
+
             case '/force-gzip':
                 response.send({
                     code: 200,
