@@ -25,4 +25,6 @@ beautify:
 
 doc:
 	jsdoc --destination docs lib README.md
+
+publishdoc: doc
 	cd docs && git commit --all --message "Auto generated documentation" && git push origin gh-pages
