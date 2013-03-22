@@ -19,7 +19,7 @@ describe('HTTP HEAD method tests', function() {
     describe('HEAD Hello World - plain', function() {
         it('should pass the response headers', function(done) {
             client.head({
-                url: 'http://127.0.0.1:' + common.options.port + '/',
+                url: 'http://127.0.0.1:' + common.options.port + '/hello-plain',
                 noCompress: true
             }, function(err, res) {
                 assert.isNull(err, 'we have an error');
@@ -36,7 +36,7 @@ describe('HTTP HEAD method tests', function() {
     describe('HEAD Hello World - gzip', function() {
         it('should pass the response headers', function(done) {
             client.head({
-                url: 'http://127.0.0.1:' + common.options.port + '/',
+                url: 'http://127.0.0.1:' + common.options.port + '/hello-gzip',
                 headers: {
                     'accept-encoding': 'gzip'
                 }
@@ -53,7 +53,7 @@ describe('HTTP HEAD method tests', function() {
     describe('HEAD Hello World - deflate', function() {
         it('should pass the response headers', function(done) {
             client.head({
-                url: 'http://127.0.0.1:' + common.options.port + '/',
+                url: 'http://127.0.0.1:' + common.options.port + '/hello-deflate',
                 headers: {
                     'accept-encoding': 'deflate'
                 }
@@ -143,7 +143,7 @@ describe('HTTP HEAD method tests', function() {
 
     describe('HEAD without protocol prefix', function() {
         it('should work fine by prepending http:// to the URL', function(done) {
-            client.head('127.0.0.1:' + common.options.port + '/', function(err, res) {
+            client.head('127.0.0.1:' + common.options.port + '/no-protocol-prefix', function(err, res) {
                 assert.isNull(err, 'we have an error');
 
                 assert.strictEqual(res.code, 200, 'the HTTP status code is OK');
@@ -162,8 +162,8 @@ describe('HTTP HEAD method tests', function() {
             }, function(err, res) {
                 assert.isNull(err, 'we have an error');
 
-                assert.strictEqual(res.code, 200);
-                assert.strictEqual(res.url, 'http://127.0.0.1:' + common.options.port + '/');
+                assert.strictEqual(res.code, 200, 'we got back the proper HTTP status code');
+                assert.strictEqual(res.url, 'http://127.0.0.1:' + common.options.port + '/redirect-target', 'we got back the proper URL');
 
                 done();
             });
@@ -173,7 +173,7 @@ describe('HTTP HEAD method tests', function() {
     describe('HEAD over HTTPS with SSL validation', function() {
         it('should verify succesfully the connection', function(done) {
             client.head({
-                url: 'https://127.0.0.1:' + common.options.securePort + '/',
+                url: 'https://127.0.0.1:' + common.options.securePort + '/ssl-validation',
                 headers: {
                     host: 'http-get.lan'
                 },
@@ -233,7 +233,7 @@ describe('HTTP HEAD method tests', function() {
     describe('HEAD with noSslVerifier', function() {
         it('should not pass an error back due to lack of root CA', function(done) {
             client.head({
-                url: 'https://127.0.0.1:' + common.options.securePort + '/',
+                url: 'https://127.0.0.1:' + common.options.securePort + '/no-ssl-verifier',
                 noSslVerifier: true
             }, function(err, res) {
                 assert.isNull(err);

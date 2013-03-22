@@ -207,7 +207,7 @@ var createServer = function(module, options) {
                     type: 'text/plain',
                     body: 'Go Home!',
                     headers: {
-                        location: '/'
+                        location: '/redirect-target'
                     }
                 });
                 break;

@@ -12,8 +12,9 @@ ca-bundler:
 lint:
 	@tools/lint.sh
 
-publish: all
+publish: all production
 	@/usr/bin/env npm publish
+	$(MAKE) development
 
 tests: test
 check: test
@@ -28,3 +29,11 @@ doc:
 
 publishdoc: doc
 	cd docs && git commit --all --message "Auto generated documentation" && git push origin gh-pages
+
+prod: production
+production:
+	@tools/production.sh
+
+dev: development
+development:
+	@tools/development.sh

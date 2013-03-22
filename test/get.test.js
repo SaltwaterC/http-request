@@ -21,7 +21,7 @@ describe('HTTP GET method tests', function() {
     describe('GET Hello World Buffer - plain', function() {
         it('should pass "Hello World" buffer', function(done) {
             client.get({
-                url: 'http://127.0.0.1:' + common.options.port + '/',
+                url: 'http://127.0.0.1:' + common.options.port + '/hello-plain',
                 noCompress: true
             }, function(err, res) {
                 assert.isNull(err, 'we have an error');
@@ -40,7 +40,7 @@ describe('HTTP GET method tests', function() {
     describe('GET Hello World Buffer - gzip', function() {
         it('should pass "Hello World" buffer', function(done) {
             client.get({
-                url: 'http://127.0.0.1:' + common.options.port + '/',
+                url: 'http://127.0.0.1:' + common.options.port + '/hello-gzip',
                 headers: {
                     'accept-encoding': 'gzip'
                 }
@@ -58,7 +58,7 @@ describe('HTTP GET method tests', function() {
     describe('GET Hello World Buffer - deflate', function() {
         it('should pass "Hello World" buffer', function(done) {
             client.get({
-                url: 'http://127.0.0.1:' + common.options.port + '/',
+                url: 'http://127.0.0.1:' + common.options.port + '/hello-deflate',
                 headers: {
                     'accept-encoding': 'deflate'
                 }
@@ -191,7 +191,7 @@ describe('HTTP GET method tests', function() {
 
     describe('GET without protocol prefix', function() {
         it('should work fine by prepending http:// to the URL', function(done) {
-            client.get('127.0.0.1:' + common.options.port + '/', function(err, res) {
+            client.get('127.0.0.1:' + common.options.port + '/no-protocol-prefix', function(err, res) {
                 assert.isNull(err, 'we have an error');
 
                 assert.strictEqual(res.code, 200, 'the HTTP status code is OK');
@@ -206,7 +206,7 @@ describe('HTTP GET method tests', function() {
     describe('GET ranged content', function() {
         it('should return just part of the content', function(done) {
             client.get({
-                url: 'http://127.0.0.1:' + common.options.port + '/',
+                url: 'http://127.0.0.1:' + common.options.port + '/range-request',
                 headers: {
                     range: 'bytes=0-5'
                 },
@@ -234,7 +234,7 @@ describe('HTTP GET method tests', function() {
                 assert.isNull(err, 'we have an error');
 
                 assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
-                assert.strictEqual(res.url, 'http://127.0.0.1:' + common.options.port + '/', 'we got the proper URL back');
+                assert.strictEqual(res.url, 'http://127.0.0.1:' + common.options.port + '/redirect-target', 'we got the proper URL back');
 
                 done();
             });
@@ -244,7 +244,7 @@ describe('HTTP GET method tests', function() {
     describe('GET with progress callback', function() {
         it('should call the progress callback', function(done) {
             client.get({
-                url: 'http://127.0.0.1:' + common.options.port + '/',
+                url: 'http://127.0.0.1:' + common.options.port + '/progress',
                 progress: function(current, total) {
                     // there's a single data event
                     // the Hello World is compressed with gzip
@@ -268,7 +268,7 @@ describe('HTTP GET method tests', function() {
     describe('GET over HTTPS with SSL validation', function() {
         it('should verify succesfully the connection', function(done) {
             client.get({
-                url: 'https://127.0.0.1:' + common.options.securePort + '/',
+                url: 'https://127.0.0.1:' + common.options.securePort + '/ssl-validation',
                 headers: {
                     host: 'http-get.lan'
                 },
@@ -333,7 +333,7 @@ describe('HTTP GET method tests', function() {
 
     describe('GET with maxBody limit', function() {
         it('should detect that the buffer is overflowing the user limit', function(done) {
-            var url = 'http://127.0.0.1:' + common.options.port + '/';
+            var url = 'http://127.0.0.1:' + common.options.port + '/max-body';
             client.get({
                 url: url,
                 maxBody: 2
@@ -385,7 +385,7 @@ describe('HTTP GET method tests', function() {
 
     describe('GET response saved to file', function() {
         it('should save the response body to a file', function(done) {
-            client.get('http://127.0.0.1:' + common.options.port + '/', 'hello.txt', function(err, res) {
+            client.get('http://127.0.0.1:' + common.options.port + '/save-to-file', 'hello.txt', function(err, res) {
                 assert.isNull(err, 'we have an error');
 
                 assert.strictEqual(res.code, 200);
@@ -413,7 +413,7 @@ describe('HTTP GET method tests', function() {
     describe('GET stream passed to client', function() {
         it('should pass back a readable stream to the client', function(done) {
             client.get({
-                url: 'http://127.0.0.1:' + common.options.port + '/',
+                url: 'http://127.0.0.1:' + common.options.port + '/pass-stream',
                 stream: true,
                 noCompress: true
             }, function(err, res) {
@@ -446,7 +446,7 @@ describe('HTTP GET method tests', function() {
     describe('GET with gzip compressed stream passed to client', function() {
         it('should pass back a decompressed readable stream to the client', function(done) {
             client.get({
-                url: 'http://127.0.0.1:' + common.options.port + '/',
+                url: 'http://127.0.0.1:' + common.options.port + '/pass-decompressed-stream',
                 stream: true
             }, function(err, res) {
                 var count = 0;
@@ -488,7 +488,7 @@ describe('HTTP GET method tests', function() {
                     fs.chmod(path, '0100', function(err) {
                         assert.isNull(err, 'we have an error');
 
-                        var url = 'http://127.0.0.1:' + common.options.port + '/';
+                        var url = 'http://127.0.0.1:' + common.options.port + '/save-to-invalid-file';
                         client.get(url, path, function(err, res) {
                             assert.instanceOf(err, Error, 'the error is an instance of Error');
                             assert.strictEqual(err.code, 'EACCES', 'we have the proper error code');
