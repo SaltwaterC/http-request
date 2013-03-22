@@ -18,7 +18,7 @@ publish: all
 tests: test
 check: test
 test: all lint
-	@tools/mocha.sh
+	./node_modules/.bin/mocha
 
 beautify:
 	@tools/beautify.sh

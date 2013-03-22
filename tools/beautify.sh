@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
-beautify=$(which js-beautify)
+beautify="./node_modules/.bin/js-beautify"
 
-if [ -z "$beautify" ]
-then
-	npm -g install js-beautify
-fi
-
-find . -name "*.js" -type f | grep -v node_modules | grep -v docs | xargs js-beautify --replace
-find . -name "*.json" -type f | grep -v node_modules | grep -v docs | xargs js-beautify --replace
+find . -name "*.js" -type f | grep -v node_modules | grep -v docs | xargs $beautify --replace
+find . -name "*.json" -type f | grep -v node_modules | grep -v docs | xargs $beautify --replace
