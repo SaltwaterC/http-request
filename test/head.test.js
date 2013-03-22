@@ -220,10 +220,26 @@ describe('HTTP HEAD method tests', function() {
 
     describe('HEAD with URL fragment', function() {
         it('should not send the URL fragment to the server', function(done) {
-            client.get('http://127.0.0.1:' + common.options.port + '/path-reflect#fragment', function(err, res) {
+            client.head('http://127.0.0.1:' + common.options.port + '/path-reflect#fragment', function(err, res) {
                 assert.isNull(err, 'we have an error');
 
                 assert.strictEqual(res.headers.path, '/path-reflect', 'we should not get back the fragment');
+
+                done();
+            });
+        });
+    });
+
+    describe('HEAD with noSslVerifier', function() {
+        it('should not pass an error back due to lack of root CA', function(done) {
+            client.head({
+                url: 'https://127.0.0.1:' + common.options.securePort + '/',
+                noSslVerifier: true
+            }, function(err, res) {
+                assert.isNull(err);
+
+                assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+                assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
 
                 done();
             });
