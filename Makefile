@@ -25,10 +25,10 @@ beautify:
 	@tools/beautify.sh
 
 doc:
-	jsdoc --destination docs lib README.md
+	jsdoc --destination ../docs lib README.md
 
-publishdoc: doc
-	cd docs && git commit --all --message "Auto generated documentation" && git push origin gh-pages
+docpublish: doc
+	cd ../docs && git commit --all --message "Auto generated documentation" && git push origin gh-pages
 
 prod: production
 production:
