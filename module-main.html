@@ -96,7 +96,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="createHttpClient"><span class="type-signature">&lt;static> </span>createHttpClient<span class="signature">(options)</span><span class="type-signature"> &rarr; {Request}</span></h4>
+    <h4 class="name" id="createHttpClient"><span class="type-signature">&lt;static> </span>createHttpClient<span class="signature">(options)</span><span class="type-signature"> &rarr; {<a href="84e50cc04e.html">module:request~Request</a>}</span></h4>
     
     
 </dt>
@@ -104,7 +104,7 @@
     
     
     <div class="description">
-        <p>new Request(options) wrapper</p>
+        <p>Constructs a Request object for wrapping your own HTTP method / functionality</p>
     </div>
     
 
@@ -144,7 +144,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type"><a href="module-request.html#options">module:request~options</a></span>
 
 
             
@@ -217,7 +217,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type">Request</span>
+<span class="param-type"><a href="84e50cc04e.html">module:request~Request</a></span>
 
 
 	</dd>
@@ -279,7 +279,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type"><a href="module-request.html#options">module:request~options</a></span>
 
 
             
@@ -289,7 +289,7 @@
             
             
             
-            <td class="description last"><p>The options Object taken by the Request constructor, filtered by <a href="module-tools.html#shortHand">module:tools.shortHand</a></p></td>
+            <td class="description last"><p>The options Object taken by the Request constructor, filtered by <a href="module-tools.html#shortHand">module:tools.shortHand</a>. options.method = 'GET' and it can not be overridden</p></td>
         </tr>
 	
 	
@@ -302,7 +302,7 @@
             <td class="type">
             
                 
-<span class="param-type">Function (error, stdResponse)</span>
+<span class="param-type"><a href="module-main.html#callback">module:main~callback</a></span>
 
 
             
@@ -312,78 +312,7 @@
             
             
             
-            <td class="description last"><p>Completion callback</p>
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>error</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Error</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>The Error instance that bubbles up to the user code</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>stdResponse</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>A standard response object passed by <a href="84e50cc04e.html#stdResult">module:request~Request#stdResult</a></p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
+            <td class="description last"><p>Completion callback</p></td>
         </tr>
 	
 	
@@ -414,7 +343,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 33
+        <a href="main.js.html">main.js</a>, line 30
     </li></ul></dd>
     
     
@@ -486,7 +415,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type"><a href="module-request.html#options">module:request~options</a></span>
 
 
             
@@ -496,7 +425,7 @@
             
             
             
-            <td class="description last"><p>The options Object taken by the Request constructor, filtered by <a href="module-tools.html#shortHand">module:tools.shortHand</a></p></td>
+            <td class="description last"><p>The options Object taken by the Request constructor, filtered by <a href="module-tools.html#shortHand">module:tools.shortHand</a>. options.method = 'HEAD' and it can not be overridden</p></td>
         </tr>
 	
 	
@@ -509,7 +438,7 @@
             <td class="type">
             
                 
-<span class="param-type">Function (error, stdResponse)</span>
+<span class="param-type"><a href="module-main.html#callback">module:main~callback</a></span>
 
 
             
@@ -519,78 +448,7 @@
             
             
             
-            <td class="description last"><p>Completion callback</p>
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>error</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Error</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>The Error instance that bubbles up to the user code</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>stdResponse</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>A standard response object passed by <a href="84e50cc04e.html#stdResult">module:request~Request#stdResult</a></p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
+            <td class="description last"><p>Completion callback</p></td>
         </tr>
 	
 	
@@ -621,7 +479,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 98
+        <a href="main.js.html">main.js</a>, line 92
     </li></ul></dd>
     
     
@@ -646,6 +504,146 @@
     
     
     
+        <h3 class="subsection-title">Type Definitions</h3>
+        
+        <dl>
+                
+<dt>
+    <h4 class="name" id="callback"><span class="type-signature"></span>callback<span class="signature">(error, result)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Describes the callback passed to each HTTP method wrapper</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-request.html#stdError">module:request~stdError</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The standard error or <em>null</em> on success</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-request.html#stdResult">module:request~stdResult</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The standard result object if error is null</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, line 110
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+            </dl>
+    
     
     
 </article>
@@ -664,7 +662,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Thu Mar 21 2013 17:16:31 GMT+0200 (EET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Sun Mar 31 2013 05:03:41 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>
