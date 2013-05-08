@@ -10,10 +10,10 @@ Either manually clone this repository into your node_modules directory, or the r
 
 ## Reference
 
- * The [Request](http://saltwaterc.github.com/http-get/84e50cc04e.html) class - for implementing your own HTTP methods if wrappers aren't provided by the library
+ * The [Request](http://saltwaterc.github.io/http-get/84e50cc04e.html) class - for implementing your own HTTP methods if wrappers aren't provided by the library
  * The DELETE method - WIP
- * The [GET method](http://saltwaterc.github.com/http-get/module-main.html#get)
- * The [HEAD method](http://saltwaterc.github.com/http-get/module-main.html#head)
+ * The [GET method](http://saltwaterc.github.io/http-get/module-main.html#get)
+ * The [HEAD method](http://saltwaterc.github.io/http-get/module-main.html#head)
  * The POST method - WIP
  * The PUT method - WIP
 
