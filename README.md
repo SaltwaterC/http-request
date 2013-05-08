@@ -26,3 +26,4 @@ Either manually clone this repository into your node_modules directory, or the r
  * [cmtt](https://github.com/cmtt) - options.timeout, fixed the broken handling of buffered response when retrying the request with options.nocompress
  * [elarcent](https://github.com/elarcent) - HTTP Basic auth fix
  * [Gil Pedersen](https://github.com/kanongil) - Fixed the stream handling
+ * [Stefan Klug](https://github.com/stefanklug) - Added support for custom Agent
