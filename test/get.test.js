@@ -414,9 +414,10 @@ describe('HTTP GET method tests', function() {
 				assert.strictEqual(res.code, 200);
 				assert.strictEqual(res.headers['content-type'], 'text/plain');
 
-				fs.stat(res.file, function(err) {
+				fs.stat(res.file, function(err, stats) {
 					assert.isNull(err, 'we have an error');
-
+					assert.strictEqual(new Date(stats.mtime).getTime(), new Date(0).getTime(), 'we got back the proper timestamp');
+					
 					fs.readFile(res.file, function(err, data) {
 						assert.isNull(err, 'we have an error');
 

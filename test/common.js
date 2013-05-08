@@ -294,9 +294,15 @@ var createServer = function(module, options) {
 				}
 
 				response.send({
-					code: 200,
-					body: 'Hello World',
 					headers: headers
+				});
+				break;
+
+			case '/save-to-file':
+				response.send({
+					headers: {
+						'last-modified': new Date(0)
+					}
 				});
 				break;
 
