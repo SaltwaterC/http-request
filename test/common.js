@@ -113,7 +113,7 @@ Response.prototype.send = function(content, forceEncoding) {
 
 		for (header in content.headers) {
 			if (content.headers.hasOwnProperty(header)) {
-				this.res.setHeader(header.toLowerCase(), content.headers[header].toLowerCase());
+				this.res.setHeader(header.toLowerCase(), content.headers[header]);
 			}
 		}
 	}
@@ -284,6 +284,19 @@ var createServer = function(module, options) {
 					headers: {
 						path: req.url
 					}
+				});
+				break;
+
+			case '/user-agent-reflect':
+				var headers = {};
+				if (req.headers['user-agent']) {
+					headers['user-agent'] = req.headers['user-agent'];
+				}
+
+				response.send({
+					code: 200,
+					body: 'Hello World',
+					headers: headers
 				});
 				break;
 
