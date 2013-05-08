@@ -527,6 +527,21 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
+
+	describe('GET with bad callback', function() {
+		it('should throw and error', function(done) {
+			var throws = function() {
+				client.get({
+					url: 'http://127.0.0.1:' + common.options.port + '/'
+				});
+			};
+
+			assert.throws(throws, Error, 'Expecting a function for the callback argument for URL: ' + 'http://127.0.0.1:' + common.options.port + '/');
+
+			done();
+		});
+	});
+
 	after(function() {
 		server.close();
 		secureServer.close();

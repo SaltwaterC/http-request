@@ -1,7 +1,6 @@
 ## TODO list
 
  * Implement & test 304 handling
- * Test the error handling for a bad callback (main.head, main.get)
  * Test the proxy implementation
  * Implement & test the socket timeout
  * Test the user agent & noUserAgent implementation
