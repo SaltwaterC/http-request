@@ -13,7 +13,7 @@ lint:
 	@tools/lint.sh
 
 publish: all production
-	@/usr/bin/env npm publish
+	@/usr/bin/env npm -f publish
 	$(MAKE) development
 
 tests: test
