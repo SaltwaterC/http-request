@@ -417,7 +417,7 @@ describe('HTTP GET method tests', function() {
 				fs.stat(res.file, function(err, stats) {
 					assert.isNull(err, 'we have an error');
 					assert.strictEqual(new Date(stats.mtime).getTime(), new Date(0).getTime(), 'we got back the proper timestamp');
-					
+
 					fs.readFile(res.file, function(err, data) {
 						assert.isNull(err, 'we have an error');
 
@@ -590,6 +590,24 @@ describe('HTTP GET method tests', function() {
 				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.isUndefined(res.headers['user-agent'], 'there is no user agent passed back');
+
+				done();
+			});
+		});
+	});
+
+	describe('GET with noRedirect', function() {
+		it('should read the status code, headers, and body from the redirect response', function(done) {
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/redirect',
+				noCompress: true,
+				noRedirect: true
+			}, function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.method, 'GET', 'the method is GET');
+				assert.strictEqual(res.code, 301, 'we got the proper HTTP status code');
+				assert.strictEqual(res.buffer.toString(), 'Go Home!', 'we got the proper HTTP response body');
 
 				done();
 			});

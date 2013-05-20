@@ -4,6 +4,7 @@
  * Removed the support for HTTPS proxies since there's no way to do it properly which opens a door for MITM attacks.
  * The progress callback option is now available for all response handlers (file, buffer, stream).
  * Fix: the 203 status code is handled as success (as it should).
+ * Added a new option: noRedirect. Returns the headers and body, if applicable, for redirect requests.
 
 ## v0.5.9
  * Changes the internal buffering concatenation to a much faster implementation: Buffer.concat by using the buffer-concat module for node.js v0.6.
