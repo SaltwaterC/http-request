@@ -303,6 +303,20 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
+	describe('HEAD with timeout', function() {
+		it('should timeout', function(done) {
+			client.head({
+				url: 'http://127.0.0.1:42892/',
+				timeout: 1
+			}, function(err, res) {
+				assert.instanceOf(err, Error, 'the error is an instance of Error');
+				assert.strictEqual(err.method, 'HEAD', 'the method is HEAD');
+
+				done();
+			});
+		});
+	});
+
 	after(function() {
 		server.close();
 		secureServer.close();
