@@ -306,7 +306,7 @@ describe('HTTP HEAD method tests', function() {
 	describe('HEAD with timeout', function() {
 		it('should timeout', function(done) {
 			client.head({
-				url: 'http://127.0.0.1:42892/',
+				url: 'http://127.0.0.1:' + common.options.noPort + '/',
 				timeout: 1
 			}, function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an instance of Error');

@@ -6,7 +6,9 @@ var http = require('http');
 var options = {
 	host: '127.0.0.1',
 	port: process.env.HTTP_REQUEST_HTTP || 42890,
-	securePort: process.env.HTTP_REQUEST_HTTPS || 42891
+	securePort: process.env.HTTP_REQUEST_HTTPS || 42891,
+	proxyPort: process.env.HTTP_REQUEST_PROXY || 42892,
+	noPort: process.env.HTTP_REQUEST_NOPORT || 42893
 };
 
 exports.options = options;
