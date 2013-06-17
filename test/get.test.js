@@ -243,6 +243,9 @@ describe('HTTP GET method tests', function() {
 		it('should redirect succesfully', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/redirect',
+				headers: {
+					host: 'foo.bar'
+				},
 				noCompress: true
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -250,6 +253,7 @@ describe('HTTP GET method tests', function() {
 				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.url, 'http://127.0.0.1:' + common.options.port + '/redirect-target', 'we got the proper URL back');
+				assert.isUndefined(res.headers.host, 'the host header is deleted in case of a redirect');
 
 				done();
 			});
