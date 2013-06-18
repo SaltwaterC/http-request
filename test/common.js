@@ -1,7 +1,9 @@
 'use strict';
 
+var u = require('url');
 var zlib = require('zlib');
 var http = require('http');
+var https = require('https');
 
 var options = {
 	host: '127.0.0.1',
@@ -322,7 +324,37 @@ var createServer = function(module, options) {
 };
 
 /**
- * Creates the HTTP and HTTPS servers for testing the client
+ * Creates a simple HTTP proxy server
+ *
+ * @returns {Object} The HTTP proxy server
+ */
+exports.createProxy = function() {
+	return http.createServer(function(req, res) {
+		var path = u.parse(req.url);
+
+		var request = http.request({
+			host: path.hostname,
+			port: path.port,
+			headers: req.headers,
+			method: req.method,
+			path: path.pathname || '/' + path.search || ''
+		}, function(response) {
+			res.writeHead(response.statusCode, response.headers);
+			response.pipe(res);
+		});
+
+		req.pipe(request);
+
+		request.on('error', function(err) {
+			res.writeHead(500);
+			res.write(JSON.stringify(err));
+			res.end();
+		});
+	});
+};
+
+/**
+ * Creates the HTTP, HTTPS, and proxy servers for testing the client
  *
  * @param {Function} callback The completion callback provided by mocha
  */
@@ -331,19 +363,25 @@ exports.createServers = function(callback) {
 	var instances = {};
 
 	var createdServers = function() {
-		if (servers === 2) {
+		if (servers === 3) {
 			callback();
 		}
 	};
 
-	instances.server = createServer(require('http'));
+	instances.server = createServer(http);
 	instances.server.listen(options.port, function() {
 		servers++;
 		createdServers();
 	});
 
-	instances.secureServer = createServer(require('https'), secureServerOptions);
+	instances.secureServer = createServer(https, secureServerOptions);
 	instances.secureServer.listen(options.securePort, function() {
+		servers++;
+		createdServers();
+	});
+
+	instances.proxy = exports.createProxy();
+	instances.proxy.listen(options.proxyPort, function() {
 		servers++;
 		createdServers();
 	});

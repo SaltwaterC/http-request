@@ -11,12 +11,13 @@ var util = require('util');
 var assert = require('chai').assert;
 
 describe('HTTP HEAD method tests', function() {
-	var server, secureServer;
+	var server, secureServer, proxy;
 
 	before(function(done) {
 		var servers = common.createServers(done);
 		server = servers.server;
 		secureServer = servers.secureServer;
+		proxy = servers.proxy;
 	});
 
 	describe('HEAD Hello World - plain', function() {
@@ -294,6 +295,8 @@ describe('HTTP HEAD method tests', function() {
 				url: 'http://127.0.0.1:' + common.options.port + '/user-agent-reflect',
 				noUserAgent: true
 			}, function(err, res) {
+				assert.isNull(err);
+
 				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.isUndefined(res.headers['user-agent'], 'there is no user agent passed back');
@@ -317,9 +320,29 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
+	describe('HEAD with proxy', function() {
+		it('should succeed', function(done) {
+			client.head({
+				url: 'http://127.0.0.1:' + common.options.port + '/proxy-request',
+				proxy: {
+					host: '127.0.0.1',
+					port: common.options.proxyPort
+				}
+			}, function(err, res) {
+				assert.isNull(err);
+
+				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+
+				done();
+			});
+		});
+	});
+
 	after(function() {
 		server.close();
 		secureServer.close();
+		proxy.close();
 	});
 
 });

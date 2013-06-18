@@ -13,12 +13,13 @@ var util = require('util');
 var assert = require('chai').assert;
 
 describe('HTTP GET method tests', function() {
-	var server, secureServer;
+	var server, secureServer, proxy;
 
 	before(function(done) {
 		var servers = common.createServers(done);
 		server = servers.server;
 		secureServer = servers.secureServer;
+		proxy = servers.proxy;
 	});
 
 	describe('GET Hello World Buffer - plain', function() {
@@ -618,8 +619,29 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
+	describe('GET with proxy', function() {
+		it('should succeed', function(done) {
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/proxy-request',
+				proxy: {
+					host: '127.0.0.1',
+					port: common.options.proxyPort
+				}
+			}, function(err, res) {
+				assert.isNull(err);
+
+				assert.strictEqual(res.method, 'GET', 'the method is GET');
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the proper response body');
+
+				done();
+			});
+		});
+	});
+
 	after(function() {
 		server.close();
 		secureServer.close();
+		proxy.close();
 	});
 });
