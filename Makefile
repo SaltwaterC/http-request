@@ -18,7 +18,7 @@ publish: all production
 
 tests: test
 check: test
-test: all lint
+test: lint
 	@rm -f world.txt
 	@./node_modules/.bin/mocha
 
