@@ -628,11 +628,61 @@ describe('HTTP GET method tests', function() {
 					port: common.options.proxyPort
 				}
 			}, function(err, res) {
-				assert.isNull(err);
+				assert.isNull(err, 'we have an error');
 
 				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the proper response body');
+
+				done();
+			});
+		});
+	});
+
+	describe('GET with no content', function() {
+		it('should return a 204 response', function(done) {
+			client.get('http://127.0.0.1:' + common.options.port + '/no-content', function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.method, 'GET', 'the method is GET');
+				assert.strictEqual(res.code, 204, 'we got the proper HTTP status code');
+				assert.isDefined(res.headers, 'we got the response headers');
+				assert.isUndefined(res.buffer, 'we did not get back a response body');
+
+				done();
+			});
+		});
+	});
+
+	describe('GET with not modified', function() {
+		it('should return a 304 response', function(done) {
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/not-modified',
+				headers: {
+					'if-modified-since': new Date(0).toString()
+				}
+			}, function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.method, 'GET', 'the method is GET');
+				assert.strictEqual(res.code, 304, 'we got the proper HTTP status code');
+				assert.isDefined(res.headers, 'we got the response headers');
+				assert.isUndefined(res.buffer, 'we did not get back a response body');
+
+				done();
+			});
+		});
+	});
+
+	describe('GET to not-modified without if-modified-since', function() {
+		it('should return a 200 response', function(done) {
+			client.get('http://127.0.0.1:' + common.options.port + '/not-modified', function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.method, 'GET', 'the method is GET');
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.isDefined(res.headers, 'we got the response headers');
+				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the default response body');
 
 				done();
 			});

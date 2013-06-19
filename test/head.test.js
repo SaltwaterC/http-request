@@ -339,6 +339,39 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
+	describe('HEAD with not modified', function() {
+		it('should return a 304 response', function(done) {
+			client.head({
+				url: 'http://127.0.0.1:' + common.options.port + '/not-modified',
+				headers: {
+					'if-modified-since': new Date(0).toString()
+				}
+			}, function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
+				assert.strictEqual(res.code, 304, 'we got the proper HTTP status code');
+				assert.isDefined(res.headers, 'we got the response headers');
+
+				done();
+			});
+		});
+	});
+
+	describe('HEAD to not-modified without if-modified-since', function() {
+		it('should return a 200 response', function(done) {
+			client.head('http://127.0.0.1:' + common.options.port + '/not-modified', function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.isDefined(res.headers, 'we got the response headers');
+
+				done();
+			});
+		});
+	});
+
 	after(function() {
 		server.close();
 		secureServer.close();

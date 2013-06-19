@@ -310,6 +310,27 @@ var createServer = function(module, options) {
 				});
 				break;
 
+			case '/no-content':
+				response.send({
+					code: 204,
+					body: null
+				});
+				break;
+
+			case '/not-modified':
+				if (req.headers['if-modified-since'] === new Date(0).toString()) {
+					response.send({
+						code: 304,
+						headers: {
+							'last-modified': new Date(0)
+						},
+						body: null
+					});
+				} else {
+					response.send();
+				}
+				break;
+
 			default:
 				response.send();
 				break;
