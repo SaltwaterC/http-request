@@ -2,6 +2,8 @@
 
 'use strict';
 
-require('./common.js').createServers(function () {
-	console.log('Created the test servers');
-});
+if (process.argv[2] === 'servers') {
+	require('./common.js').createServers(function () {
+		console.log('Created the test servers');
+	});
+}
