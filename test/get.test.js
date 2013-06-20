@@ -633,6 +633,7 @@ describe('HTTP GET method tests', function() {
 				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the proper response body');
+				assert.strictEqual(res.headers['x-via'], 'http-proxy', 'we actual got the response from the proxy');
 
 				done();
 			});

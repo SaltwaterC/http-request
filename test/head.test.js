@@ -333,6 +333,7 @@ describe('HTTP HEAD method tests', function() {
 
 				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['x-via'], 'http-proxy', 'we actual got the response from the proxy');
 
 				done();
 			});
@@ -366,6 +367,20 @@ describe('HTTP HEAD method tests', function() {
 				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.isDefined(res.headers, 'we got the response headers');
+
+				done();
+			});
+		});
+	});
+
+	describe('HEAD to use proxy', function() {
+		it('should receive the response via a http-proxy', function(done) {
+			client.head('http://127.0.0.1:' + common.options.port + '/use-proxy', function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['x-via'], 'http-proxy', 'we actual got the response from the proxy');
 
 				done();
 			});

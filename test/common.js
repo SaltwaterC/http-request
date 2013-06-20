@@ -197,10 +197,10 @@ Response.prototype.write = function(body) {
  * Wrapper for creating a HTTP/HTTPS server
  *
  * @param {Object} module The node.js core module http or https
- * @param {Object} options The options for the HTTPS server
+ * @param {Object} opt The options for the HTTPS server
  * @returns {Object} The HTTP/HTTPS server instance
  */
-var createServer = function(module, options) {
+var createServer = function(module, opt) {
 	var callback = function(req, res) {
 		var response = new Response(req, res);
 
@@ -330,6 +330,20 @@ var createServer = function(module, options) {
 					response.send();
 				}
 				break;
+			
+			case '/use-proxy':
+				if (req.headers['x-via'] === 'http-proxy') {
+					response.send();
+				} else {
+					response.send({
+						code: 305,
+						headers: {
+							location: 'http://127.0.0.1:' + options.proxyPort
+						},
+						body: null
+					});
+				}
+				break;
 
 			default:
 				response.send();
@@ -337,8 +351,8 @@ var createServer = function(module, options) {
 		}
 	};
 
-	if (options) {
-		return module.createServer(options, callback);
+	if (opt) {
+		return module.createServer(opt, callback);
 	}
 
 	return module.createServer(callback);
@@ -353,6 +367,7 @@ exports.createProxy = function() {
 	return http.createServer(function(req, res) {
 		var path = u.parse(req.url);
 
+		req.headers['x-via'] = 'http-proxy';
 		var request = http.request({
 			host: path.hostname,
 			port: path.port,
@@ -360,6 +375,7 @@ exports.createProxy = function() {
 			method: req.method,
 			path: path.pathname || '/' + path.search || ''
 		}, function(response) {
+			response.headers['x-via'] = 'http-proxy';
 			res.writeHead(response.statusCode, response.headers);
 			response.pipe(res);
 		});
