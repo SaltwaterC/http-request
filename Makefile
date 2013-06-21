@@ -38,3 +38,6 @@ production:
 dev: development
 development:
 	@tools/development.sh
+
+contributors:
+	@git shortlog -s -n --all
