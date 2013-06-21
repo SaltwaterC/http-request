@@ -126,9 +126,7 @@ function Request(options) {
 	if (!this.options.proxy) {
 		this.parseUrl();
 	} else {
-		this.reqOpt.host = this.options.proxy.host;
-		this.reqOpt.port = this.options.proxy.port;
-		this.reqOpt.path = this.options.url;
+		this.useProxy();
 	}
 
 	this.reqOpt.headers = this.options.headers;
@@ -156,11 +154,16 @@ function Request(options) {
  * @param {module:request~innerCallback} callback Completion callback
  */
 Request.prototype.saveBuffer = function(callback) {
+	if (this.noResponseBody) {
+		this.finish(callback);
+		return;
+	}
+
 	var self = this;
 	var buf = [],
 		size = 0;
 
-	self.stream.on('data', function(data) {
+	this.stream.on('data', function(data) {
 		var err;
 
 		buf.push(data);
@@ -181,16 +184,17 @@ Request.prototype.saveBuffer = function(callback) {
 		}
 	});
 
-	self.stream.on('end', function() {
+	this.stream.on('end', function() {
 		self.buffer = Buffer.concat(buf, size);
 		self.finish(callback);
 	});
 
-	self.stream.on('error', function(err) {
+	this.stream.on('error', function(err) {
+		// TODO: reissue the request without gzip,deflate
 		self.error(err, callback);
 	});
 
-	self.response.resume();
+	this.response.resume();
 };
 
 /**
@@ -200,6 +204,11 @@ Request.prototype.saveBuffer = function(callback) {
  * @param {module:request~innerCallback} callback Completion callback
  */
 Request.prototype.saveFile = function(file, callback) {
+	if (this.noResponseBody) {
+		this.finish(callback);
+		return;
+	}
+
 	var self = this;
 	var ws = fs.createWriteStream(file);
 
@@ -216,6 +225,11 @@ Request.prototype.saveFile = function(file, callback) {
 		}
 	});
 
+	this.stream.on('error', function(err) {
+		// TODO: reissue the request without gzip,deflate
+		self.error(err, callback);
+	});
+
 	this.stream.pipe(ws);
 	this.response.resume();
 };
@@ -228,13 +242,17 @@ Request.prototype.saveFile = function(file, callback) {
  * @throws {callback} Expecting a function for callback on URL {@link module:request~Request} options.url.
  */
 Request.prototype.send = function(callback) {
-	var self = this;
-
-	if (typeof callback !== 'function') {
-		throw tools.formatError('Expecting a function for callback on URL %s.', self.options.url);
+	if (this.options.reqId > this.options.maxRedirects + 1) {
+		this.error(tools.formattedError('Redirect loop detected after %d requests.', this.options.reqId), callback);
+		return;
 	}
 
-	var request = self.client.request(self.reqOpt, function(response) {
+	if (typeof callback !== 'function') {
+		throw tools.formatError('Expecting a function for callback on URL %s.', this.options.url);
+	}
+
+	var self = this;
+	var request = this.client.request(this.reqOpt, function(response) {
 		self.response = response;
 		response.pause();
 
@@ -287,16 +305,12 @@ Request.prototype.send = function(callback) {
 				break;
 
 				// redirect requests, handled if they have a valid Location header
-			case 300:
-				// Multiple Choices - XXX: need to study if it actually sends location, otherwise pass it as "user" error as it buffers the response
 			case 301:
 				// Moved Permanently
 			case 302:
 				// Found
 			case 303:
 				// See Other
-			case 305:
-				// Use Proxy - XXX: need to study this properly
 			case 307:
 				// Temporary Redirect
 				if (self.options.noRedirect) {
@@ -305,16 +319,27 @@ Request.prototype.send = function(callback) {
 					if (!response.headers.location) {
 						self.error(new Error('Redirect response without the Location header.'), callback);
 					} else {
-						if (self.options.reqId &lt; self.options.maxRedirects) {
-							self.prepareRedirectUrl();
-							self.options.reqId++;
-							self.parseUrl();
-							self.send(callback);
-							response.resume();
-						} else {
-							self.error(tools.formattedError('Redirect loop detected after %d requests.', self.options.reqId), callback);
-						}
+						self.prepareRedirectUrl();
+						self.options.reqId++;
+						self.parseUrl();
+						self.send(callback);
+						response.resume();
+						return;
 					}
+				}
+				break;
+
+			case 305:
+				// Use Proxy
+				if (!response.headers.location) {
+					self.error(new Error('Use proxy response without the Location header.'), callback);
+				} else {
+					delete(self.options.parsedUrl);
+					self.prepareProxy();
+					self.options.reqId++;
+					self.send(callback);
+					response.resume();
+					return;
 				}
 				break;
 
@@ -323,8 +348,12 @@ Request.prototype.send = function(callback) {
 				// No Content
 			case 304:
 				// Not Modified
-				throw new Error('TO IMPLEMENT ' + response.statusCode);
+				self.noResponseBody = true;
+				self.success(ret, callback);
+				break;
 
+			case 300:
+				// Multiple Choices
 				// user errors
 			case 400:
 				// Bad Request
@@ -411,13 +440,13 @@ Request.prototype.send = function(callback) {
 		self.error(err, callback);
 	});
 
-	if (self.options.reqBody instanceof Buffer) {
-		request.write(self.options.reqBody);
+	if (this.options.reqBody instanceof Buffer) {
+		request.write(this.options.reqBody);
 	}
 
-	if (self.options.reqBody instanceof Stream) {
-		self.options.reqBody.resume();
-		self.options.reqBody.pipe(request);
+	if (this.options.reqBody instanceof Stream) {
+		this.options.reqBody.resume();
+		this.options.reqBody.pipe(request);
 	}
 
 	request.end();
@@ -431,16 +460,28 @@ Request.prototype.send = function(callback) {
  * @returns {module:request~stdResult} result The standard result
  */
 Request.prototype.stdResult = function() {
-	return {
+	var ret = {
 		method: this.options.method,
 		code: this.response.statusCode,
 		headers: this.response.headers,
 		response: this.response,
-		url: this.url,
-		buffer: this.buffer,
-		file: this.file,
-		stream: this.stream
+		stream: this.stream,
+		requests: this.options.reqId
 	};
+
+	if (this.url) {
+		ret.url = this.url;
+	}
+
+	if (this.buffer) {
+		ret.buffer = this.buffer;
+	}
+
+	if (this.file) {
+		ret.file = this.file;
+	}
+
+	return ret;
 };
 
 // The private API aka don't rely on it
@@ -527,11 +568,38 @@ Request.prototype.prepareRedirectUrl = function() {
 		location.protocol = this.options.parsedUrl.protocol;
 	}
 
+	delete(this.options.headers.host);
+
 	if (!location.host) {
 		location.host = this.options.parsedUrl.host;
 	}
 
 	this.options.url = u.format(location);
+};
+
+/**
+ * Prepares the use proxy follow from the location header
+ *
+ * @private
+ */
+Request.prototype.prepareProxy = function() {
+	var location = u.parse(this.response.headers.location);
+	this.options.proxy = {
+		host: location.hostname,
+		port: location.port || 80
+	};
+	this.useProxy();
+};
+
+/**
+ * Prepares the request for a HTTP proxy
+ *
+ * @private
+ */
+Request.prototype.useProxy = function() {
+	this.reqOpt.host = this.options.proxy.host;
+	this.reqOpt.port = this.options.proxy.port;
+	this.reqOpt.path = this.options.url;
 };
 
 /**
@@ -543,7 +611,7 @@ Request.prototype.prepareRedirectUrl = function() {
 Request.prototype.saveMtime = function(callback) {
 	var self = this;
 
-	fs.open(self.file, 'r', function(err, fd) {
+	fs.open(this.file, 'r', function(err, fd) {
 		if (err) {
 			self.error(err, callback);
 			return;
@@ -577,7 +645,9 @@ Request.prototype.error = function(error, callback) {
 
 	if (!this.states.error && !this.states.finish) {
 		this.states.error = true;
-		this.request.abort();
+		if (this.request) {
+			this.request.abort();
+		}
 
 		if (!error.code && this.response) {
 			error.code = this.response.statusCode;
@@ -679,10 +749,11 @@ module.exports = Request;
  * @property {Number} code The HTTP status code
  * @property {Object} headers The HTTP response headers
  * @property {Stream} response The node.js [HTTP client response](http://nodejs.org/api/http.html#http_event_response)
+ * @property {Stream} stream The HTTP response body as [Readable Stream](http://nodejs.org/api/stream.html#stream_class_stream_readable). The actual stream is either the [HTTP client response](http://nodejs.org/api/http.html#http_event_response) or the decoded stream by [zlib.createUnzip](http://nodejs.org/api/zlib.html#zlib_zlib_createunzip_options) if the Content-Encoding response header is either gzip or deflate. 204 and 304 responses, by RFC, don't pass back a response body
+ * @property {Number} requests The number of HTTP requests that were sent for getting the response
  * @property {String | undefined} url The final URL, only if there was a succesful redirect
  * @property {Buffer | undefined} buffer The HTTP response body for buffered responses as [Buffer](http://nodejs.org/api/buffer.html) instance
  * @property {String | undefined} file The file path where the HTTP response body is saved, if applicable
- * @property {Stream | undefined} stream The HTTP response body if {@link module:request~options}.stream is true as [Readable Stream](http://nodejs.org/api/stream.html#stream_class_stream_readable). The actual stream is either the [HTTP client response](http://nodejs.org/api/http.html#http_event_response) or the decoded stream by [zlib.createUnzip](http://nodejs.org/api/zlib.html#zlib_zlib_createunzip_options) if the Content-Encoding response header is either gzip or deflate
  */
 
 /**
@@ -725,7 +796,7 @@ module.exports = Request;
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Thu Jun 13 2013 18:23:42 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Fri Jun 21 2013 12:03:00 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>
