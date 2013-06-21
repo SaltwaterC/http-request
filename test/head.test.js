@@ -223,7 +223,7 @@ describe('HTTP HEAD method tests', function() {
 			client.head(url, function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an instance of Error');
 				assert.strictEqual(err.method, 'HEAD', 'the method is HEAD');
-				assert.strictEqual(err.message, 'Redirect loop detected after 10 requests.', 'the proper message is passed back to the user');
+				assert.strictEqual(err.message, 'Redirect loop detected after 12 requests.', 'the proper message is passed back to the user');
 				assert.strictEqual(err.code, 301, 'the error code is equal to the code of the HTTP response');
 				assert.strictEqual(err.url, url, 'the error object has the proper URL');
 
@@ -373,9 +373,32 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD to use proxy', function() {
+	describe('HEAD to proxy to use-proxy', function() {
+		it('should go through the proxy to the use-proxy actual response', function(done) {
+			client.head({
+				url: 'http://127.0.0.1:' + common.options.port + '/use-proxy',
+				proxy: {
+					host: '127.0.0.1',
+					port: common.options.proxyPort
+				}
+			}, function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['x-via'], 'http-proxy', 'we actual got the response from the proxy');
+
+				done();
+			});
+		});
+	});
+
+	describe('HEAD to use-proxy', function() {
 		it('should receive the response via a http-proxy', function(done) {
-			client.head('http://127.0.0.1:' + common.options.port + '/use-proxy', function(err, res) {
+			client.head({
+				url: 'http://127.0.0.1:' + common.options.port + '/use-proxy',
+				maxRedirects: 1
+			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
 				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');

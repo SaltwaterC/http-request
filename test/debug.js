@@ -3,7 +3,7 @@
 'use strict';
 
 if (process.argv[2] === 'servers') {
-	require('./common.js').createServers(function () {
+	require('./common.js').createServers(function() {
 		console.log('Created the test servers');
 	});
 }

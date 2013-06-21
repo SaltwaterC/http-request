@@ -323,14 +323,13 @@ var createServer = function(module, opt) {
 						code: 304,
 						headers: {
 							'last-modified': new Date(0)
-						},
-						body: null
+						}
 					});
 				} else {
 					response.send();
 				}
 				break;
-			
+
 			case '/use-proxy':
 				if (req.headers['x-via'] === 'http-proxy') {
 					response.send();
@@ -340,7 +339,7 @@ var createServer = function(module, opt) {
 						headers: {
 							location: 'http://127.0.0.1:' + options.proxyPort
 						},
-						body: null
+						body: 'use-proxy'
 					});
 				}
 				break;
@@ -366,7 +365,6 @@ var createServer = function(module, opt) {
 exports.createProxy = function() {
 	return http.createServer(function(req, res) {
 		var path = u.parse(req.url);
-
 		req.headers['x-via'] = 'http-proxy';
 		var request = http.request({
 			host: path.hostname,
