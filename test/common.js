@@ -95,7 +95,7 @@ Response.prototype.encoding = function(forceEncoding) {
  * @param {String} content.body The HTTP response body content
  * @param {String} content.type The content MIME type
  */
-Response.prototype.send = function(content, forceEncoding) {
+Response.prototype.send = function(content, forceEncoding, breakEncoding) {
 	if (typeof content !== 'object') {
 		content = {};
 	}
@@ -138,12 +138,13 @@ Response.prototype.send = function(content, forceEncoding) {
 		case 'gzip':
 			zlib.gzip(content.body, function(err, compressed) {
 				if (!err) {
-					self.res.setHeader('content-length', compressed.length);
 					self.res.setHeader('content-encoding', 'gzip');
-					self.res.writeHead(content.code, {
-						'content-type': content.type
-					});
-					self.write(compressed);
+
+					if (!breakEncoding) {
+						content.body = compressed;
+					}
+
+					self.write(content);
 				} else {
 					self.res.writeHead(500, {
 						'content-type': 'text/plain'
@@ -156,12 +157,13 @@ Response.prototype.send = function(content, forceEncoding) {
 		case 'deflate':
 			zlib.deflate(content.body, function(err, compressed) {
 				if (!err) {
-					self.res.setHeader('content-length', compressed.length);
 					self.res.setHeader('content-encoding', 'deflate');
-					self.res.writeHead(content.code, {
-						'content-type': content.type
-					});
-					self.write(compressed);
+
+					if (!breakEncoding) {
+						content.body = compressed;
+					}
+
+					self.write(content);
 				} else {
 					self.res.writeHead(500, {
 						'content-type': 'text/plain'
@@ -172,24 +174,26 @@ Response.prototype.send = function(content, forceEncoding) {
 			break;
 
 		default:
-			self.res.setHeader('content-length', content.body.length);
-			self.res.writeHead(content.code, {
-				'content-type': content.type
-			});
-			self.write(content.body);
+			self.write(content);
 			self.res.end();
 			break;
 	}
 };
 
 /**
- * Sends the content down the pipe for HTTP methods that support this
+ * Sets some headers and sends the content down the pipe for HTTP methods that support this
  *
- * @param {String} body The HTTP response body content
+ * @param {String} content The content object constructed by this.send
  */
-Response.prototype.write = function(body) {
+Response.prototype.write = function(content) {
+	this.res.setHeader('content-length', content.body.length);
+
+	this.res.writeHead(content.code, {
+		'content-type': content.type
+	});
+
 	if (this.req.method !== 'HEAD') {
-		this.res.write(body);
+		this.res.write(content.body);
 	}
 };
 
@@ -341,6 +345,16 @@ var createServer = function(module, opt) {
 						},
 						body: 'use-proxy'
 					});
+				}
+				break;
+
+			case '/break-compression':
+				if (req.headers['accept-encoding']) {
+					response.send({
+						body: 'broken-gzip'
+					}, 'gzip', true);
+				} else {
+					response.send();
 				}
 				break;
 

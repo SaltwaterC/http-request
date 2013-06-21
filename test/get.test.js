@@ -729,6 +729,20 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
+	describe('GET with broken gzip encoding', function() {
+		it('should reissue the request without the accept-encoding: gzip,deflate header', function(done) {
+			client.get('http://127.0.0.1:' + common.options.port + '/break-compression', function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.method, 'GET', 'the method is GET');
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the default response body');
+
+				done();
+			});
+		});
+	});
+
 	after(function() {
 		server.close();
 		secureServer.close();
