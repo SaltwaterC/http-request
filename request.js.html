@@ -100,14 +100,6 @@ function Request(options) {
 		this.options.timeout = 60000;
 	}
 
-	if (!this.options.noCompress) {
-		if (!this.options.headers['accept-encoding']) {
-			this.options.headers['accept-encoding'] = 'gzip,deflate';
-		}
-	} else if (this.options.headers['accept-encoding']) {
-		delete(this.options.headers['accept-encoding']);
-	}
-
 	if (!this.options.headers['user-agent'] && !this.options.noUserAgent) {
 		this.options.headers['user-agent'] = util.format('http-request/v%s (https://github.com/SaltwaterC/http-get) node.js/%s', config.version, process.version);
 	}
@@ -121,18 +113,6 @@ function Request(options) {
 
 	if (this.options.progress && typeof this.options.progress !== 'function') {
 		throw new Error('Expecting a function as progress callback.');
-	}
-
-	if (!this.options.proxy) {
-		this.parseUrl();
-	} else {
-		this.useProxy();
-	}
-
-	this.reqOpt.headers = this.options.headers;
-
-	if (!this.options.reqId) {
-		this.options.reqId = 1;
 	}
 
 	if (this.options.bufferType) {
@@ -160,8 +140,8 @@ Request.prototype.saveBuffer = function(callback) {
 	}
 
 	var self = this;
-	var buf = [],
-		size = 0;
+	var buf = [];
+	var size = 0;
 
 	this.stream.on('data', function(data) {
 		var err;
@@ -190,7 +170,24 @@ Request.prototype.saveBuffer = function(callback) {
 	});
 
 	this.stream.on('error', function(err) {
-		// TODO: reissue the request without gzip,deflate
+		if (self.response.headers['content-encoding']) {
+			self.request.abort();
+
+			self.setNoCompress();
+			self = new Request(self.options);
+
+			self.send(function(err, res) {
+				if (err) {
+					self.error(err, callback);
+					return;
+				}
+
+				self.saveBuffer(callback);
+			});
+
+			return;
+		}
+
 		self.error(err, callback);
 	});
 
@@ -226,7 +223,23 @@ Request.prototype.saveFile = function(file, callback) {
 	});
 
 	this.stream.on('error', function(err) {
-		// TODO: reissue the request without gzip,deflate
+		if (self.response.headers['content-encoding']) {
+			self.request.abort();
+			
+			self.setNoCompress();
+			self = new Request(self.options);
+			
+			self.send(function (err, res) {
+				if (err) {
+					self.error(err, callback);
+					return;
+				}
+				
+				self.saveFile(file, callback);
+			});
+			
+			return;
+		}
 		self.error(err, callback);
 	});
 
@@ -242,6 +255,11 @@ Request.prototype.saveFile = function(file, callback) {
  * @throws {callback} Expecting a function for callback on URL {@link module:request~Request} options.url.
  */
 Request.prototype.send = function(callback) {
+	if (!this.options.reqId) {
+		this.options.reqId = 0;
+	}
+	this.options.reqId++;
+
 	if (this.options.reqId > this.options.maxRedirects + 1) {
 		this.error(tools.formattedError('Redirect loop detected after %d requests.', this.options.reqId), callback);
 		return;
@@ -251,10 +269,26 @@ Request.prototype.send = function(callback) {
 		throw tools.formatError('Expecting a function for callback on URL %s.', this.options.url);
 	}
 
+	if (!this.options.proxy) {
+		this.parseUrl();
+	} else {
+		this.useProxy();
+	}
+
+	if (!this.options.noCompress) {
+		if (!this.options.headers['accept-encoding']) {
+			this.options.headers['accept-encoding'] = 'gzip,deflate';
+		}
+	} else if (this.options.headers['accept-encoding']) {
+		delete(this.options.headers['accept-encoding']);
+	}
+
+	this.reqOpt.headers = this.options.headers;
+
 	var self = this;
 	var request = this.client.request(this.reqOpt, function(response) {
 		self.response = response;
-		response.pause();
+		self.response.pause();
 
 		var err, size;
 		var stream = response;
@@ -296,8 +330,6 @@ Request.prototype.send = function(callback) {
 
 				if (self.options.reqId > 1) {
 					ret.url = self.options.url;
-				} else {
-					ret.url = undefined;
 				}
 
 				self.url = ret.url;
@@ -320,7 +352,6 @@ Request.prototype.send = function(callback) {
 						self.error(new Error('Redirect response without the Location header.'), callback);
 					} else {
 						self.prepareRedirectUrl();
-						self.options.reqId++;
 						self.parseUrl();
 						self.send(callback);
 						response.resume();
@@ -336,7 +367,6 @@ Request.prototype.send = function(callback) {
 				} else {
 					delete(self.options.parsedUrl);
 					self.prepareProxy();
-					self.options.reqId++;
 					self.send(callback);
 					response.resume();
 					return;
@@ -393,7 +423,7 @@ Request.prototype.send = function(callback) {
 				// Expectation Failed
 				err = tools.formattedError('HTTP Error: %d', response.statusCode);
 
-				err.document = '';
+				err.document = new Buffer(0);
 				err.largeDocument = false;
 				err.noDocument = false;
 
@@ -445,8 +475,8 @@ Request.prototype.send = function(callback) {
 	}
 
 	if (this.options.reqBody instanceof Stream) {
-		this.options.reqBody.resume();
 		this.options.reqBody.pipe(request);
+		this.options.reqBody.resume();
 	}
 
 	request.end();
@@ -482,6 +512,17 @@ Request.prototype.stdResult = function() {
 	}
 
 	return ret;
+};
+
+/**
+ * Sets options.noCompress and deletes the request headers that enable this functionality
+ */
+Request.prototype.setNoCompress = function() {
+	this.options.noCompress = true;
+
+	if (this.options.headers['accept-encoding']) {
+		delete(this.options.headers['accept-encoding']);
+	}
 };
 
 // The private API aka don't rely on it
@@ -584,11 +625,11 @@ Request.prototype.prepareRedirectUrl = function() {
  */
 Request.prototype.prepareProxy = function() {
 	var location = u.parse(this.response.headers.location);
+
 	this.options.proxy = {
 		host: location.hostname,
 		port: location.port || 80
 	};
-	this.useProxy();
 };
 
 /**
@@ -627,7 +668,7 @@ Request.prototype.saveMtime = function(callback) {
 					return;
 				}
 
-				callback(null, self.file);
+				self.finish(callback);
 			});
 		});
 	});
@@ -796,7 +837,7 @@ module.exports = Request;
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Fri Jun 21 2013 12:03:00 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Tue Jun 25 2013 11:37:23 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>
