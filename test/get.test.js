@@ -30,9 +30,9 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'the status is success');
 				assert.isObject(res.headers, 'there is a headers object');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.isUndefined(res.headers['content-encoding'], 'the content must not be encoded');
 				assert.instanceOf(res.buffer, Buffer, 'the buffer is an instance of Buffer');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we  got back the proper string');
@@ -52,8 +52,8 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.headers['content-encoding'], 'gzip', 'the content is encoded with gzip');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we  got back the proper string');
 
 				done();
@@ -71,8 +71,8 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.headers['content-encoding'], 'deflate', 'the content is encoded with deflate');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we  got back the proper string');
 
 				done();
@@ -93,7 +93,7 @@ describe('HTTP GET method tests', function() {
 			client.get(url, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				var auth = JSON.parse(res.buffer.toString());
 				var urlAuth = u.parse(url).auth.split(/:/);
@@ -110,7 +110,6 @@ describe('HTTP GET method tests', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.get('http://.foo.bar/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
-				assert.strictEqual(err.method, 'GET', 'the method is GET');
 				assert.strictEqual(err.url, 'http://.foo.bar/');
 
 				assert.isUndefined(res, 'we have a response');
@@ -124,7 +123,6 @@ describe('HTTP GET method tests', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.get('https://.foo.bar/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
-				assert.strictEqual(err.method, 'GET', 'the method is GET');
 				assert.strictEqual(err.url, 'https://.foo.bar/');
 
 				assert.isUndefined(res, 'we have a response');
@@ -138,7 +136,6 @@ describe('HTTP GET method tests', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.get('http://foo.bar/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
-				assert.strictEqual(err.method, 'GET', 'the method is GET');
 				assert.strictEqual(err.code, 'ENOTFOUND');
 				assert.strictEqual(err.url, 'http://foo.bar/');
 
@@ -159,8 +156,8 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.headers.foo, 'bar', 'we got the foo header back');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the proper response body');
 
 				done();
@@ -207,9 +204,9 @@ describe('HTTP GET method tests', function() {
 			client.get('127.0.0.1:' + common.options.port + '/no-protocol-prefix', function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'the HTTP status code is OK');
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the proper buffer');
 
 				done();
@@ -228,10 +225,10 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 206, 'we have the proper status code');
 				assert.isDefined(res.headers['content-length'], 'we have a Content-Lenght');
 				assert.strictEqual(res.headers['content-range'], '0-5/11', 'we have the proper value for the Content-Range response header');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				assert.strictEqual(res.buffer.toString(), 'Hello', 'we have the proper partial content');
 
@@ -251,10 +248,10 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.url, 'http://127.0.0.1:' + common.options.port + '/redirect-target', 'we got the proper URL back');
 				assert.isUndefined(res.headers.host, 'the host header is deleted in case of a redirect');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				done();
 			});
@@ -276,9 +273,9 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got back the proper buffer');
 
 				done();
@@ -297,9 +294,9 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err);
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got back the proper buffer');
 
 				done();
@@ -324,11 +321,11 @@ describe('HTTP GET method tests', function() {
 			var url = 'http://127.0.0.1:' + common.options.port + '/not-found';
 			client.get(url, function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an instance of Error');
-				assert.strictEqual(err.method, 'GET', 'the method is GET');
 				assert.strictEqual(err.document.toString(), 'Not Found', 'we got back the proper error document');
 				assert.strictEqual(err.largeDocument, false, 'no error document overflow');
 				assert.strictEqual(err.url, url, 'the error object has the proper URL');
 				assert.strictEqual(err.headers['content-encoding'], 'gzip');
+				assert.strictEqual(err.headers['x-http-method'], 'GET', 'the method is GET');
 
 				assert.isUndefined(res, 'we have a response');
 
@@ -343,10 +340,10 @@ describe('HTTP GET method tests', function() {
 
 			client.get(url, function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an instance of Error');
-				assert.strictEqual(err.method, 'GET', 'the method is GET');
 				assert.strictEqual(err.message, 'Redirect loop detected after 12 requests.', 'the proper message is passed back to the user');
 				assert.strictEqual(err.code, 301, 'the error code is equal to the code of the HTTP response');
 				assert.strictEqual(err.url, url, 'the error object has the proper URL');
+				assert.strictEqual(err.headers['x-http-method'], 'GET', 'the method is GET');
 
 				assert.isUndefined(res, 'we have a response');
 
@@ -363,10 +360,10 @@ describe('HTTP GET method tests', function() {
 				maxBody: 2
 			}, function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an instance of Error');
-				assert.strictEqual(err.method, 'GET', 'the method is GET');
 				assert.strictEqual(err.message, 'Large body detected.', 'the proper message is passed back to the client');
 				assert.strictEqual(err.code, 200, 'the error code is equal to the code of the HTTP response');
 				assert.strictEqual(err.url, url, 'the error object has the proper URL');
+				assert.strictEqual(err.headers['x-http-method'], 'GET', 'the method is GET');
 
 				assert.isUndefined(res, 'we have a response');
 
@@ -380,9 +377,9 @@ describe('HTTP GET method tests', function() {
 			client.get('http://127.0.0.1:' + common.options.port + '/redirect', null, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'the status is success');
 				assert.isObject(res.headers, 'there is a headers object');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				// regression test for the fix from v0.4.2
 				assert.isUndefined(res.buffer, 'there is no buffered data');
@@ -400,9 +397,9 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'the HTTP status code is OK');
 				assert.strictEqual(res.headers['content-encoding'], 'gzip', 'we got back gzip even though it was not requested');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got back the proper buffer');
 
 				done();
@@ -415,9 +412,9 @@ describe('HTTP GET method tests', function() {
 			client.get('http://127.0.0.1:' + common.options.port + '/save-to-file', 'hello.txt', function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200);
 				assert.strictEqual(res.headers['content-type'], 'text/plain');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				fs.stat(res.file, function(err, stats) {
 					assert.isNull(err, 'we have an error');
@@ -449,10 +446,11 @@ describe('HTTP GET method tests', function() {
 				var count = 0;
 
 				assert.isNull(err, 'we have an error');
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
+
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
 				assert.strictEqual(res.headers['content-length'], '11', 'we got the proper size for the data');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				res.stream.on('data', function(data) {
 					count += data.length;
@@ -482,10 +480,11 @@ describe('HTTP GET method tests', function() {
 				var count = 0;
 
 				assert.isNull(err, 'we have an error');
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
+
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
 				assert.strictEqual(res.headers['content-length'], '31', 'we got the proper size for the compressed data');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				res.stream.on('data', function(data) {
 					count += data.length;
@@ -522,9 +521,9 @@ describe('HTTP GET method tests', function() {
 						var url = 'http://127.0.0.1:' + common.options.port + '/save-to-invalid-file';
 						client.get(url, path, function(err, res) {
 							assert.instanceOf(err, Error, 'the error is an instance of Error');
-							assert.strictEqual(err.method, 'GET', 'the method is GET');
 							assert.strictEqual(err.code, 'EACCES', 'we have the proper error code');
 							assert.strictEqual(err.url, url);
+							assert.strictEqual(err.headers['x-http-method'], 'GET', 'the method is GET');
 
 							assert.isUndefined(res, 'we have a response');
 
@@ -549,11 +548,11 @@ describe('HTTP GET method tests', function() {
 				assert.instanceOf(err, Error, 'the error is an instance of Error');
 
 				assert.strictEqual(err.code, 404, 'we got back the proper status code');
-				assert.strictEqual(err.method, 'GET', 'the method is GET');
 				assert.strictEqual(err.largeDocument, true, 'we detect the overflowing error document');
 				assert.strictEqual(err.noDocument, false, 'we detect that there was a document, but could not be buffered');
 				assert.strictEqual(err.headers['content-length'], '1048577', 'we got the content length of the overflowing error document');
 				assert.strictEqual(err.url, 'http://127.0.0.1:' + common.options.port + '/big-error', 'we got back the proper error URL');
+				assert.strictEqual(err.headers['x-http-method'], 'GET', 'the method is GET');
 
 				done();
 			});
@@ -577,9 +576,9 @@ describe('HTTP GET method tests', function() {
 		it('should pass the standard user-agent header', function(done) {
 			client.get('http://127.0.0.1:' + common.options.port + '/user-agent-reflect', function(err, res) {
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
-				assert.strictEqual(res.headers['user-agent'], util.format('http-request/v%s (https://github.com/SaltwaterC/http-get) node.js/%s', config.version, process.version), 'we got the proper user-agent header back into the response');
+				assert.strictEqual(res.headers['user-agent'], util.format('http-request/v%s (http://git.io/tl_S2w) node.js/%s', config.version, process.version), 'we got the proper user-agent header back into the response');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				done();
 			});
@@ -592,9 +591,9 @@ describe('HTTP GET method tests', function() {
 				url: 'http://127.0.0.1:' + common.options.port + '/user-agent-reflect',
 				noUserAgent: true
 			}, function(err, res) {
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.isUndefined(res.headers['user-agent'], 'there is no user agent passed back');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				done();
 			});
@@ -610,8 +609,8 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 301, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Go Home!', 'we got the proper HTTP response body');
 
 				done();
@@ -630,10 +629,10 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the proper response body');
 				assert.strictEqual(res.headers['x-via'], 'http-proxy', 'we actual got the response from the proxy');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				done();
 			});
@@ -645,9 +644,9 @@ describe('HTTP GET method tests', function() {
 			client.get('http://127.0.0.1:' + common.options.port + '/no-content', function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 204, 'we got the proper HTTP status code');
 				assert.isDefined(res.headers, 'we got the response headers');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.isUndefined(res.buffer, 'we did not get back a response body');
 
 				done();
@@ -665,9 +664,9 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 304, 'we got the proper HTTP status code');
 				assert.isDefined(res.headers, 'we got the response headers');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.isUndefined(res.buffer, 'we did not get back a response body');
 
 				done();
@@ -680,9 +679,9 @@ describe('HTTP GET method tests', function() {
 			client.get('http://127.0.0.1:' + common.options.port + '/not-modified', function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.isDefined(res.headers, 'we got the response headers');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the default response body');
 
 				done();
@@ -701,9 +700,9 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['x-via'], 'http-proxy', 'we actual got the response from the proxy');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the default response body');
 
 				done();
@@ -719,9 +718,9 @@ describe('HTTP GET method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['x-via'], 'http-proxy', 'we actual got the response from the proxy');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the default response body');
 
 				done();
@@ -734,8 +733,8 @@ describe('HTTP GET method tests', function() {
 			client.get('http://127.0.0.1:' + common.options.port + '/break-compression', function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 				assert.strictEqual(res.buffer.toString(), 'Hello World', 'we got the default response body');
 
 				done();
@@ -748,8 +747,8 @@ describe('HTTP GET method tests', function() {
 			client.get('http://127.0.0.1:' + common.options.port + '/break-compression', 'foo.txt', function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'GET', 'the method is GET');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
 				fs.stat(res.file, function(err, stats) {
 					assert.isNull(err, 'we have an error');

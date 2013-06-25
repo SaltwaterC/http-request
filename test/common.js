@@ -189,7 +189,8 @@ Response.prototype.write = function(content) {
 	this.res.setHeader('content-length', content.body.length);
 
 	this.res.writeHead(content.code, {
-		'content-type': content.type
+		'content-type': content.type,
+		'x-http-method': this.req.method
 	});
 
 	if (this.req.method !== 'HEAD') {

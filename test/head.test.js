@@ -28,10 +28,10 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'the status is success');
 				assert.isObject(res.headers, 'there is a headers object');
 				assert.isUndefined(res.headers['content-encoding'], 'the content must not be encoded');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -48,8 +48,8 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.headers['content-encoding'], 'gzip', 'the content is encoded with gzip');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -66,8 +66,8 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.headers['content-encoding'], 'deflate', 'the content is encoded with deflate');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -81,9 +81,9 @@ describe('HTTP HEAD method tests', function() {
 				noCompress: true
 			}, function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
-				assert.strictEqual(err.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(err.code, 301, 'the error code should be equal to the HTTP status code');
 				assert.strictEqual(err.url, 'http://127.0.0.1:' + common.options.port + '/redirect-without-location', 'the URL must be passed back to the completion callback');
+				assert.strictEqual(err.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				assert.isUndefined(res);
 
@@ -96,7 +96,6 @@ describe('HTTP HEAD method tests', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.head('http://.foo.bar/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
-				assert.strictEqual(err.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(err.url, 'http://.foo.bar/');
 
 				assert.isUndefined(res, 'we have a response');
@@ -110,7 +109,6 @@ describe('HTTP HEAD method tests', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.head('https://.foo.bar/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
-				assert.strictEqual(err.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(err.url, 'https://.foo.bar/');
 
 				assert.isUndefined(res, 'we have a response');
@@ -124,7 +122,6 @@ describe('HTTP HEAD method tests', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.head('http://foo.bar/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
-				assert.strictEqual(err.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(err.code, 'ENOTFOUND');
 				assert.strictEqual(err.url, 'http://foo.bar/');
 
@@ -145,8 +142,8 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.headers.foo, 'bar', 'we got the foo header back');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -158,9 +155,9 @@ describe('HTTP HEAD method tests', function() {
 			client.head('127.0.0.1:' + common.options.port + '/no-protocol-prefix', function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'the HTTP status code is OK');
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -175,9 +172,9 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got back the proper HTTP status code');
 				assert.strictEqual(res.url, 'http://127.0.0.1:' + common.options.port + '/redirect-target', 'we got back the proper URL');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -195,9 +192,9 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err);
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -222,10 +219,10 @@ describe('HTTP HEAD method tests', function() {
 
 			client.head(url, function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an instance of Error');
-				assert.strictEqual(err.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(err.message, 'Redirect loop detected after 12 requests.', 'the proper message is passed back to the user');
 				assert.strictEqual(err.code, 301, 'the error code is equal to the code of the HTTP response');
 				assert.strictEqual(err.url, url, 'the error object has the proper URL');
+				assert.strictEqual(err.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				assert.isUndefined(res, 'we have a response');
 
@@ -239,8 +236,8 @@ describe('HTTP HEAD method tests', function() {
 			client.head('http://127.0.0.1:' + common.options.port + '/path-reflect#fragment', function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.headers.path, '/path-reflect', 'we should not get back the fragment');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -255,9 +252,9 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err);
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['content-type'], 'text/plain', 'we got the proper MIME type');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -280,9 +277,9 @@ describe('HTTP HEAD method tests', function() {
 		it('should pass the standard user-agent header', function(done) {
 			client.head('http://127.0.0.1:' + common.options.port + '/user-agent-reflect', function(err, res) {
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
-				assert.strictEqual(res.headers['user-agent'], util.format('http-request/v%s (https://github.com/SaltwaterC/http-get) node.js/%s', config.version, process.version), 'we got the proper user-agent header back into the response');
+				assert.strictEqual(res.headers['user-agent'], util.format('http-request/v%s (http://git.io/tl_S2w) node.js/%s', config.version, process.version), 'we got the proper user-agent header back into the response');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -297,9 +294,9 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err);
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.isUndefined(res.headers['user-agent'], 'there is no user agent passed back');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -331,9 +328,9 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err);
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['x-via'], 'http-proxy', 'we actual got the response from the proxy');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -350,9 +347,9 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 304, 'we got the proper HTTP status code');
 				assert.isDefined(res.headers, 'we got the response headers');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -364,9 +361,9 @@ describe('HTTP HEAD method tests', function() {
 			client.head('http://127.0.0.1:' + common.options.port + '/not-modified', function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.isDefined(res.headers, 'we got the response headers');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -384,9 +381,9 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['x-via'], 'http-proxy', 'we actual got the response from the proxy');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
@@ -401,9 +398,9 @@ describe('HTTP HEAD method tests', function() {
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
-				assert.strictEqual(res.method, 'HEAD', 'the method is HEAD');
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['x-via'], 'http-proxy', 'we actual got the response from the proxy');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
 
 				done();
 			});
