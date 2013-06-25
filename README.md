@@ -11,7 +11,7 @@ Either manually clone this repository into your node_modules directory, or the r
 ## Reference
 
  * The [Request](http://saltwaterc.github.io/http-get/84e50cc04e.html) class - for implementing your own HTTP methods if wrappers aren't provided by the library
- * The DELETE method - Work in progress
+ * The [DELETE method](http://saltwaterc.github.io/http-get/module-main.html#delete)
  * The [GET method](http://saltwaterc.github.io/http-get/module-main.html#get)
  * The [HEAD method](http://saltwaterc.github.io/http-get/module-main.html#head)
  * The POST method - Work in progress
