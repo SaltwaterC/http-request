@@ -743,6 +743,34 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
+	describe('GET with broken encoding saved to file', function() {
+		it('should reissue the request without the accept-encoding: gzip,deflate header', function(done) {
+			client.get('http://127.0.0.1:' + common.options.port + '/break-compression', 'foo.txt', function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.method, 'GET', 'the method is GET');
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+
+				fs.stat(res.file, function(err, stats) {
+					assert.isNull(err, 'we have an error');
+					assert.strictEqual(new Date(stats.mtime).getTime(), new Date(0).getTime(), 'we got back the proper timestamp');
+
+					fs.readFile(res.file, function(err, data) {
+						assert.isNull(err, 'we have an error');
+
+						assert.strictEqual(data.toString(), 'Hello World');
+
+						fs.unlink(res.file, function(err) {
+							assert.isNull(err);
+
+							done();
+						});
+					});
+				});
+			});
+		});
+	});
+
 	after(function() {
 		server.close();
 		secureServer.close();

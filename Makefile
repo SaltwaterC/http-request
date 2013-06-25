@@ -19,7 +19,9 @@ publish: all production
 tests: test
 check: test
 test: lint
+	@rm -f hello.txt
 	@rm -f world.txt
+	@rm -f foo.txt
 	@./node_modules/.bin/mocha
 
 beautify:

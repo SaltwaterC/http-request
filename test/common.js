@@ -354,7 +354,11 @@ var createServer = function(module, opt) {
 						body: 'broken-gzip'
 					}, 'gzip', true);
 				} else {
-					response.send();
+					response.send({
+						headers: {
+							'last-modified': new Date(0)
+						}
+					});
 				}
 				break;
 
