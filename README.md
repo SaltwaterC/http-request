@@ -1,6 +1,6 @@
 # http-request ![build status](https://secure.travis-ci.org/SaltwaterC/http-get.png?branch=master)
 
-General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding.
+General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding. Successor of http-get.
 
 ## Installation
 
@@ -11,11 +11,11 @@ Either manually clone this repository into your node_modules directory, or the r
 ## Reference
 
  * The [Request](http://saltwaterc.github.io/http-get/84e50cc04e.html) class - for implementing your own HTTP methods if wrappers aren't provided by the library
- * The DELETE method - WIP
+ * The DELETE method - Work in progress
  * The [GET method](http://saltwaterc.github.io/http-get/module-main.html#get)
  * The [HEAD method](http://saltwaterc.github.io/http-get/module-main.html#head)
- * The POST method - WIP
- * The PUT method - WIP
+ * The POST method - Work in progress
+ * The PUT method - Work in progress
 
 ## System Requirements
 
