@@ -289,7 +289,7 @@
             
             
             
-            <td class="description last"><p>The options Object taken by the Request constructor, filtered by <a href="module-tools.html#shortHand">module:tools.shortHand</a>. options.method = 'DELETE' and it can not be overridden</p></td>
+            <td class="description last"><p>The options Object taken by the Request constructor, filtered by module:tools.shortHand. options.method = 'DELETE' and it can not be overridden</p></td>
         </tr>
 	
 	
@@ -369,7 +369,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 133
+        <a href="main.js.html">main.js</a>, line 204
     </li></ul></dd>
     
     
@@ -387,6 +387,29 @@
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// shorthand syntax, buffered response
+http.delete('http://localhost/delete', function (err, res) {
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(res.code, res.headers, res.buffer.toString());
+	}
+});
+
+// with explicit options object, save to file the response body
+http.delete({
+	url: 'http://localhost/delete'
+}, function (err, res) {
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(res.code, res.headers, res.file);
+	}
+});</code></pre>
+
     
 </dd>
 
@@ -451,7 +474,7 @@
             
             
             
-            <td class="description last"><p>The options Object taken by the Request constructor, filtered by <a href="module-tools.html#shortHand">module:tools.shortHand</a>. options.method = 'GET' and it can not be overridden</p></td>
+            <td class="description last"><p>The options Object taken by the Request constructor, filtered by module:tools.shortHand. options.method = 'GET' and it can not be overridden</p></td>
         </tr>
 	
 	
@@ -531,7 +554,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 99
+        <a href="main.js.html">main.js</a>, line 139
     </li></ul></dd>
     
     
@@ -549,6 +572,48 @@
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// shorthand syntax, buffered response
+http.get('http://localhost/get', function (err, res) {
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(res.code, res.headers, res.buffer.toString());
+	}
+});
+
+// save the response to file with a progress callback
+http.get({
+	url: 'http://localhost/get',
+	progress: function (current, total) {
+		console.log('downloaded %d bytes from %d', current, total);
+	}
+}, 'get.bin', function (err, res) {
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(res.code, res.headers, res.file);
+	}
+});
+
+// with explicit options, use a HTTP proxy, and limit the number of redirects
+http.get({
+	url: 'http://localhost/get',
+	proxy: {
+		host: 'localhost',
+		port: 3128
+	},
+	maxRedirects: 2
+}, function (err, res) {
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(res.code, res.headers, res.buffer.toString());
+	}
+});</code></pre>
+
     
 </dd>
 
@@ -613,7 +678,7 @@
             
             
             
-            <td class="description last"><p>The options Object taken by the Request constructor, filtered by <a href="module-tools.html#shortHand">module:tools.shortHand</a>. options.method = 'HEAD' and it can not be overridden</p></td>
+            <td class="description last"><p>The options Object taken by the Request constructor, filtered by module:tools.shortHand. options.method = 'HEAD' and it can not be overridden</p></td>
         </tr>
 	
 	
@@ -667,7 +732,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 110
+        <a href="main.js.html">main.js</a>, line 160
     </li></ul></dd>
     
     
@@ -685,6 +750,18 @@
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// shorthand syntax, default options
+http.head('http://localhost/head', function (err, res) {
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(res.code, res.headers);
+	}
+});</code></pre>
+
     
 </dd>
 
@@ -780,7 +857,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 143
+        <a href="main.js.html">main.js</a>, line 218
     </li></ul></dd>
     
     
@@ -798,6 +875,12 @@
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// use up to 128 concurrent sockets
+http.setMaxSockets(128);</code></pre>
+
     
 </dd>
 
@@ -922,7 +1005,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 153
+        <a href="main.js.html">main.js</a>, line 228
     </li></ul></dd>
     
     
@@ -957,13 +1040,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-main.html">main</a></li><li><a href="module-request.html">request</a></li><li><a href="module-tools.html">tools</a></li></ul><h3>Classes</h3><ul><li><a href="84e50cc04e.html">Request</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-main.html">main</a></li><li><a href="module-request.html">request</a></li></ul><h3>Classes</h3><ul><li><a href="84e50cc04e.html">Request</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Tue Jun 25 2013 18:22:59 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Wed Jun 26 2013 18:37:13 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>
