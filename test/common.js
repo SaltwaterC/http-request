@@ -239,6 +239,17 @@ var createServer = function(module, opt) {
 				});
 				break;
 
+			case '/to-http':
+				response.send({
+					code: 301,
+					type: 'text/plain',
+					headers: {
+						location: 'http://127.0.0.1:' + options.port + '/http',
+					},
+					body: 'Redirect to HTTP'
+				});
+				break;
+
 			case '/basic-auth':
 				// basic HTTP Basic Auth parser
 				var authorization = req.headers.authorization || '';

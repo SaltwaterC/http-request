@@ -407,6 +407,25 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
+	describe('HEAD to redirect from HTTPS to HTTP', function() {
+		it('should redirect without issues', function(done) {
+			client.head({
+				url: 'https://127.0.0.1:' + common.options.securePort + '/to-http',
+				headers: {
+					host: 'http-get.lan'
+				},
+				ca: [require('./ca.js')]
+			}, function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['x-http-method'], 'HEAD', 'the method is HEAD');
+
+				done();
+			});
+		});
+	});
+
 	after(function() {
 		server.close();
 		secureServer.close();
