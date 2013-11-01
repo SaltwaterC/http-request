@@ -543,7 +543,7 @@ describe('HTTP GET method tests', function() {
 
 	// On Travis CI this response comes back short at 1043957 bytes
 	// Therefore, this test always fails under node 0.8.25
-	if (process.env['TRAVIS_NODE_VERSION'] !== '0.8.25') {
+	if (process.env.TRAVIS_NODE_VERSION !== '0.8.25') {
 		describe('GET with overflowing error document', function() {
 			it('should detect the situation and act accordingly', function(done) {
 				client.get({
