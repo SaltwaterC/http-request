@@ -547,6 +547,8 @@ describe('HTTP GET method tests', function() {
 				url: 'http://127.0.0.1:' + common.options.port + '/big-error',
 				noCompress: true
 			}, function(err) {
+				console.log(err); // XXX Travis CI fails for unknown reasons on this object
+				
 				assert.instanceOf(err, Error, 'the error is an instance of Error');
 
 				assert.strictEqual(err.code, 404, 'we got back the proper status code');
