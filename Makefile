@@ -43,3 +43,6 @@ development:
 
 contributors:
 	@git shortlog -s -n --all
+
+clean:
+	rm -rf node_modules

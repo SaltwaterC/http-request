@@ -204,7 +204,9 @@ describe('HTTP HEAD method tests', function() {
 	describe('HEAD without url', function() {
 		it('should throw an error', function(done) {
 			var throws = function() {
-				client.head({}, function(err, res) {});
+				client.head({}, function(err) {
+					assert.ifError(err);
+				});
 			};
 
 			assert.throws(throws, Error, 'The options object requires an input URL value.');
@@ -276,6 +278,7 @@ describe('HTTP HEAD method tests', function() {
 	describe('HEAD with standard user agent', function() {
 		it('should pass the standard user-agent header', function(done) {
 			client.head('http://127.0.0.1:' + common.options.port + '/user-agent-reflect', function(err, res) {
+				assert.ifError(err);
 
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['user-agent'], util.format('http-request/v%s (http://git.io/tl_S2w) node.js/%s', config.version, process.version), 'we got the proper user-agent header back into the response');
@@ -308,7 +311,7 @@ describe('HTTP HEAD method tests', function() {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.noPort + '/',
 				timeout: 1
-			}, function(err, res) {
+			}, function(err) {
 				assert.instanceOf(err, Error, 'the error is an instance of Error');
 				assert.strictEqual(err.method, 'HEAD', 'the method is HEAD');
 

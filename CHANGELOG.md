@@ -1,7 +1,7 @@
 ## v0.6.0
  * Client rewritten almost from scratch for including broader HTTP support. Renamed to http-request to indicate this change. New HTTP method: DELETE.
  * Strict about user errors. They are considered unrecoverable aka won't fix without changing the code, hence they throw. Passing these to the completion callback has only one outcome: to conceal bugs.
- * Removed the support for HTTPS proxies since there's no way to do it properly which opens a door for MITM attacks.
+ * Removed the support for HTTPS proxies since there's no way to do it properly, unless you actually control the proxy, which opens a door for MITM attacks.
  * The progress callback option is now available for all response handlers (file, buffer, stream).
  * Fix: the 201, 202, 203, 205 responses are handled as success (as they should).
  * Fix: the 305 responses are not handled as simple redirects. The library uses the location header information as options.proxy.

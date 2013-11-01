@@ -56,7 +56,7 @@ GzbWB96n\n\
  * The HTTP test server response wrapper
  *
  * @param {Object} req The client request
- * @param {Object} res The server response 
+ * @param {Object} res The server response
  */
 var Response = function(req, res) {
 	this.req = req;

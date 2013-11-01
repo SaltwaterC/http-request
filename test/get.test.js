@@ -171,8 +171,8 @@ describe('HTTP GET method tests', function() {
 				client.get({
 					url: 'http://127.0.0.1:' + common.options.port + '/',
 					maxBody: 'foo'
-				}, function(err, res) {
-
+				}, function(err) {
+					assert.ifError(err);
 				});
 			};
 
@@ -188,8 +188,8 @@ describe('HTTP GET method tests', function() {
 				client.get({
 					url: 'http://127.0.0.1:' + common.options.port + '/',
 					progress: 'foo'
-				}, function(err, res) {
-
+				}, function(err) {
+					assert.ifError(err);
 				});
 			};
 
@@ -307,7 +307,9 @@ describe('HTTP GET method tests', function() {
 	describe('GET without url', function() {
 		it('should throw an error', function(done) {
 			var throws = function() {
-				client.get({}, function(err, res) {});
+				client.get({}, function(err) {
+					assert.ifError(err);
+				});
 			};
 
 			assert.throws(throws, Error, 'The options object requires an input URL value.');
@@ -544,7 +546,7 @@ describe('HTTP GET method tests', function() {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/big-error',
 				noCompress: true
-			}, function(err, res) {
+			}, function(err) {
 				assert.instanceOf(err, Error, 'the error is an instance of Error');
 
 				assert.strictEqual(err.code, 404, 'we got back the proper status code');
@@ -575,7 +577,8 @@ describe('HTTP GET method tests', function() {
 	describe('GET with standard user agent', function() {
 		it('should pass the standard user-agent header', function(done) {
 			client.get('http://127.0.0.1:' + common.options.port + '/user-agent-reflect', function(err, res) {
-
+				assert.ifError(err);
+				
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.strictEqual(res.headers['user-agent'], util.format('http-request/v%s (http://git.io/tl_S2w) node.js/%s', config.version, process.version), 'we got the proper user-agent header back into the response');
 				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
@@ -591,6 +594,8 @@ describe('HTTP GET method tests', function() {
 				url: 'http://127.0.0.1:' + common.options.port + '/user-agent-reflect',
 				noUserAgent: true
 			}, function(err, res) {
+				assert.ifError(err);
+				
 				assert.strictEqual(res.code, 200, 'we got the proper HTTP status code');
 				assert.isUndefined(res.headers['user-agent'], 'there is no user agent passed back');
 				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
