@@ -4,6 +4,7 @@ var u = require('url');
 var zlib = require('zlib');
 var http = require('http');
 var https = require('https');
+var qs = require('querystring');
 
 var options = {
 	host: '127.0.0.1',
@@ -370,6 +371,31 @@ var createServer = function(module, opt) {
 						headers: {
 							'last-modified': new Date(0)
 						}
+					});
+				}
+				break;
+
+			case '/post':
+				if (req.method === 'POST') {
+					var buf = [],
+						size = 0;
+					req.on('data', function(chunk) {
+						buf.push(chunk);
+						size += chunk.length;
+					});
+
+					req.on('end', function() {
+						response.send({
+							body: Buffer.concat(buf, size).toString(),
+							headers: {
+								'x-content-type': req.headers['content-type']
+							}
+						});
+					});
+				} else {
+					response.send({
+						code: 405,
+						body: '<html><head><title>405 - Method not supported</title></head><body><h1>Method not supported.</h1></body></html>'
 					});
 				}
 				break;
