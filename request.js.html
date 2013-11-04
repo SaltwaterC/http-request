@@ -67,7 +67,6 @@ function Request(options) {
 	options.method = options.method.toUpperCase();
 
 	this.options = options;
-	this.reqOpt = {};
 
 	this.options.url = String(this.options.url).trim();
 	if (!this.options.url.match(/^https?:\/\//i)) {
@@ -175,7 +174,7 @@ Request.prototype.saveBuffer = function(callback) {
 			self.setNoCompress();
 			self = new Request(self.options);
 
-			self.send(function(err, res) {
+			self.send(function(err) {
 				if (err) {
 					self.error(err, callback);
 					return;
@@ -228,7 +227,7 @@ Request.prototype.saveFile = function(file, callback) {
 			self.setNoCompress();
 			self = new Request(self.options);
 
-			self.send(function(err, res) {
+			self.send(function(err) {
 				if (err) {
 					self.error(err, callback);
 					return;
@@ -254,6 +253,8 @@ Request.prototype.saveFile = function(file, callback) {
  * @throws {callback} Expecting a function for callback on URL {@link module:request~Request} options.url.
  */
 Request.prototype.send = function(callback) {
+	this.reqOpt = {};
+
 	if (!this.options.reqId) {
 		this.options.reqId = 0;
 	}
@@ -280,6 +281,10 @@ Request.prototype.send = function(callback) {
 		}
 	} else if (this.options.headers['accept-encoding']) {
 		delete(this.options.headers['accept-encoding']);
+	}
+
+	if (this.options.reqBody instanceof Buffer) {
+		this.options.headers['content-lenght'] = this.options.reqBody.length;
 	}
 
 	this.reqOpt.headers = this.options.headers;
@@ -352,13 +357,13 @@ Request.prototype.send = function(callback) {
 				if (self.options.noRedirect) {
 					self.success(ret, callback);
 				} else {
-					if (!response.headers.location) {
+					if (!self.response.headers.location) {
 						self.error(new Error('Redirect response without the Location header.'), callback);
 					} else {
 						self.prepareRedirectUrl();
 						self.parseUrl();
 						self.send(callback);
-						response.resume();
+						self.response.resume();
 						return;
 					}
 				}
@@ -366,13 +371,13 @@ Request.prototype.send = function(callback) {
 
 			case 305:
 				// Use Proxy
-				if (!response.headers.location) {
+				if (!self.response.headers.location) {
 					self.error(new Error('Use proxy response without the Location header.'), callback);
 				} else {
 					delete(self.options.parsedUrl);
 					self.prepareProxy();
 					self.send(callback);
-					response.resume();
+					self.response.resume();
 					return;
 				}
 				break;
@@ -457,12 +462,13 @@ Request.prototype.send = function(callback) {
 					self.error(err, callback);
 				});
 
-				response.resume();
+				self.response.resume();
 				break;
 
 				// catch all error handler
 			default:
 				self.error(tools.formattedError('HTTP Error: %d', response.statusCode), callback);
+				self.response.resume();
 				break;
 		}
 	});
@@ -539,14 +545,14 @@ Request.prototype.setNoCompress = function() {
  * @private
  */
 Request.prototype.normalizeHeaders = function() {
-	var name;
+	var name, lowName, val;
 
-	for (name in this.headers) {
-		if (this.headers.hasOwnProperty(name)) {
-			var lowName = name.toLowerCase();
-			var val = this.headers[name];
-			delete(this.headers[name]);
-			this.headers[lowName] = val;
+	for (name in this.options.headers) {
+		if (this.options.headers.hasOwnProperty(name)) {
+			lowName = name.toLowerCase();
+			val = this.options.headers[name];
+			delete(this.options.headers[name]);
+			this.options.headers[lowName] = val;
 		}
 	}
 };
@@ -646,6 +652,7 @@ Request.prototype.prepareProxy = function() {
  */
 Request.prototype.useProxy = function() {
 	this.client = http;
+
 	this.reqOpt.host = this.options.proxy.host;
 	this.reqOpt.port = this.options.proxy.port;
 	this.reqOpt.path = this.options.url;
@@ -768,7 +775,7 @@ module.exports = Request;
  * @property {Boolean} noSslValidation Optional; turns of the SSL validation. **Warning:** do this only if you know what you're doing and if you have proper reasons for doing it. Making SSL useless is not a small thing to do
  * @property {Boolean} stream Optional; passes a ReadableStream back to the completion callback of a HTTP request
  * @property {Boolean} noRedirect Optional; turns off the HTTP redirects. Passes back the headers and body of the redirect response
- * @property {Buffer|Stream} reqBody Optional; the contents of the request body for PUT, POST, etc. requests. Must be a Buffer or a Readable Stream instance
+ * @property {Buffer|Stream} reqBody Optional; the contents of the request body for PUT, POST, etc. requests. Must be a Buffer or a Readable Stream instance. For Buffers, the content-length is Buffer.lenght. For a Readable Stream you must pass a content-length header, unless you're building a POST request with the [form-data](https://github.com/felixge/node-form-data) module. The library makes no assumptions about the content-type header, unless you're building a form with form-data
  */
 
 /**
@@ -847,7 +854,7 @@ module.exports = Request;
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Wed Jul 03 2013 18:08:46 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Mon Nov 04 2013 14:40:21 GMT+0200 (EET)
 </footer>
 
 <script> prettyPrint(); </script>

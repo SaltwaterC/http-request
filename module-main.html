@@ -185,7 +185,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 88
+        <a href="main.js.html">main.js</a>, line 91
     </li></ul></dd>
     
     
@@ -369,7 +369,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 204
+        <a href="main.js.html">main.js</a>, line 207
     </li></ul></dd>
     
     
@@ -554,7 +554,7 @@ http.delete({
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 139
+        <a href="main.js.html">main.js</a>, line 142
     </li></ul></dd>
     
     
@@ -732,7 +732,7 @@ http.get({
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 160
+        <a href="main.js.html">main.js</a>, line 163
     </li></ul></dd>
     
     
@@ -759,6 +759,230 @@ http.head('http://localhost/head', function (err, res) {
 		console.error(err);
 	} else {
 		console.log(res.code, res.headers);
+	}
+});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="post"><span class="type-signature">&lt;static> </span>post<span class="signature">(options, file, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>HTTP POST method wrapper</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-request.html#options">module:request~options</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The options Object taken by the Request constructor, filtered by module:tools.shortHand. options.method = 'POST' and it can not be overridden</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>file</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Optional; specify a filesystem path to save the response body as file instead of Buffer. Passing null turns of the data listeners</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-main.html#callback">module:main~callback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Completion callback</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, line 279
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// shorthand syntax, buffered response, content-type = application/x-www-form-urlencoded
+// param1=value1&param2=value2 are stripped from the URL and sent via the request body
+
+// do not pass the query values by using URL encoding as the URL encoding is done automatically
+// the query params are unserialized into an object, then serialized back into a query string
+// by node's querystring.stringify which also does the URL encoding
+http.post('http://localhost/post?param1=value1&param2=value2', function (err, res) {
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(res.code, res.headers, res.buffer.toString());
+	}
+});
+
+// explicit POST request, saves the response body to file
+
+// for Buffer reqBody, the content-lenght header is reqBody.lenght
+var reqBody = {
+	param1: 'value1',
+	param2: 'value2'
+};
+
+// this serialization also does URL encoding so you won't have to
+reqBody = querystring.stringify(reqBody);
+
+http.post({
+	url: 'http://localhost/post',
+	reqBody: new Buffer(reqBody),
+	headers: {
+		'content-type': 'application/x-www-form-urlencoded;charset=utf-8' // specify how to handle the request
+	}
+}, 'post.bin', function (err, res) {
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(res.code, res.headers, res.file);
+	}
+});
+
+// multipart/form-data request built with form-data (3rd party module)
+// you have to use the http export of FormData
+// the instanceof operator fails otherwise
+// implementing a manual check is not very elegant
+var form = new http.FormData();
+
+form.append('param1', 'value1');
+form.append('param2', 'value2');
+
+http.post({
+	url: 'http://localhost/post',
+	reqBody: form
+}, function (err, res) {
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(res.code, res.headers, res.buffer.toString());
 	}
 });</code></pre>
 
@@ -857,7 +1081,7 @@ http.head('http://localhost/head', function (err, res) {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 218
+        <a href="main.js.html">main.js</a>, line 320
     </li></ul></dd>
     
     
@@ -1005,7 +1229,7 @@ http.setMaxSockets(128);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, line 228
+        <a href="main.js.html">main.js</a>, line 330
     </li></ul></dd>
     
     
@@ -1046,7 +1270,7 @@ http.setMaxSockets(128);</code></pre>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Wed Jul 03 2013 18:08:47 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Mon Nov 04 2013 14:40:21 GMT+0200 (EET)
 </footer>
 
 <script> prettyPrint(); </script>
