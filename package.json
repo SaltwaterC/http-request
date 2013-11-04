@@ -13,7 +13,8 @@
 		"mocha": ">= 1.8.2",
 		"chai": ">= 1.5.0",
 		"js-beautify": ">= 0.4.2",
-		"jslint": ">= 0.1.9"
+		"jslint": ">= 0.1.9",
+		"multiparty": ">= 3.0.0"
 	},
 	"homepage": "https://github.com/SaltwaterC/http-get",
 	"author": {

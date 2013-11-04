@@ -1,10 +1,15 @@
 'use strict';
 
+/* core libraries */
 var u = require('url');
 var zlib = require('zlib');
 var http = require('http');
 var https = require('https');
 var qs = require('querystring');
+
+/* 3rd party libraries */
+var assert = require('chai').assert;
+var multiparty = require('multiparty');
 
 var options = {
 	host: '127.0.0.1',
@@ -377,21 +382,39 @@ var createServer = function(module, opt) {
 
 			case '/post':
 				if (req.method === 'POST') {
-					var buf = [],
-						size = 0;
-					req.on('data', function(chunk) {
-						buf.push(chunk);
-						size += chunk.length;
-					});
+					headers = {
+						'x-content-type': req.headers['content-type']
+					};
 
-					req.on('end', function() {
-						response.send({
-							body: Buffer.concat(buf, size).toString(),
-							headers: {
-								'x-content-type': req.headers['content-type']
-							}
+					if (req.headers.wibble) {
+						headers.wibble = req.headers.wibble;
+					}
+
+					if (req.headers['content-type'].search('multipart/form-data') === -1) {
+						var buf = [],
+							size = 0;
+						req.on('data', function(chunk) {
+							buf.push(chunk);
+							size += chunk.length;
 						});
-					});
+
+						req.on('end', function() {
+							response.send({
+								headers: headers,
+								body: Buffer.concat(buf, size).toString()
+							});
+						});
+					} else {
+						var form = new multiparty.Form();
+
+						form.parse(req, function(err, fields) {
+							assert.ifError(err);
+							response.send({
+								body: qs.stringify(fields),
+								headers: headers
+							});
+						});
+					}
 				} else {
 					response.send({
 						code: 405,
