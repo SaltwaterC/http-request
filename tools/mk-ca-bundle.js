@@ -10,8 +10,13 @@ rs.on('data', function(data) {
 });
 
 rs.on('end', function() {
-	var json = JSON.stringify(ca.match(/(-----BEGIN CERTIFICATE-----[^]*?-----END CERTIFICATE-----)/g));
-	fs.writeFile(__dirname + '/../lib/ca-bundle.json', json, function(err) {
+	var idx, matches = ca.match(/(-----BEGIN CERTIFICATE-----[^]*?-----END CERTIFICATE-----)/g);
+
+	for (idx in matches) {
+		matches[idx] = matches[idx] + '\n';
+	}
+
+	fs.writeFile(__dirname + '/../lib/ca-bundle.json', JSON.stringify(matches), function(err) {
 		if (err) {
 			throw err;
 		} else {
