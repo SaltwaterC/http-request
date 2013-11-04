@@ -62,7 +62,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="request.js.html">request.js</a>, line 3
+        <a href="request.js.html">request.js</a>, <a href="request.js.html#line3">line 3</a>
     </li></ul></dd>
     
     
@@ -88,7 +88,7 @@
         <h3 class="subsection-title">Classes</h3>
         
         <dl>
-            <dt><a href="84e50cc04e.html">Request</a></dt>
+            <dt><a href="module-request-Request.html">Request</a></dt>
             <dd></dd>
         </dl>
     
@@ -113,7 +113,7 @@
     
     
     <div class="description">
-        <p>Describes the completion callback of the inner wrappers <a href="84e50cc04e.html#saveBuffer">module:request~Request#saveBuffer</a> and <a href="84e50cc04e.html#saveFile">module:request~Request#saveFile</a></p>
+        Describes the completion callback of the inner wrappers <a href="module-request-Request.html#saveBuffer">module:request~Request#saveBuffer</a> and <a href="module-request-Request.html#saveFile">module:request~Request#saveFile</a>
     </div>
     
 
@@ -163,7 +163,7 @@
             
             
             
-            <td class="description last"><p>The standard error</p></td>
+            <td class="description last">The standard error</td>
         </tr>
 	
 	
@@ -186,7 +186,7 @@
             
             
             
-            <td class="description last"><p>The standard result. If you wrap <a href="84e50cc04e.html#saveBuffer">module:request~Request#saveBuffer</a> or <a href="84e50cc04e.html#saveFile">module:request~Request#saveFile</a> by yourself, you have to use the result passed to innerCallback instead of calling <a href="84e50cc04e.html#stdResult">module:request~Request#stdResult</a> if you want consistent results. When the request is reissued for a plain resource due to gzip or deflate decoding errors a new <a href="84e50cc04e.html">module:request~Request</a> object is created internally in order to keep things simpler for requests that respond with success, but break things later. saveBuffer and saveFile use a simple recursive logic in this particular case</p></td>
+            <td class="description last">The standard result. If you wrap <a href="module-request-Request.html#saveBuffer">module:request~Request#saveBuffer</a> or <a href="module-request-Request.html#saveFile">module:request~Request#saveFile</a> by yourself, you have to use the result passed to innerCallback instead of calling <a href="module-request-Request.html#stdResult">module:request~Request#stdResult</a> if you want consistent results. When the request is reissued for a plain resource due to gzip or deflate decoding errors a new <a href="module-request-Request.html">module:request~Request</a> object is created internally in order to keep things simpler for requests that respond with success, but break things later. saveBuffer and saveFile use a simple recursive logic in this particular case</td>
         </tr>
 	
 	
@@ -217,7 +217,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="request.js.html">request.js</a>, line 738
+        <a href="request.js.html">request.js</a>, <a href="request.js.html#line738">line 738</a>
     </li></ul></dd>
     
     
@@ -229,6 +229,10 @@
 </dl>
 
     
+    
+
+    
+
     
     
     
@@ -248,10 +252,22 @@
 <dd>
     
     <div class="description">
-        <p>Describes the options Object passed to the <a href="84e50cc04e.html">module:request~Request</a> constructor</p>
+        Describes the options Object passed to the <a href="module-request-Request.html">module:request~Request</a> constructor
     </div>
     
     
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+            </li>
+        </ul>
+    
+
     
 <dl class="details">
     
@@ -298,7 +314,7 @@
             
             
             
-            <td class="description last"><p>Mandatory; the request URL</p></td>
+            <td class="description last">Mandatory; the request URL</td>
         </tr>
 	
 	
@@ -321,7 +337,7 @@
             
             
             
-            <td class="description last"><p>Mandatory; the HTTP method</p></td>
+            <td class="description last">Mandatory; the HTTP method</td>
         </tr>
 	
 	
@@ -344,7 +360,7 @@
             
             
             
-            <td class="description last"><p>Optional; the HTTP request headers</p></td>
+            <td class="description last">Optional; the HTTP request headers</td>
         </tr>
 	
 	
@@ -367,7 +383,7 @@
             
             
             
-            <td class="description last"><p>Optional; disables the Accept-Encoding HTTP request header. You may leave this job to the library itself. In case of gzip / deflate decoding errors, the request is transparently reissued with the options.noCompress flag</p></td>
+            <td class="description last">Optional; disables the Accept-Encoding HTTP request header. You may leave this job to the library itself. In case of gzip / deflate decoding errors, the request is transparently reissued with the options.noCompress flag</td>
         </tr>
 	
 	
@@ -390,7 +406,7 @@
             
             
             
-            <td class="description last"><p>Optional; issue the request through a HTTP proxy</p>
+            <td class="description last">Optional; issue the request through a HTTP proxy
                 <h6>Properties</h6>
 
 <table class="props">
@@ -431,7 +447,7 @@
             
             
             
-            <td class="description last"><p>The HTTP proxy host</p></td>
+            <td class="description last">The HTTP proxy host</td>
         </tr>
 	
 	
@@ -454,7 +470,7 @@
             
             
             
-            <td class="description last"><p>The HTTP proxy port</p></td>
+            <td class="description last">The HTTP proxy port</td>
         </tr>
 	
 	
@@ -483,7 +499,7 @@
             
             
             
-            <td class="description last"><p>Optional; the limit for the subsequent HTTP redirects in order to avoid redirect loops. Defaults to 10 if unspecified / invalid input</p></td>
+            <td class="description last">Optional; the limit for the subsequent HTTP redirects in order to avoid redirect loops. Defaults to 10 if unspecified / invalid input</td>
         </tr>
 	
 	
@@ -506,7 +522,7 @@
             
             
             
-            <td class="description last"><p>Optional; indicates the maximum size of the buffered HTTP response body</p></td>
+            <td class="description last">Optional; indicates the maximum size of the buffered HTTP response body</td>
         </tr>
 	
 	
@@ -529,7 +545,7 @@
             
             
             
-            <td class="description last"><p>Optional; indicates the underlying <a href="http://nodejs.org/docs/latest/api/net.html#net_socket_settimeout_timeout_callback">socket timeout</a> value in miliseconds. Defaults to 60 seconds</p></td>
+            <td class="description last">Optional; indicates the underlying [socket timeout](http://nodejs.org/docs/latest/api/net.html#net_socket_settimeout_timeout_callback) value in miliseconds. Defaults to 60 seconds</td>
         </tr>
 	
 	
@@ -552,7 +568,7 @@
             
             
             
-            <td class="description last"><p>Optional; callback for tracking the request progress</p></td>
+            <td class="description last">Optional; callback for tracking the request progress</td>
         </tr>
 	
 	
@@ -575,7 +591,7 @@
             
             
             
-            <td class="description last"><p>Optional; disables the default User-Agent of http-request</p></td>
+            <td class="description last">Optional; disables the default User-Agent of http-request</td>
         </tr>
 	
 	
@@ -598,7 +614,7 @@
             
             
             
-            <td class="description last"><p>Optional; supply your own Certificate Authority information. It <em>appends</em> your certificate(s) to the bundled list by defining the <a href="http://nodejs.org/api/tls.html#tls_tls_connect_options_callback">ca of tls.connect()</a>. The node.js standard behaviour is to replace the ca list</p></td>
+            <td class="description last">Optional; supply your own Certificate Authority information. It *appends* your certificate(s) to the bundled list by defining the [ca of tls.connect()](http://nodejs.org/api/tls.html#tls_tls_connect_options_callback). The node.js standard behaviour is to replace the ca list</td>
         </tr>
 	
 	
@@ -621,7 +637,7 @@
             
             
             
-            <td class="description last"><p>Optional; turns of the SSL validation. <strong>Warning:</strong> do this only if you know what you're doing and if you have proper reasons for doing it. Making SSL useless is not a small thing to do</p></td>
+            <td class="description last">Optional; turns of the SSL validation. **Warning:** do this only if you know what you're doing and if you have proper reasons for doing it. Making SSL useless is not a small thing to do</td>
         </tr>
 	
 	
@@ -644,7 +660,7 @@
             
             
             
-            <td class="description last"><p>Optional; passes a ReadableStream back to the completion callback of a HTTP request</p></td>
+            <td class="description last">Optional; passes a ReadableStream back to the completion callback of a HTTP request</td>
         </tr>
 	
 	
@@ -667,7 +683,7 @@
             
             
             
-            <td class="description last"><p>Optional; turns off the HTTP redirects. Passes back the headers and body of the redirect response</p></td>
+            <td class="description last">Optional; turns off the HTTP redirects. Passes back the headers and body of the redirect response</td>
         </tr>
 	
 	
@@ -693,7 +709,7 @@
             
             
             
-            <td class="description last"><p>Optional; the contents of the request body for PUT, POST, etc. requests. Must be a Buffer or a Readable Stream instance. For Buffers, the content-length is Buffer.lenght. For a Readable Stream you must pass a content-length header, unless you're building a POST request with the <a href="https://github.com/felixge/node-form-data">form-data</a> module. The library makes no assumptions about the content-type header, unless you're building a form with form-data</p></td>
+            <td class="description last">Optional; the contents of the request body for PUT, POST, etc. requests. Must be a Buffer or a Readable Stream instance. For Buffers, the content-length is Buffer.lenght. For a Readable Stream you must pass a content-length header, unless you're building a POST request with the [form-data](https://github.com/felixge/node-form-data) module. The library makes no assumptions about the content-type header, unless you're building a form with form-data</td>
         </tr>
 	
 	
@@ -721,7 +737,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="request.js.html">request.js</a>, line 730
+        <a href="request.js.html">request.js</a>, <a href="request.js.html#line730">line 730</a>
     </li></ul></dd>
     
     
@@ -747,7 +763,7 @@
     
     
     <div class="description">
-        <p>Describes the progress callback</p>
+        Describes the progress callback
     </div>
     
 
@@ -797,7 +813,7 @@
             
             
             
-            <td class="description last"><p>The current number of downloaded bytes</p></td>
+            <td class="description last">The current number of downloaded bytes</td>
         </tr>
 	
 	
@@ -820,7 +836,7 @@
             
             
             
-            <td class="description last"><p>The total number of bytes to download or 0 for chunked responses</p></td>
+            <td class="description last">The total number of bytes to download or 0 for chunked responses</td>
         </tr>
 	
 	
@@ -851,7 +867,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="request.js.html">request.js</a>, line 732
+        <a href="request.js.html">request.js</a>, <a href="request.js.html#line732">line 732</a>
     </li></ul></dd>
     
     
@@ -863,6 +879,10 @@
 </dl>
 
     
+    
+
+    
+
     
     
     
@@ -883,7 +903,7 @@
     
     
     <div class="description">
-        <p>Describes the completion callback of the send method</p>
+        Describes the completion callback of the send method
     </div>
     
 
@@ -933,7 +953,7 @@
             
             
             
-            <td class="description last"><p>The standard error or <em>null</em> on success</p></td>
+            <td class="description last">The standard error or *null* on success</td>
         </tr>
 	
 	
@@ -956,7 +976,7 @@
             
             
             
-            <td class="description last"><p>The send result Object if the error is null</p></td>
+            <td class="description last">The send result Object if the error is null</td>
         </tr>
 	
 	
@@ -987,7 +1007,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="request.js.html">request.js</a>, line 740
+        <a href="request.js.html">request.js</a>, <a href="request.js.html#line740">line 740</a>
     </li></ul></dd>
     
     
@@ -999,6 +1019,10 @@
 </dl>
 
     
+    
+
+    
+
     
     
     
@@ -1018,10 +1042,22 @@
 <dd>
     
     <div class="description">
-        <p>Describes the sendResult Object</p>
+        Describes the sendResult Object
     </div>
     
     
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Options</span>
+
+
+            </li>
+        </ul>
+    
+
     
 <dl class="details">
     
@@ -1068,7 +1104,7 @@
             
             
             
-            <td class="description last"><p>The HTTP response of node's http.request</p></td>
+            <td class="description last">The HTTP response of node's http.request</td>
         </tr>
 	
 	
@@ -1091,7 +1127,7 @@
             
             
             
-            <td class="description last"><p>The HTTP response body. Uncompressed if it was encoded with gzip or deflate. Equal to response otherwise.</p></td>
+            <td class="description last">The HTTP response body. Uncompressed if it was encoded with gzip or deflate. Equal to response otherwise.</td>
         </tr>
 	
 	
@@ -1114,7 +1150,7 @@
             
             
             
-            <td class="description last"><p>Optional, passed if there was a HTTP redirect. Contains the URL of the resource that returned a succesful status code.</p></td>
+            <td class="description last">Optional, passed if there was a HTTP redirect. Contains the URL of the resource that returned a succesful status code.</td>
         </tr>
 	
 	
@@ -1142,7 +1178,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="request.js.html">request.js</a>, line 742
+        <a href="request.js.html">request.js</a>, <a href="request.js.html#line742">line 742</a>
     </li></ul></dd>
     
     
@@ -1167,10 +1203,22 @@
 <dd>
     
     <div class="description">
-        <p>Describes the standard error passed to the completion callback as instance of Error with additional properties</p>
+        Describes the standard error passed to the completion callback as instance of Error with additional properties
     </div>
     
     
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Error</span>
+
+
+            </li>
+        </ul>
+    
+
     
 <dl class="details">
     
@@ -1217,7 +1265,7 @@
             
             
             
-            <td class="description last"><p>The HTTP method of the request</p></td>
+            <td class="description last">The HTTP method of the request</td>
         </tr>
 	
 	
@@ -1240,7 +1288,7 @@
             
             
             
-            <td class="description last"><p>The url value passed to <a href="module-request.html#options">module:request~options</a></p></td>
+            <td class="description last">The url value passed to <a href="module-request.html#options">module:request~options</a></td>
         </tr>
 	
 	
@@ -1269,7 +1317,7 @@
             
             
             
-            <td class="description last"><p>The error code passed by a node.js internal binding or the HTTP status code. <em>undefined</em> otherwise</p></td>
+            <td class="description last">The error code passed by a node.js internal binding or the HTTP status code. *undefined* otherwise</td>
         </tr>
 	
 	
@@ -1295,7 +1343,7 @@
             
             
             
-            <td class="description last"><p>The HTTP response headers or <em>undefined</em> if no HTTP request is issued</p></td>
+            <td class="description last">The HTTP response headers or *undefined* if no HTTP request is issued</td>
         </tr>
 	
 	
@@ -1323,7 +1371,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="request.js.html">request.js</a>, line 734
+        <a href="request.js.html">request.js</a>, <a href="request.js.html#line734">line 734</a>
     </li></ul></dd>
     
     
@@ -1348,10 +1396,22 @@
 <dd>
     
     <div class="description">
-        <p>Describes the standard result object passed to the completion callback</p>
+        Describes the standard result object passed to the completion callback
     </div>
     
     
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+            </li>
+        </ul>
+    
+
     
 <dl class="details">
     
@@ -1398,7 +1458,7 @@
             
             
             
-            <td class="description last"><p>The HTTP method of the request</p></td>
+            <td class="description last">The HTTP method of the request</td>
         </tr>
 	
 	
@@ -1421,7 +1481,7 @@
             
             
             
-            <td class="description last"><p>The HTTP status code</p></td>
+            <td class="description last">The HTTP status code</td>
         </tr>
 	
 	
@@ -1444,7 +1504,7 @@
             
             
             
-            <td class="description last"><p>The HTTP response headers</p></td>
+            <td class="description last">The HTTP response headers</td>
         </tr>
 	
 	
@@ -1467,7 +1527,7 @@
             
             
             
-            <td class="description last"><p>The node.js <a href="http://nodejs.org/api/http.html#http_event_response">HTTP client response</a></p></td>
+            <td class="description last">The node.js [HTTP client response](http://nodejs.org/api/http.html#http_event_response)</td>
         </tr>
 	
 	
@@ -1490,7 +1550,7 @@
             
             
             
-            <td class="description last"><p>The HTTP response body as <a href="http://nodejs.org/api/stream.html#stream_class_stream_readable">Readable Stream</a>. The actual stream is either the <a href="http://nodejs.org/api/http.html#http_event_response">HTTP client response</a> or the decoded stream by <a href="http://nodejs.org/api/zlib.html#zlib_zlib_createunzip_options">zlib.createUnzip</a> if the Content-Encoding response header is either gzip or deflate. 204 and 304 responses, by RFC, don't pass back a response body</p></td>
+            <td class="description last">The HTTP response body as [Readable Stream](http://nodejs.org/api/stream.html#stream_class_stream_readable). The actual stream is either the [HTTP client response](http://nodejs.org/api/http.html#http_event_response) or the decoded stream by [zlib.createUnzip](http://nodejs.org/api/zlib.html#zlib_zlib_createunzip_options) if the Content-Encoding response header is either gzip or deflate. 204 and 304 responses, by RFC, don't pass back a response body</td>
         </tr>
 	
 	
@@ -1513,7 +1573,7 @@
             
             
             
-            <td class="description last"><p>The number of HTTP requests that were sent for getting the response</p></td>
+            <td class="description last">The number of HTTP requests that were sent for getting the response</td>
         </tr>
 	
 	
@@ -1539,7 +1599,7 @@
             
             
             
-            <td class="description last"><p>The final URL, only if there was a succesful redirect</p></td>
+            <td class="description last">The final URL, only if there was a succesful redirect</td>
         </tr>
 	
 	
@@ -1565,7 +1625,7 @@
             
             
             
-            <td class="description last"><p>The HTTP response body for buffered responses as <a href="http://nodejs.org/api/buffer.html">Buffer</a> instance</p></td>
+            <td class="description last">The HTTP response body for buffered responses as [Buffer](http://nodejs.org/api/buffer.html) instance</td>
         </tr>
 	
 	
@@ -1591,7 +1651,7 @@
             
             
             
-            <td class="description last"><p>The file path where the HTTP response body is saved, if applicable</p></td>
+            <td class="description last">The file path where the HTTP response body is saved, if applicable</td>
         </tr>
 	
 	
@@ -1619,7 +1679,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="request.js.html">request.js</a>, line 736
+        <a href="request.js.html">request.js</a>, <a href="request.js.html#line736">line 736</a>
     </li></ul></dd>
     
     
@@ -1648,15 +1708,16 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-main.html">main</a></li><li><a href="module-request.html">request</a></li></ul><h3>Classes</h3><ul><li><a href="84e50cc04e.html">Request</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-main.html">main</a></li><li><a href="module-request.html">request</a></li></ul><h3>Classes</h3><ul><li><a href="module-request-Request.html">Request</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Mon Nov 04 2013 14:40:21 GMT+0200 (EET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Mon Nov 04 2013 14:53:38 GMT+0200 (EET)
 </footer>
 
 <script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
 </body>
 </html>
