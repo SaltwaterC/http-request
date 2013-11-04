@@ -1,5 +1,5 @@
 ## v0.6.0
- * Client rewritten almost from scratch for including broader HTTP support. Renamed to http-request to indicate this change. New HTTP method: DELETE.
+ * Client rewritten almost from scratch for including broader HTTP support. Renamed to http-request to indicate this change. New HTTP method wrappers: DELETE, POST.
  * Strict about user errors. They are considered unrecoverable aka won't fix without changing the code, hence they throw. Passing these to the completion callback has only one outcome: to conceal bugs.
  * Removed the support for HTTPS proxies since there's no way to do it properly, unless you actually control the proxy, which opens a door for MITM attacks.
  * The progress callback option is now available for all response handlers (file, buffer, stream).

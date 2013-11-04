@@ -14,7 +14,7 @@ Either manually clone this repository into your node_modules directory, or the r
  * The [DELETE method](http://saltwaterc.github.io/http-get/module-main.html#delete)
  * The [GET method](http://saltwaterc.github.io/http-get/module-main.html#get)
  * The [HEAD method](http://saltwaterc.github.io/http-get/module-main.html#head)
- * The POST method - Work in progress
+ * The [POST method](http://saltwaterc.github.io/http-get/module-main.html#post)
  * The PUT method - Work in progress
 
 ## System Requirements

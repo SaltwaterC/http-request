@@ -1,10 +1,13 @@
 {
 	"name": "http-request",
-	"version": "0.6.0-beta6",
+	"version": "0.6.0-beta7",
 	"main": "./lib/main.js",
 	"description": "General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding.",
 	"engines": {
 		"node": ">= 0.8.5"
+	},
+	"dependencies": {
+		"form-data": ">= 0.1.2"
 	},
 	"devDependencies": {
 		"mocha": ">= 1.8.2",
