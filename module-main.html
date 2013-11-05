@@ -185,7 +185,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line95">line 95</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line97">line 97</a>
     </li></ul></dd>
     
     
@@ -373,7 +373,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line217">line 217</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line219">line 219</a>
     </li></ul></dd>
     
     
@@ -564,7 +564,7 @@ http.delete({
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line149">line 149</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line151">line 151</a>
     </li></ul></dd>
     
     
@@ -749,7 +749,7 @@ http.get({
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line171">line 171</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line173">line 173</a>
     </li></ul></dd>
     
     
@@ -902,7 +902,7 @@ http.head('http://localhost/head', function (err, res) {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line445">line 445</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line480">line 480</a>
     </li></ul></dd>
     
     
@@ -1080,7 +1080,7 @@ http.head('http://localhost/head', function (err, res) {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line292">line 292</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line294">line 294</a>
     </li></ul></dd>
     
     
@@ -1311,7 +1311,7 @@ http.post({
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line381">line 381</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line406">line 406</a>
     </li></ul></dd>
     
     
@@ -1353,6 +1353,44 @@ http.put({
 	console.log(res.code, res.headers, res.buffer.toString());
 });
 
+// put a ReadStream created with fs.createReadStream
+// http-request knows how to handle a ReadStream
+// content-length is taken from the file itself by making a fs.stat call
+// content-type is detected automatically by using mmmagic if unspecified
+http.put({
+	url: 'http://localhost/put',
+	reqBody: fs.createReadStream('/path/to/file')
+}, function (err, res) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	
+	console.log(res.code, res.headers);
+});
+
+// pipe a HTTP response (a http.IncomingMessage Object) to a PUT request
+// http-request knows how to handle an IncomingMessage
+// content-lenght is taken from the response if exists
+require('http').get('http://example.org/file.ext', function (im) {
+	http.put({
+		url: 'http://localhost/put',
+		reqBody: im,
+		headers: {
+			// if you don't define content-type
+			// it is taken from the response if exists
+			'content-type': 'application/octet-stream'
+		}
+	}, function (err, res) {
+		if (err) {
+			console.error(err);
+			return;
+		}
+		
+		console.log(res.code, res.headers);
+	});
+});
+
 // put a readable stream with known size and type, save the response body to file
 http.put({
 	url: 'http://localhost/put',
@@ -1368,21 +1406,6 @@ http.put({
 	}
 	
 	console.log(res.code, res.headers, res.buffer.toString());
-});
-
-// put a ReadStream created with fs.createReadStream
-// content-length is taken from the file itself by making a fs.stat call
-// content-type is detected automatically by using mmmagic if unspecified
-http.put({
-	url: 'http://localhost/put',
-	reqBody: fs.createReadStream('/path/to/file')
-}, function (err, res) {
-	if (err) {
-		console.error(err);
-		return;
-	}
-	
-	console.log(res.code, res.headers);
 });</code></pre>
 
     
@@ -1480,7 +1503,7 @@ http.put({
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line494">line 494</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line529">line 529</a>
     </li></ul></dd>
     
     
@@ -1632,7 +1655,7 @@ http.setMaxSockets(128);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line504">line 504</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line539">line 539</a>
     </li></ul></dd>
     
     
@@ -1677,7 +1700,7 @@ http.setMaxSockets(128);</code></pre>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.1</a> on Tue Nov 05 2013 16:27:38 GMT+0200 (EET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.1</a> on Tue Nov 05 2013 17:58:28 GMT+0200 (EET)
 </footer>
 
 <script> prettyPrint(); </script>
