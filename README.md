@@ -16,7 +16,7 @@ Either manually clone this repository into your node_modules directory, or the r
  * The [HEAD method](http://saltwaterc.github.io/http-get/module-main.html#head)
  * The [POST method](http://saltwaterc.github.io/http-get/module-main.html#post)
  * The [PUT method](http://saltwaterc.github.io/http-get/module-main.html#put)
- * The [MIME sniffer](http://saltwaterc.github.io/http-get/module-main.html#mimeSniffer)
+ * The [MIME sniffer](http://saltwaterc.github.io/http-get/module-main.html#mimeSniff)
 
 ## System Requirements
 
