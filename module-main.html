@@ -185,7 +185,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line91">line 91</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line95">line 95</a>
     </li></ul></dd>
     
     
@@ -373,7 +373,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line207">line 207</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line217">line 217</a>
     </li></ul></dd>
     
     
@@ -402,9 +402,10 @@
 http.delete('http://localhost/delete', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.buffer.toString());
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
 });
 
 // with explicit options object, save to file the response body
@@ -413,9 +414,10 @@ http.delete({
 }, function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.file);
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.file);
 });</code></pre>
 
     
@@ -562,7 +564,7 @@ http.delete({
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line142">line 142</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line149">line 149</a>
     </li></ul></dd>
     
     
@@ -591,9 +593,10 @@ http.delete({
 http.get('http://localhost/get', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.buffer.toString());
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
 });
 
 // save the response to file with a progress callback
@@ -605,9 +608,10 @@ http.get({
 }, 'get.bin', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.file);
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.file);
 });
 
 // with explicit options, use a HTTP proxy, and limit the number of redirects
@@ -621,9 +625,10 @@ http.get({
 }, function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.buffer.toString());
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
 });</code></pre>
 
     
@@ -744,7 +749,7 @@ http.get({
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line163">line 163</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line171">line 171</a>
     </li></ul></dd>
     
     
@@ -773,9 +778,162 @@ http.get({
 http.head('http://localhost/head', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers);
+		return;
 	}
+	
+	console.log(res.code, res.headers);
+});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="mimeSniff"><span class="type-signature">&lt;static> </span>mimeSniff<span class="signature">(url, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Reads the first chunk from the target URL. Tries to pass back the proper MIME type</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The target URL</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Completion callback with either <a href="module-request.html#stdError">module:request~stdError</a> or the MIME type as string</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line433">line 433</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>http.mimeSniff('http://localhost/foo.pdf', function (err, mime) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	
+	console.log(mime); // application/pdf
 });</code></pre>
 
     
@@ -922,7 +1080,7 @@ http.head('http://localhost/head', function (err, res) {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line279">line 279</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line292">line 292</a>
     </li></ul></dd>
     
     
@@ -955,9 +1113,10 @@ http.head('http://localhost/head', function (err, res) {
 http.post('http://localhost/post?param1=value1&amp;param2=value2', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.buffer.toString());
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
 });
 
 // explicit POST request, saves the response body to file
@@ -981,9 +1140,10 @@ http.post({
 }, 'post.bin', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.file);
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.file);
 });
 
 // multipart/form-data request built with form-data (3rd party module)
@@ -1001,9 +1161,228 @@ http.post({
 }, function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.buffer.toString());
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
+});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="put"><span class="type-signature">&lt;static> </span>put<span class="signature">(options, file, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>HTTP PUT method wrapper</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-request.html#options">module:request~options</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The options Object taken by the Request constructor, filtered by module:tools.shortHand. options.method = 'PUT' and it can not be overridden</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>file</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Optional; specify a filesystem path to save the response body as file instead of Buffer. Passing null turns of the data listeners</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-main.html#callback">module:main~callback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Completion callback</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line381">line 381</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// put a buffer
+http.put({
+	url: 'http://localhost/put',
+	reqBody: new Buffer('data to put'),
+	headers: {
+		// you need to define a type if required by the target application
+		'content-type': 'text/plain'
+	}
+}, function (err, res) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
+});
+
+// put a readable stream with known size and type, save the response body to file
+http.put({
+	url: 'http://localhost/put',
+	reqBody: readableStream,
+	headers: {
+		'content-lenght': 1337,
+		'content-type': 'text/plain'
+	}
+}, 'put.bin', function (err, res) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
+});
+
+// put a ReadStream created with fs.createReadStream
+// content-length is taken from the file itself by making a fs.stat call
+// content-type is detected automatically by using mmmagic if unspecified
+http.put({
+	url: 'http://localhost/put',
+	reqBody: fs.createReadStream('/path/to/file')
+}, function (err, res) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	
+	console.log(res.code, res.headers);
 });</code></pre>
 
     
@@ -1101,7 +1480,7 @@ http.post({
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line320">line 320</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line482">line 482</a>
     </li></ul></dd>
     
     
@@ -1253,7 +1632,7 @@ http.setMaxSockets(128);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line330">line 330</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line492">line 492</a>
     </li></ul></dd>
     
     
@@ -1298,7 +1677,7 @@ http.setMaxSockets(128);</code></pre>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.1</a> on Mon Nov 04 2013 17:30:35 GMT+0200 (EET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.1</a> on Tue Nov 05 2013 15:19:18 GMT+0200 (EET)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -34,13 +34,17 @@
 /* core modules */
 var util = require('util');
 var http = require('http');
+var fs = require('fs');
+var ReadStream = fs.ReadStream;
 
 /* local modules */
 var tools = require('./tools.js');
 var Request = require('./request.js');
 
-/* 3rd party module */
+/* 3rd party modules */
 exports.FormData = require('form-data');
+var mmm = require('mmmagic');
+var magic = new mmm.Magic(mmm.MAGIC_MIME_TYPE);
 
 // private section
 
@@ -131,9 +135,10 @@ exports.createHttpClient = function(options) {
 http.get('http://localhost/get', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.buffer.toString());
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
 });
 
 // save the response to file with a progress callback
@@ -145,9 +150,10 @@ http.get({
 }, 'get.bin', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.file);
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.file);
 });
 
 // with explicit options, use a HTTP proxy, and limit the number of redirects
@@ -161,9 +167,10 @@ http.get({
 }, function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.buffer.toString());
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
 });
  */
 exports.get = function(options, file, callback) {
@@ -182,9 +189,10 @@ exports.get = function(options, file, callback) {
 http.head('http://localhost/head', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers);
+		return;
 	}
+	
+	console.log(res.code, res.headers);
 });
  */
 exports.head = function(options, callback) {
@@ -215,9 +223,10 @@ exports.head = function(options, callback) {
 http.delete('http://localhost/delete', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.buffer.toString());
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
 });
 
 // with explicit options object, save to file the response body
@@ -226,9 +235,10 @@ http.delete({
 }, function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.file);
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.file);
 });
  */
 exports.delete = function(options, file, callback) {
@@ -252,9 +262,10 @@ exports.delete = function(options, file, callback) {
 http.post('http://localhost/post?param1=value1&amp;param2=value2', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.buffer.toString());
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
 });
 
 // explicit POST request, saves the response body to file
@@ -278,9 +289,10 @@ http.post({
 }, 'post.bin', function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.file);
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.file);
 });
 
 // multipart/form-data request built with form-data (3rd party module)
@@ -298,9 +310,10 @@ http.post({
 }, function (err, res) {
 	if (err) {
 		console.error(err);
-	} else {
-		console.log(res.code, res.headers, res.buffer.toString());
+		return;
 	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
 });
  */
 exports.post = function(options, file, callback) {
@@ -333,6 +346,155 @@ exports.post = function(options, file, callback) {
 	}
 
 	requestWrapper(options, file, callback);
+};
+
+/**
+ * HTTP PUT method wrapper
+ *
+ * @param {module:request~options} options The options Object taken by the {@link Request} constructor, filtered by {@link module:tools.shortHand}. options.method = 'PUT' and it can not be overridden
+ * @param {String|null} file Optional; specify a filesystem path to save the response body as file instead of Buffer. Passing null turns of the data listeners
+ * @param {module:main~callback} callback Completion callback
+ *
+ * @example
+// put a buffer
+http.put({
+	url: 'http://localhost/put',
+	reqBody: new Buffer('data to put'),
+	headers: {
+		// you need to define a type if required by the target application
+		'content-type': 'text/plain'
+	}
+}, function (err, res) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
+});
+
+// put a readable stream with known size and type, save the response body to file
+http.put({
+	url: 'http://localhost/put',
+	reqBody: readableStream,
+	headers: {
+		'content-lenght': 1337,
+		'content-type': 'text/plain'
+	}
+}, 'put.bin', function (err, res) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	
+	console.log(res.code, res.headers, res.buffer.toString());
+});
+
+// put a ReadStream created with fs.createReadStream
+// content-length is taken from the file itself by making a fs.stat call
+// content-type is detected automatically by using mmmagic if unspecified
+http.put({
+	url: 'http://localhost/put',
+	reqBody: fs.createReadStream('/path/to/file')
+}, function (err, res) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	
+	console.log(res.code, res.headers);
+});
+ */
+exports.put = function(options, file, callback) {
+	options = tools.shortHand(options, 'put');
+
+	if (options.reqBody instanceof ReadStream) {
+		options.reqBody.pause();
+
+		fs.stat(options.reqBody.path, function(err, stats) {
+			if (err) {
+				callback(err);
+				return;
+			}
+
+			options.headers['content-length'] = stats.size;
+
+			if (!options.headers['content-type']) {
+				magic.detectFile(options.reqBody.path, function(err, mime) {
+					if (err) {
+						callback(err);
+						return;
+					}
+
+					options.headers['content-type'] = mime;
+
+					requestWrapper(options, file, callback);
+				});
+				return;
+			}
+
+			requestWrapper(options, file, callback);
+		});
+		return;
+	}
+
+	requestWrapper(options, file, callback);
+};
+
+/**
+ * Reads the first chunk from the target URL. Tries to pass back the proper MIME type
+ *
+ * @param {String} url The target URL
+ * @param {Function} callback Completion callback with either {@link module:request~stdError} or the MIME type as string
+ *
+ * @example
+http.mimeSniff('http://localhost/foo.pdf', function (err, mime) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	
+	console.log(mime); // application/pdf
+});
+ */
+exports.mimeSniff = function(url, callback) {
+	var request = new Request({
+		url: url,
+		method: 'GET',
+		stream: true,
+		noCompress: true
+	});
+
+	request.send(function(err, res) {
+		if (err) {
+			callback(err);
+			return;
+		}
+
+		if (!res.stream) {
+			request.error(new Error('Failed to retrieve the HTTP stream.'), callback);
+			return;
+		}
+
+		if (res.stream.headers['content-length'] === '0') {
+			request.error(new Error('The target URL has Content-Length: 0.'), callback);
+			return;
+		}
+
+		res.stream.resume();
+		res.stream.on('data', function(chunk) {
+			request.request.abort();
+
+			magic.detect(chunk, function(err, mime) {
+				if (err) {
+					request.error(err, callback);
+					return;
+				}
+
+				callback(null, mime);
+			});
+		});
+	});
 };
 
 /**
@@ -377,7 +539,7 @@ exports.setMaxSockets = function(value) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.1</a> on Mon Nov 04 2013 17:30:35 GMT+0200 (EET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.1</a> on Tue Nov 05 2013 15:19:18 GMT+0200 (EET)
 </footer>
 
 <script> prettyPrint(); </script>
