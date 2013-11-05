@@ -1,7 +1,9 @@
 'use strict';
 
 /* core libraries */
+var fs = require('fs');
 var u = require('url');
+var p = require('path');
 var zlib = require('zlib');
 var http = require('http');
 var https = require('https');
@@ -10,13 +12,16 @@ var qs = require('querystring');
 /* 3rd party libraries */
 var assert = require('chai').assert;
 var multiparty = require('multiparty');
+var mmm = require('mmmagic');
+var magic = new mmm.Magic(mmm.MAGIC_MIME_TYPE);
 
 var options = {
 	host: '127.0.0.1',
 	port: process.env.HTTP_REQUEST_HTTP || 42890,
 	securePort: process.env.HTTP_REQUEST_HTTPS || 42891,
 	proxyPort: process.env.HTTP_REQUEST_PROXY || 42892,
-	noPort: process.env.HTTP_REQUEST_NOPORT || 42893
+	noPort: process.env.HTTP_REQUEST_NOPORT || 42893,
+	filePort: process.env.HTTP_REQUEST_FILE || 42894
 };
 
 exports.options = options;
@@ -503,4 +508,43 @@ exports.createServers = function(callback) {
 	});
 
 	return instances;
+};
+
+/**
+ * Creates a file server for testing mimeSniff
+ *
+ * @param {Function} callback The completion callback provided by mocha
+ */
+exports.createFileServer = function(callback) {
+	return http.createServer(function(req, res) {
+		var uri = u.parse(req.url).pathname;
+		var filename = p.join(process.cwd() + '/test/data', uri);
+		fs.exists(filename, function(exists) {
+			if (!exists) {
+				res.writeHead(404, {
+					'content-type': 'text/plain'
+				});
+				res.end('404 - Not found');
+				return;
+			}
+
+			magic.detectFile(filename, function(err, mime) {
+				if (err) {
+					res.writeHead(500, {
+						'content-type': 'text/plain'
+					});
+					res.end('500 - Internal Server Error');
+					return;
+				}
+
+				res.writeHead(200, {
+					'content-type': mime
+				});
+				var fileStream = fs.createReadStream(filename);
+				fileStream.pipe(res);
+			});
+		});
+	}).listen(options.filePort, function() {
+		callback();
+	});
 };
