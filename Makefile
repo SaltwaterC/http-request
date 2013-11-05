@@ -1,5 +1,6 @@
 .PHONY: all
 .DEFAULT: all
+REPORTER ?= dot
 
 all:
 	@/usr/bin/env npm install
@@ -22,7 +23,7 @@ test: lint
 	@rm -f hello.txt
 	@rm -f world.txt
 	@rm -f foo.txt
-	@./node_modules/.bin/mocha
+	@./node_modules/.bin/mocha --reporter $(REPORTER)
 
 beautify:
 	@tools/beautify.sh

@@ -221,6 +221,7 @@ Response.prototype.write = function(content) {
 var createServer = function(module, opt) {
 	var callback = function(req, res) {
 		var response = new Response(req, res);
+		var buf, size;
 
 		switch (req.url) {
 			case '/redirect':
@@ -398,8 +399,9 @@ var createServer = function(module, opt) {
 					}
 
 					if (req.headers['content-type'].search('multipart/form-data') === -1) {
-						var buf = [],
-							size = 0;
+						buf = [];
+						size = 0;
+
 						req.on('data', function(chunk) {
 							buf.push(chunk);
 							size += chunk.length;
@@ -422,6 +424,35 @@ var createServer = function(module, opt) {
 							});
 						});
 					}
+				} else {
+					response.send({
+						code: 405,
+						body: '<html><head><title>405 - Method not supported</title></head><body><h1>Method not supported.</h1></body></html>'
+					});
+				}
+				break;
+
+			case '/put':
+				if (req.method === 'PUT') {
+					headers = {
+						'x-content-type': req.headers['content-type'],
+						'x-content-length': req.headers['content-length']
+					};
+
+					buf = [];
+					size = 0;
+
+					req.on('data', function(chunk) {
+						buf.push(chunk);
+						size += chunk.length;
+					});
+
+					req.on('end', function() {
+						response.send({
+							headers: headers,
+							body: Buffer.concat(buf, size).toString()
+						});
+					});
 				} else {
 					response.send({
 						code: 405,
@@ -519,8 +550,8 @@ exports.createFileServer = function(callback) {
 	return http.createServer(function(req, res) {
 		var uri = u.parse(req.url).pathname;
 		var filename = p.join(process.cwd() + '/test/data', uri);
-		fs.exists(filename, function(exists) {
-			if (!exists) {
+		fs.stat(filename, function(err, stats) {
+			if (err) {
 				res.writeHead(404, {
 					'content-type': 'text/plain'
 				});
@@ -538,7 +569,8 @@ exports.createFileServer = function(callback) {
 				}
 
 				res.writeHead(200, {
-					'content-type': mime
+					'content-type': mime,
+					'content-length': stats.size
 				});
 				var fileStream = fs.createReadStream(filename);
 				fileStream.pipe(res);
