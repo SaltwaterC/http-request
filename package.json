@@ -7,7 +7,8 @@
 		"node": ">= 0.8.5"
 	},
 	"dependencies": {
-		"form-data": ">= 0.1.2"
+		"form-data": ">= 0.1.2",
+		"mmmagic": ">= 0.3.4"
 	},
 	"devDependencies": {
 		"mocha": ">= 1.8.2",
