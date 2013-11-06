@@ -1,4 +1,4 @@
-# http-request ![build status](https://secure.travis-ci.org/SaltwaterC/http-get.png?branch=master)
+# http-request ![build status](https://secure.travis-ci.org/SaltwaterC/http-request.png?branch=master)
 
 General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding. Successor of http-get.
 
@@ -8,13 +8,13 @@ General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / def
 
 ## Reference
 
- * The [Request](http://saltwaterc.github.io/http-get/module-request-Request.html) class - for implementing your own HTTP methods if wrappers aren't provided by the library
- * The [DELETE method](http://saltwaterc.github.io/http-get/module-main.html#delete)
- * The [GET method](http://saltwaterc.github.io/http-get/module-main.html#get)
- * The [HEAD method](http://saltwaterc.github.io/http-get/module-main.html#head)
- * The [POST method](http://saltwaterc.github.io/http-get/module-main.html#post)
- * The [PUT method](http://saltwaterc.github.io/http-get/module-main.html#put)
- * The [MIME sniffer](http://saltwaterc.github.io/http-get/module-main.html#mimeSniff)
+ * The [Request](http://saltwaterc.github.io/http-request/module-request-Request.html) class - for implementing your own HTTP methods if wrappers aren't provided by the library
+ * The [DELETE method](http://saltwaterc.github.io/http-request/module-main.html#delete)
+ * The [GET method](http://saltwaterc.github.io/http-request/module-main.html#get)
+ * The [HEAD method](http://saltwaterc.github.io/http-request/module-main.html#head)
+ * The [POST method](http://saltwaterc.github.io/http-request/module-main.html#post)
+ * The [PUT method](http://saltwaterc.github.io/http-request/module-main.html#put)
+ * The [MIME sniffer](http://saltwaterc.github.io/http-request/module-main.html#mimeSniff)
 
 ## System Requirements
 
