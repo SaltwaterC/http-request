@@ -1,3 +1,14 @@
+## v0.6.0
+ * Client rewritten almost from scratch for including broader HTTP support. Renamed to http-request to indicate this change. New HTTP method wrappers: DELETE, POST, PUT.
+ * Strict about user errors. They are considered unrecoverable aka won't fix without changing the code, hence they throw. Passing these to the completion callback has only one outcome: to conceal bugs.
+ * Removed the support for HTTPS proxies since there's no way to do it properly, unless you actually control the proxy, which opens a door for MITM attacks.
+ * The progress callback option is now available for all response handlers (file, buffer, stream).
+ * Fix: the 201, 202, 203, 205 responses are handled as success (as they should).
+ * Fix: the 305 responses are not handled as simple redirects. The library uses the location header information as options.proxy.
+ * The 300 Multiple Choices responses are handled as errors instead of redirects. The location header, by RFC, indicates a preference, not something that must be automatically followed. It is up to the developer by using the response body (entity) to pick what to do next, or use the location header in a subsequent request.
+ * Added a new option: noRedirect. Returns the headers and body (if applicable), for redirect requests.
+ * Documentation generated with JSDoc 3.
+
 ## v0.5.9
  * Changes the internal buffering concatenation to a much faster implementation: Buffer.concat by using the buffer-concat module for node.js v0.6.
 

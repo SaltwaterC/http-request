@@ -1,4 +1,4 @@
-# http-get license
+# http-request license
 
 Copyright (c) 2011-2013, Stefan Rusu All rights reserved.
 

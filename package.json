@@ -1,43 +1,58 @@
 {
-	"name": "http-get",
-	"version": "0.5.10",
-	"main": "./lib/http-get.js",
-	"description": "Simple to use node.js HTTP / HTTPS client for downloading remote files. Supports transparent gzip / deflate decoding.",
-	"dependencies": {
-		"semver": ">=1.0.13",
-		"buffer-concat": ">=0.0.1"
-	},
+	"name": "http-request",
+	"version": "0.6.0",
+	"main": "./lib/main.js",
+	"description": "General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding.",
 	"engines": {
-		"node": ">=0.6.11"
+		"node": ">= 0.8.5"
+	},
+	"dependencies": {
+		"form-data": ">= 0.1.2",
+		"mmmagic": ">= 0.3.4"
+	},
+	"devDependencies": {
+		"mocha": ">= 1.8.2",
+		"chai": ">= 1.5.0",
+		"js-beautify": ">= 0.4.2",
+		"jslint": ">= 0.1.9",
+		"multiparty": ">= 3.0.0"
 	},
 	"homepage": "https://github.com/SaltwaterC/http-get",
 	"author": {
 		"name": "Stefan Rusu",
 		"url": "http://www.saltwaterc.eu/"
 	},
-	"contributors": [
-		{
-			"name": "cmtt",
-			"url": "https://github.com/cmtt"
-		},
-		{
-			"name": "elarcent",
-			"url": "https://github.com/elarcent"
-		},
-		{
-			"name": "Gil Pedersen",
-			"url": "https://github.com/kanongil"
-		},
-		{
-			"name": "Stefan Klug",
-			"url": "https://github.com/stefanklug"
-		}
-	],
+	"contributors": [{
+		"name": "cmtt",
+		"url": "https://github.com/cmtt"
+	}, {
+		"name": "elarcent",
+		"url": "https://github.com/elarcent"
+	}, {
+		"name": "Gil Pedersen",
+		"url": "https://github.com/kanongil"
+	}, {
+		"name": "Stefan Klug",
+		"url": "https://github.com/stefanklug"
+	}],
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/SaltwaterC/http-get.git"
 	},
-	"keywords": ["http", "https", "get", "head", "download", "gzip", "deflate"],
+	"keywords": [
+		"http",
+		"https",
+		"get",
+		"head",
+		"post",
+		"put",
+		"delete",
+		"download",
+		"upload",
+		"gzip",
+		"deflate",
+		"mime"
+	],
 	"scripts": {
 		"test": "make test"
 	}
