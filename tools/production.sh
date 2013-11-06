@@ -2,12 +2,8 @@
 
 function production()
 {
-	sed=$(which gsed)
-	if [ $? -ne 0 ]
-	then
-		sed=sed
-	fi
-	find $1 -name "*.js" | xargs $sed -i "s#tools\.debug#//tools\.debug#g"
+	SED=$(which gsed || which sed)
+	find "$1" -name "*.js" | xargs $SED -i "s#tools\.debug#//tools\.debug#g"
 }
 
 production lib
