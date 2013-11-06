@@ -1,6 +1,6 @@
 {
 	"name": "http-request",
-	"version": "0.6.0-beta7",
+	"version": "0.6.0",
 	"main": "./lib/main.js",
 	"description": "General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding.",
 	"engines": {
@@ -50,7 +50,8 @@
 		"download",
 		"upload",
 		"gzip",
-		"deflate"
+		"deflate",
+		"mime"
 	],
 	"scripts": {
 		"test": "make test"

@@ -4,13 +4,11 @@ General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / def
 
 ## Installation
 
-Either manually clone this repository into your node_modules directory, or the recommended method:
-
 > npm install http-request
 
 ## Reference
 
- * The [Request](http://saltwaterc.github.io/http-get/84e50cc04e.html) class - for implementing your own HTTP methods if wrappers aren't provided by the library
+ * The [Request](http://saltwaterc.github.io/http-get/module-request-Request.html) class - for implementing your own HTTP methods if wrappers aren't provided by the library
  * The [DELETE method](http://saltwaterc.github.io/http-get/module-main.html#delete)
  * The [GET method](http://saltwaterc.github.io/http-get/module-main.html#get)
  * The [HEAD method](http://saltwaterc.github.io/http-get/module-main.html#head)
@@ -21,6 +19,8 @@ Either manually clone this repository into your node_modules directory, or the r
 ## System Requirements
 
  * [node.js](http://nodejs.org/) v0.8.5+. Previous versions do not have proper SSL support.
+ * [form-data](https://github.com/felixge/node-form-data)
+ * [mmmagic](https://github.com/mscdex/mmmagic)
 
 ## Contributors
 
