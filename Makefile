@@ -19,7 +19,7 @@ publish: all production
 
 tests: test
 check: test
-test: lint
+test: all lint
 	@rm -f hello.txt
 	@rm -f world.txt
 	@rm -f foo.txt
