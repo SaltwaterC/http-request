@@ -2,8 +2,6 @@
 .settings/
 node_modules/
 *.komodoproject
-tests/foo.txt
-tests/bar.txt
 test/hello.txt
 test/world.txt
 test/foo.txt
