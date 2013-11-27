@@ -11,7 +11,7 @@ ca-bundler:
 	$(MAKE) beautify
 
 lint:
-	@tools/lint.sh
+	@tools/lint.sh lib test
 
 publish: all production
 	@/usr/bin/env npm publish
