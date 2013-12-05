@@ -5,3 +5,4 @@ node_modules/
 test/hello.txt
 test/world.txt
 test/foo.txt
+npm-debug.log
