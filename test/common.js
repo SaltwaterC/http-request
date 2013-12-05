@@ -391,7 +391,8 @@ var createServer = function(module, opt) {
 			case '/post':
 				if (req.method === 'POST') {
 					headers = {
-						'x-content-type': req.headers['content-type']
+						'x-content-type': req.headers['content-type'],
+						'x-content-length': req.headers['content-length']
 					};
 
 					if (req.headers.wibble) {
