@@ -1,5 +1,5 @@
 ## v0.6.1
- * Typo in content-length for Buffer reqBody.
+ * Fixed the typo in content-length for Buffer reqBody.
 
 ## v0.6.0
  * Client rewritten almost from scratch for including broader HTTP support. Renamed to http-request to indicate this change. New HTTP method wrappers: DELETE, POST, PUT.
