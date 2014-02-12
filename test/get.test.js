@@ -778,6 +778,27 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
+	describe('GET with redirect and defined host header into the request', function() {
+		it('should keep the host header for relative redirects', function(done) {
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/redirect',
+				headers: {
+					host: 'foo.bar'
+				},
+				noRedirect: true
+			}, function(err, res) {
+				assert.ifError(err, 'we have an error');
+
+				assert.strictEqual(res.code, 301, 'we got the proper HTTP status code');
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
+				assert.strictEqual(res.headers['redirect-to-host'], 'foo.bar');
+				assert.strictEqual(res.headers['redirect-to-url'], 'http://127.0.0.1:' + common.options.port + '/redirect-target');
+
+				done();
+			});
+		});
+	});
+
 	after(function() {
 		server.close();
 		secureServer.close();
