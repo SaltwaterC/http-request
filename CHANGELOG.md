@@ -1,3 +1,7 @@
+## v0.6.2
+ * Closes [#24](https://github.com/SaltwaterC/http-request/issues/24). Keeps the host header specified into the request headers when the location header contains a relative path.
+ * Adds some debugging info to the noRedirect option, the redirect-to-url and redirect-to-host as response headers. Related to the #24 issue.
+
 ## v0.6.1
  * Fixed the typo in content-length for Buffer reqBody.
 

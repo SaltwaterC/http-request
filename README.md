@@ -1,4 +1,4 @@
-# http-request ![build status](https://secure.travis-ci.org/SaltwaterC/http-request.png?branch=master)
+# http-request ![build status](https://secure.travis-ci.org/SaltwaterC/http-request.png?branch=master) [![NPM version](https://badge.fury.io/js/http-request.png)](http://badge.fury.io/js/http-request)
 
 General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding. Successor of http-get.
 
