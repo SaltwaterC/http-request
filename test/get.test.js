@@ -131,6 +131,42 @@ describe('HTTP GET method tests', function() {
 			});
 		});
 	});
+	
+	describe('GET invalid type for the auth option', function () {
+		it('should throw an Error', function (done) {
+			var throws = function() {
+				client.get({
+					url: 'http://127.0.0.1:' + common.options.port + '/basic-auth',
+					auth: 'foo'
+				}, function(err) {
+					assert.ifError(err);
+				});
+			};
+
+			assert.throws(throws, Error, 'Expecting an Object for the auth option.');
+
+			done();
+		});
+	});
+	
+	describe('GET invalid option.auth.type', function () {
+		it('should throw an Error', function (done) {
+			var throws = function() {
+				client.get({
+					url: 'http://127.0.0.1:' + common.options.port + '/basic-auth',
+					auth: {
+						type: 'foo'
+					}
+				}, function(err) {
+					assert.ifError(err);
+				});
+			};
+
+			assert.throws(throws, Error, 'Unknown type for the auth option.');
+
+			done();
+		});
+	});
 
 	describe('GET broken DNS name over HTTP', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
