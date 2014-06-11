@@ -106,6 +106,32 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
+	describe('GET Basic Authentication with auth option', function() {
+		it('should pass back the basic authentication', function(done) {
+			var basicAuth = {
+				type: 'basic',
+				username: 'user@example.com',
+				password: 'pass#word'
+			};
+
+			client.get({
+				url: 'http://127.0.0.1:' + common.options.port + '/basic-auth',
+				auth: basicAuth
+			}, function(err, res) {
+				assert.isNull(err, 'we have an error');
+
+				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
+
+				var auth = JSON.parse(res.buffer.toString());
+
+				assert.strictEqual(auth.username, basicAuth.username);
+				assert.strictEqual(auth.password, basicAuth.password);
+
+				done();
+			});
+		});
+	});
+
 	describe('GET broken DNS name over HTTP', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.get('http://.foo.bar/', function(err, res) {
