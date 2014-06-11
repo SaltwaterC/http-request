@@ -131,9 +131,9 @@ describe('HTTP GET method tests', function() {
 			});
 		});
 	});
-	
-	describe('GET invalid type for the auth option', function () {
-		it('should throw an Error', function (done) {
+
+	describe('GET invalid type for the auth option', function() {
+		it('should throw an Error', function(done) {
 			var throws = function() {
 				client.get({
 					url: 'http://127.0.0.1:' + common.options.port + '/basic-auth',
@@ -148,9 +148,9 @@ describe('HTTP GET method tests', function() {
 			done();
 		});
 	});
-	
-	describe('GET invalid option.auth.type', function () {
-		it('should throw an Error', function (done) {
+
+	describe('GET invalid option.auth.type', function() {
+		it('should throw an Error', function(done) {
 			var throws = function() {
 				client.get({
 					url: 'http://127.0.0.1:' + common.options.port + '/basic-auth',
@@ -605,7 +605,7 @@ describe('HTTP GET method tests', function() {
 
 	// On Travis CI this response comes back short at 1043957 bytes
 	// Therefore, this test always fails under Travis CI
-	if (process.env.TRAVIS_NODE_VERSION) {
+	if (!process.env.TRAVIS_NODE_VERSION) {
 		describe('GET with overflowing error document', function() {
 			it('should detect the situation and act accordingly', function(done) {
 				client.get({
