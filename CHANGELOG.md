@@ -1,5 +1,5 @@
 ## v0.7
- * [MAY BREAK COMPAT] The Error objects thrown on wrong argument types were changed to TypeError. Standardised message output of these errors.
+ * [MAY BREAK COMPAT] The Error objects thrown on wrong argument types were changed to TypeError. Standardised message output for these errors.
  * Fixed the client crash when noRedirect is used with a response that doesn't redirect.
  * Migrated from jslint to jshint.
  * Removed the warning about the deprecated options.bufferType.
