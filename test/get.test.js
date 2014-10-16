@@ -26,7 +26,8 @@ describe('HTTP GET method tests', function() {
 		it('should pass "Hello World" buffer', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-plain',
-				noCompress: true
+				noCompress: true,
+				noRedirect: true
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 

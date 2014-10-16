@@ -24,7 +24,8 @@ describe('HTTP HEAD method tests', function() {
 		it('should pass the response headers', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-plain',
-				noCompress: true
+				noCompress: true,
+				noRedirect: true
 			}, function(err, res) {
 				assert.isNull(err, 'we have an error');
 
