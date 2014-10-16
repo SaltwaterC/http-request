@@ -121,10 +121,10 @@ describe('HTTP HEAD method tests', function() {
 
 	describe('HEAD DNS error', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
-			client.head('http://foo.bar/', function(err, res) {
+			client.head('http://wibble.wobble/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
 				assert.strictEqual(err.code, 'ENOTFOUND');
-				assert.strictEqual(err.url, 'http://foo.bar/');
+				assert.strictEqual(err.url, 'http://wibble.wobble/');
 
 				assert.isUndefined(res, 'we have a response');
 
