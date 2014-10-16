@@ -27,7 +27,7 @@ var options = {
 exports.options = options;
 
 var secureServerOptions = {
-	key: "-----BEGIN RSA PRIVATE KEY-----\n\
+	key: '-----BEGIN RSA PRIVATE KEY-----\n\
 MIICXAIBAAKBgQCqU3qR60Pgojh8HjO3+ttmgZVj6l5Ai0PHscCUq7q72vrgJVjz\n\
 LqfOz2K182MxACwh5oYklqhSuL+7j+GvXRVCoq7Y2zE6P/PphEGhVwgS1fg034S4\n\
 sgzuY01MzbBKfG1j5YOYMpAo0E4TcxF/iT69L3aRGyWP/xc9rG8rsypdTQIDAQAB\n\
@@ -42,8 +42,8 @@ iBDymLaxm+GF/dDH3gjiFvJxuYP9pyRRpkSx0ughJ0p7KUTXTlEYrZ4xPQJBAIkT\n\
 1p9mmp8K5unKZgCwtVkCQBTu2Q57Pq6bMm0szuxU/+v5/6ECZyNLkW6fjOaro4TU\n\
 0UN0N4vfzkQXx7zwB2b462/hDmMABS3ZaySuWW4bsyo=\n\
 -----END RSA PRIVATE KEY-----\n\
-",
-	cert: "-----BEGIN CERTIFICATE-----\n\
+\n',
+	cert: '-----BEGIN CERTIFICATE-----\n\
 MIIDAjCCAmugAwIBAgIJAK2xvkb3AFXoMA0GCSqGSIb3DQEBBQUAMHwxCzAJBgNV\n\
 BAYTAlJPMRMwEQYDVQQIEwpTb21lLVN0YXRlMQ0wCwYDVQQKEwRIb21lMQ0wCwYD\n\
 VQQLEwRIb21lMRUwEwYDVQQDFAzImHRlZmFuIFJ1c3UxIzAhBgkqhkiG9w0BCQEW\n\
@@ -62,7 +62,7 @@ pqovTsKrytNQdXjizJNbXL98vr956fcuCYCwwCX3M60amVhbRYa2XoHegJBZm/KS\n\
 Nf1BxNjf/LEgc4yAn6XxRfwG3hqqyvhXeRhs6pehWxgAUje2TIKBfYkgyo1MMeBQ\n\
 GzbWB96n\n\
 -----END CERTIFICATE-----\n\
-"
+\n'
 };
 
 /**

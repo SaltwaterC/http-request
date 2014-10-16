@@ -3,11 +3,9 @@
 /*global describe: true, it: true, before: true, after: true*/
 
 var client = require('../');
-var config = require('../package.json');
 
 var common = require('./common.js');
 
-var util = require('util');
 var qs = require('querystring');
 var assert = require('chai').assert;
 

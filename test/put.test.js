@@ -3,7 +3,6 @@
 /*global describe: true, it: true, before: true, after: true*/
 
 var client = require('../');
-var config = require('../package.json');
 
 var common = require('./common.js');
 
