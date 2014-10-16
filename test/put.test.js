@@ -21,7 +21,7 @@ describe('HTTP PUT method tests', function() {
 		proxy = servers.proxy;
 	});
 
-	describe('PUT buffer', function() {
+	describe('PUT: buffer', function() {
 		it('should make a succesful PUT request', function(done) {
 			client.put({
 				url: 'http://127.0.0.1:' + common.options.port + '/put',
@@ -39,7 +39,7 @@ describe('HTTP PUT method tests', function() {
 		});
 	});
 
-	describe('PUT file', function() {
+	describe('PUT: file', function() {
 		it('should make a succesful PUT request', function(done) {
 			client.put({
 				url: 'http://127.0.0.1:' + common.options.port + '/put',
@@ -57,7 +57,7 @@ describe('HTTP PUT method tests', function() {
 		});
 	});
 
-	describe('PUT pipe http.IncomingMessage', function() {
+	describe('PUT: pipe http.IncomingMessage', function() {
 		it('should make a succesful PUT request', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.filePort + '/bzip2.foo',

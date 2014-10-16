@@ -2,6 +2,7 @@
  * [MAY BREAK COMPAT] The Error objects thrown on wrong argument types were changed to TypeError. Standardised message output of these errors.
  * Fixed the client crash when noRedirect is used with a response that doesn't redirect.
  * Migrated from jslint to jshint.
+ * Removed the warning about the deprecated options.bufferType.
 
 ## v0.6.3
  * New option: auth. Defines the HTTP Authentication parameters. Currently it only supports Basic authentication.

@@ -10,6 +10,8 @@ var common = require('./common.js');
 var u = require('url');
 var fs = require('fs');
 var util = require('util');
+var domain = require('domain');
+
 var assert = require('chai').assert;
 
 describe('HTTP GET method tests', function() {
@@ -22,7 +24,7 @@ describe('HTTP GET method tests', function() {
 		proxy = servers.proxy;
 	});
 
-	describe('GET Hello World Buffer - plain', function() {
+	describe('GET: Hello World Buffer - plain', function() {
 		it('should pass "Hello World" buffer', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-plain',
@@ -43,7 +45,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET Hello World Buffer - gzip', function() {
+	describe('GET: Hello World Buffer - gzip', function() {
 		it('should pass "Hello World" buffer', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-gzip',
@@ -62,7 +64,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET Hello World Buffer - deflate', function() {
+	describe('GET: Hello World Buffer - deflate', function() {
 		it('should pass "Hello World" buffer', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-deflate',
@@ -81,7 +83,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET Basic Authentication', function() {
+	describe('GET: Basic Authentication', function() {
 		it('should pass back the basic authentication', function(done) {
 			var url = u.format({
 				protocol: 'http:',
@@ -107,7 +109,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET Basic Authentication with auth option', function() {
+	describe('GET: Basic Authentication with auth option', function() {
 		it('should pass back the basic authentication', function(done) {
 			var basicAuth = {
 				type: 'basic',
@@ -133,26 +135,24 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET invalid type for the auth option', function() {
-		it('should throw an Error', function(done) {
-			var throws = function() {
+	describe('GET: invalid type for the auth option', function() {
+		it('should throw a TypeError', function(done) {
+			assert.throws(function() {
 				client.get({
 					url: 'http://127.0.0.1:' + common.options.port + '/basic-auth',
 					auth: 'foo'
 				}, function(err) {
 					assert.ifError(err);
 				});
-			};
-
-			assert.throws(throws, Error, 'Expecting an Object for the auth option.');
+			}, TypeError, 'Parameter \'options.auth\' must be an object, not string');
 
 			done();
 		});
 	});
 
-	describe('GET invalid option.auth.type', function() {
+	describe('GET: invalid option.auth.type', function() {
 		it('should throw an Error', function(done) {
-			var throws = function() {
+			assert.throws(function() {
 				client.get({
 					url: 'http://127.0.0.1:' + common.options.port + '/basic-auth',
 					auth: {
@@ -161,15 +161,13 @@ describe('HTTP GET method tests', function() {
 				}, function(err) {
 					assert.ifError(err);
 				});
-			};
-
-			assert.throws(throws, Error, 'Unknown type for the auth option.');
+			}, Error, 'Invalid value for option.auth.type.');
 
 			done();
 		});
 	});
 
-	describe('GET broken DNS name over HTTP', function() {
+	describe('GET: broken DNS name over HTTP', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.get('http://.foo.bar/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
@@ -182,7 +180,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET broken DNS name over HTTPS', function() {
+	describe('GET: broken DNS name over HTTPS', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.get('https://.foo.bar/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
@@ -195,7 +193,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET DNS error', function() {
+	describe('GET: DNS error', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.get('http://wibble.wobble/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
@@ -209,7 +207,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET header reflect', function() {
+	describe('GET: header reflect', function() {
 		it('should pass back the header foo sent from the client', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/header-reflect',
@@ -228,41 +226,37 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with invalid maxBody', function() {
-		it('should throw an Error', function(done) {
-			var throws = function() {
+	describe('GET: with invalid maxBody', function() {
+		it('should throw a TypeError', function(done) {
+			assert.throws(function() {
 				client.get({
 					url: 'http://127.0.0.1:' + common.options.port + '/',
 					maxBody: 'foo'
 				}, function(err) {
 					assert.ifError(err);
 				});
-			};
-
-			assert.throws(throws, Error, 'Invalid options.maxBody specification. Expecting a proper integer value.');
+			}, TypeError, 'Parameter \'options.maxBody\' must be a number, not string');
 
 			done();
 		});
 	});
 
-	describe('GET with invalid progress', function() {
-		it('should throw an Error', function(done) {
-			var throws = function() {
+	describe('GET: with invalid progress', function() {
+		it('should throw a TypeError', function(done) {
+			assert.throws(function() {
 				client.get({
 					url: 'http://127.0.0.1:' + common.options.port + '/',
 					progress: 'foo'
 				}, function(err) {
 					assert.ifError(err);
 				});
-			};
-
-			assert.throws(throws, Error, 'Expecting a function as progress callback.');
+			}, TypeError, 'Parameter \'options.progress\' must be a function, not string');
 
 			done();
 		});
 	});
 
-	describe('GET without protocol prefix', function() {
+	describe('GET: without protocol prefix', function() {
 		it('should work fine by prepending http:// to the URL', function(done) {
 			client.get('127.0.0.1:' + common.options.port + '/no-protocol-prefix', function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -277,7 +271,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET ranged content', function() {
+	describe('GET: ranged content', function() {
 		it('should return just part of the content', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/range-request',
@@ -300,7 +294,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with redirect', function() {
+	describe('GET: with redirect', function() {
 		it('should redirect succesfully', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/redirect',
@@ -321,7 +315,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with progress callback', function() {
+	describe('GET: with progress callback', function() {
 		it('should call the progress callback', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/progress',
@@ -346,7 +340,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET over HTTPS with SSL validation', function() {
+	describe('GET: over HTTPS with SSL validation', function() {
 		it('should verify succesfully the connection', function(done) {
 			client.get({
 				url: 'https://127.0.0.1:' + common.options.securePort + '/ssl-validation',
@@ -367,21 +361,19 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET without url', function() {
+	describe('GET: without url', function() {
 		it('should throw an error', function(done) {
-			var throws = function() {
+			assert.throws(function() {
 				client.get({}, function(err) {
 					assert.ifError(err);
 				});
-			};
-
-			assert.throws(throws, Error, 'The options object requires an input URL value.');
+			}, TypeError, 'Parameter \'options.url\' must be a string, not undefined');
 
 			done();
 		});
 	});
 
-	describe('GET 404', function() {
+	describe('GET: 404 response', function() {
 		it('should buffer the error document', function(done) {
 			var url = 'http://127.0.0.1:' + common.options.port + '/not-found';
 			client.get(url, function(err, res) {
@@ -399,7 +391,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with redirect loop', function() {
+	describe('GET: with redirect loop', function() {
 		it('should detect the condition and pass the error argument to the completion callback', function(done) {
 			var url = 'http://127.0.0.1:' + common.options.port + '/redirect-loop';
 
@@ -417,7 +409,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with maxBody limit', function() {
+	describe('GET: with maxBody limit', function() {
 		it('should detect that the buffer is overflowing the user limit', function(done) {
 			var url = 'http://127.0.0.1:' + common.options.port + '/max-body';
 			client.get({
@@ -437,7 +429,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with null argument for the file argument', function() {
+	describe('GET: with null argument for the file argument', function() {
 		it('should simulate writing the file /dev/null in a cross platform way', function(done) {
 			client.get('http://127.0.0.1:' + common.options.port + '/redirect', null, function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -454,7 +446,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with gzipped response without being requested', function() {
+	describe('GET: with gzipped response without being requested', function() {
 		it('should return gzipped content without being requested', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/force-gzip',
@@ -472,7 +464,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET response saved to file', function() {
+	describe('GET: response saved to file', function() {
 		it('should save the response body to a file', function(done) {
 			client.get('http://127.0.0.1:' + common.options.port + '/save-to-file', 'hello.txt', function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -501,7 +493,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET stream passed to client', function() {
+	describe('GET: stream passed to client', function() {
 		it('should pass back a readable stream to the client', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/pass-stream',
@@ -536,7 +528,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with gzip compressed stream passed to client', function() {
+	describe('GET: with gzip compressed stream passed to client', function() {
 		it('should pass back a decompressed readable stream to the client', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/pass-decompressed-stream',
@@ -570,7 +562,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with error passed to the completion callback by the fs module', function() {
+	describe('GET: with error passed to the completion callback by the fs module', function() {
 		it('should pass back an error from the fs module', function(done) {
 			var path = 'world.txt';
 
@@ -607,7 +599,7 @@ describe('HTTP GET method tests', function() {
 	// On Travis CI this response comes back short at 1043957 bytes
 	// Therefore, this test always fails under Travis CI
 	if (!process.env.TRAVIS_NODE_VERSION) {
-		describe('GET with overflowing error document', function() {
+		describe('GET: with overflowing error document', function() {
 			it('should detect the situation and act accordingly', function(done) {
 				client.get({
 					url: 'http://127.0.0.1:' + common.options.port + '/big-error',
@@ -628,19 +620,17 @@ describe('HTTP GET method tests', function() {
 		});
 	}
 
-	describe('GET with bad callback', function() {
+	describe('GET: with bad callback', function() {
 		it('should throw and error', function(done) {
-			var throws = function() {
+			assert.throws(function() {
 				client.get('http://127.0.0.1:' + common.options.port + '/');
-			};
-
-			assert.throws(throws, Error, 'Expecting a function for the callback argument for URL: ' + 'http://127.0.0.1:' + common.options.port + '/');
+			}, TypeError, 'Parameter \'callback\' must be a function, not undefined');
 
 			done();
 		});
 	});
 
-	describe('GET with standard user agent', function() {
+	describe('GET: with standard user agent', function() {
 		it('should pass the standard user-agent header', function(done) {
 			client.get('http://127.0.0.1:' + common.options.port + '/user-agent-reflect', function(err, res) {
 				assert.ifError(err);
@@ -654,7 +644,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with user agent turned off', function() {
+	describe('GET: with user agent turned off', function() {
 		it('should not pass the user-agent header back', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/user-agent-reflect',
@@ -671,7 +661,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with noRedirect', function() {
+	describe('GET: with noRedirect', function() {
 		it('should read the status code, headers, and body from the redirect response', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/redirect',
@@ -689,7 +679,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with proxy', function() {
+	describe('GET: with proxy', function() {
 		it('should succeed', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/proxy-request',
@@ -710,7 +700,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with no content', function() {
+	describe('GET: with no content', function() {
 		it('should return a 204 response', function(done) {
 			client.get('http://127.0.0.1:' + common.options.port + '/no-content', function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -725,7 +715,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with not modified', function() {
+	describe('GET: with not modified', function() {
 		it('should return a 304 response', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/not-modified',
@@ -745,7 +735,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET to not-modified without if-modified-since', function() {
+	describe('GET: to not-modified without if-modified-since', function() {
 		it('should return a 200 response', function(done) {
 			client.get('http://127.0.0.1:' + common.options.port + '/not-modified', function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -760,7 +750,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET to proxy to use-proxy', function() {
+	describe('GET: to proxy to use-proxy', function() {
 		it('should go through the proxy to the use-proxy actual response', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/use-proxy',
@@ -781,7 +771,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET to use-proxy', function() {
+	describe('GET: to use-proxy', function() {
 		it('should receive the response via a http-proxy', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/use-proxy',
@@ -799,7 +789,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with broken gzip encoding', function() {
+	describe('GET: with broken gzip encoding', function() {
 		it('should reissue the request without the accept-encoding: gzip,deflate header', function(done) {
 			client.get('http://127.0.0.1:' + common.options.port + '/break-compression', function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -813,7 +803,7 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with broken encoding saved to file', function() {
+	describe('GET: with broken encoding saved to file', function() {
 		it('should reissue the request without the accept-encoding: gzip,deflate header', function(done) {
 			client.get('http://127.0.0.1:' + common.options.port + '/break-compression', 'foo.txt', function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -841,7 +831,24 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET with redirect and defined host header into the request', function() {
+	describe('GET: with invalid type for file', function() {
+		it('should throw a TypeError', function(done) {
+			var dom = domain.create();
+
+			dom.on('error', function(err) {
+				assert.instanceOf(err, TypeError, 'we got a TypeError');
+				assert.strictEqual(err.message, 'Parameter \'file\' must be a string, not number', 'we got the proper message');
+
+				done();
+			});
+
+			dom.run(function() {
+				client.get('http://127.0.0.1:' + common.options.port + '/save-to-file', 0, function() {});
+			});
+		});
+	});
+
+	describe('GET: with redirect and defined host header into the request', function() {
 		it('should keep the host header for relative redirects', function(done) {
 			client.get({
 				url: 'http://127.0.0.1:' + common.options.port + '/redirect',

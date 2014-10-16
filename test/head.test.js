@@ -20,7 +20,7 @@ describe('HTTP HEAD method tests', function() {
 		proxy = servers.proxy;
 	});
 
-	describe('HEAD Hello World - plain', function() {
+	describe('HEAD: Hello World - plain', function() {
 		it('should pass the response headers', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-plain',
@@ -39,7 +39,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD Hello World - gzip', function() {
+	describe('HEAD: Hello World - gzip', function() {
 		it('should pass the response headers', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-gzip',
@@ -57,7 +57,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD Hello World - deflate', function() {
+	describe('HEAD: Hello World - deflate', function() {
 		it('should pass the response headers', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-deflate',
@@ -75,7 +75,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD redirect without location header', function() {
+	describe('HEAD: redirect without location header', function() {
 		it('should return the error argument', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/redirect-without-location',
@@ -93,7 +93,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD broken DNS name over HTTP', function() {
+	describe('HEAD: broken DNS name over HTTP', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.head('http://.foo.bar/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
@@ -106,7 +106,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD broken DNS name over HTTPS', function() {
+	describe('HEAD: broken DNS name over HTTPS', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.head('https://.foo.bar/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
@@ -119,7 +119,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD DNS error', function() {
+	describe('HEAD: DNS error', function() {
 		it('should fail with an error passed back to the completion callback', function(done) {
 			client.head('http://wibble.wobble/', function(err, res) {
 				assert.instanceOf(err, Error, 'the error is an Error instance');
@@ -133,7 +133,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD header reflect', function() {
+	describe('HEAD: header reflect', function() {
 		it('should pass back the header foo sent from the client', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/header-reflect',
@@ -151,7 +151,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD without protocol prefix', function() {
+	describe('HEAD: without protocol prefix', function() {
 		it('should work fine by prepending http:// to the URL', function(done) {
 			client.head('127.0.0.1:' + common.options.port + '/no-protocol-prefix', function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -165,7 +165,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD with redirect', function() {
+	describe('HEAD: with redirect', function() {
 		it('should redirect succesfully', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/redirect',
@@ -182,7 +182,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD over HTTPS with SSL validation', function() {
+	describe('HEAD: over HTTPS with SSL validation', function() {
 		it('should verify succesfully the connection', function(done) {
 			client.head({
 				url: 'https://127.0.0.1:' + common.options.securePort + '/ssl-validation',
@@ -202,21 +202,19 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD without url', function() {
+	describe('HEAD: without url', function() {
 		it('should throw an error', function(done) {
-			var throws = function() {
+			assert.throws(function() {
 				client.head({}, function(err) {
 					assert.ifError(err);
 				});
-			};
-
-			assert.throws(throws, Error, 'The options object requires an input URL value.');
+			}, TypeError, 'Parameter \'options.url\' must be a string, not undefined');
 
 			done();
 		});
 	});
 
-	describe('HEAD with redirect loop', function() {
+	describe('HEAD: with redirect loop', function() {
 		it('should detect the condition and pass the error argument to the completion callback', function(done) {
 			var url = 'http://127.0.0.1:' + common.options.port + '/redirect-loop';
 
@@ -234,7 +232,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD with URL fragment', function() {
+	describe('HEAD: with URL fragment', function() {
 		it('should not send the URL fragment to the server', function(done) {
 			client.head('http://127.0.0.1:' + common.options.port + '/path-reflect#fragment', function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -247,7 +245,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD with noSslVerifier', function() {
+	describe('HEAD: with noSslVerifier', function() {
 		it('should not pass an error back due to lack of root CA', function(done) {
 			client.head({
 				url: 'https://127.0.0.1:' + common.options.securePort + '/no-ssl-verifier',
@@ -264,19 +262,17 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD with bad callback', function() {
+	describe('HEAD: with bad callback', function() {
 		it('should throw and error', function(done) {
-			var throws = function() {
+			assert.throws(function() {
 				client.head('http://127.0.0.1:' + common.options.port + '/');
-			};
-
-			assert.throws(throws, Error, 'Expecting a function for the callback argument for URL: ' + 'http://127.0.0.1:' + common.options.port + '/');
+			}, TypeError, 'Parameter \'callback\' must be a function, not undefined');
 
 			done();
 		});
 	});
 
-	describe('HEAD with standard user agent', function() {
+	describe('HEAD: with standard user agent', function() {
 		it('should pass the standard user-agent header', function(done) {
 			client.head('http://127.0.0.1:' + common.options.port + '/user-agent-reflect', function(err, res) {
 				assert.ifError(err);
@@ -290,7 +286,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD with user agent turned off', function() {
+	describe('HEAD: with user agent turned off', function() {
 		it('should not pass the user-agent header back', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/user-agent-reflect',
@@ -307,7 +303,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD with timeout', function() {
+	describe('HEAD: with timeout', function() {
 		it('should timeout', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.noPort + '/',
@@ -321,7 +317,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD with proxy', function() {
+	describe('HEAD: with proxy', function() {
 		it('should succeed', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/proxy-request',
@@ -341,7 +337,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD with not modified', function() {
+	describe('HEAD: with not modified', function() {
 		it('should return a 304 response', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/not-modified',
@@ -360,7 +356,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD to not-modified without if-modified-since', function() {
+	describe('HEAD: to not-modified without if-modified-since', function() {
 		it('should return a 200 response', function(done) {
 			client.head('http://127.0.0.1:' + common.options.port + '/not-modified', function(err, res) {
 				assert.isNull(err, 'we have an error');
@@ -374,7 +370,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD to proxy to use-proxy', function() {
+	describe('HEAD: to proxy to use-proxy', function() {
 		it('should go through the proxy to the use-proxy actual response', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/use-proxy',
@@ -394,7 +390,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD to use-proxy', function() {
+	describe('HEAD: to use-proxy', function() {
 		it('should receive the response via a http-proxy', function(done) {
 			client.head({
 				url: 'http://127.0.0.1:' + common.options.port + '/use-proxy',
@@ -411,7 +407,7 @@ describe('HTTP HEAD method tests', function() {
 		});
 	});
 
-	describe('HEAD to redirect from HTTPS to HTTP', function() {
+	describe('HEAD: to redirect from HTTPS to HTTP', function() {
 		it('should redirect without issues', function(done) {
 			client.head({
 				url: 'https://127.0.0.1:' + common.options.securePort + '/to-http',

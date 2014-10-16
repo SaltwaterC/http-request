@@ -19,7 +19,7 @@ describe('HTTP POST method tests', function() {
 		proxy = servers.proxy;
 	});
 
-	describe('POST request shorthand', function() {
+	describe('POST: request shorthand', function() {
 		it('should pass the arguments as query string into the request body', function(done) {
 			client.post('http://127.0.0.1:' + common.options.port + '/post?foo=bar&baz=q u x', function(err, res) {
 				assert.ifError(err);
@@ -35,7 +35,7 @@ describe('HTTP POST method tests', function() {
 		});
 	});
 
-	describe('POST request with application/x-www-form-urlencoded', function() {
+	describe('POST: request with application/x-www-form-urlencoded', function() {
 		it('should pass the proper request body as querystring with URL encoding', function(done) {
 			client.post({
 				url: 'http://127.0.0.1:' + common.options.port + '/post',
@@ -62,7 +62,7 @@ describe('HTTP POST method tests', function() {
 		});
 	});
 
-	describe('POST request with multipart/form-data', function() {
+	describe('POST: request with multipart/form-data', function() {
 		it('should pass the proper request body', function(done) {
 			var form = new client.FormData();
 

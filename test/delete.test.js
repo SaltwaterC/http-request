@@ -18,7 +18,7 @@ describe('HTTP DELETE method tests', function() {
 		proxy = servers.proxy;
 	});
 
-	describe('DELETE Hello World Buffer - plain', function() {
+	describe('DELETE: Hello World Buffer - plain', function() {
 		it('should pass "Hello World" buffer', function(done) {
 			client.delete({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-plain',
@@ -38,7 +38,7 @@ describe('HTTP DELETE method tests', function() {
 		});
 	});
 
-	describe('DELETE Hello World Buffer - gzip', function() {
+	describe('DELETE: Hello World Buffer - gzip', function() {
 		it('should pass "Hello World" buffer', function(done) {
 			client.delete({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-gzip',
@@ -57,7 +57,7 @@ describe('HTTP DELETE method tests', function() {
 		});
 	});
 
-	describe('DELETE Hello World Buffer - deflate', function() {
+	describe('DELETE: Hello World Buffer - deflate', function() {
 		it('should pass "Hello World" buffer', function(done) {
 			client.delete({
 				url: 'http://127.0.0.1:' + common.options.port + '/hello-deflate',
@@ -76,7 +76,7 @@ describe('HTTP DELETE method tests', function() {
 		});
 	});
 
-	describe('DELETE with no content', function() {
+	describe('DELETE: with no content', function() {
 		it('should return a 204 response', function(done) {
 			client.delete('http://127.0.0.1:' + common.options.port + '/no-content', function(err, res) {
 				assert.isNull(err, 'we have an error');

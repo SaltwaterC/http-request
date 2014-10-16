@@ -17,7 +17,7 @@ describe('MIME library compliance tests', function() {
 		server = common.createFileServer(done);
 	});
 
-	describe('MIME file not found', function() {
+	describe('MIME: file not found', function() {
 		it('should pass an error', function(done) {
 			magic.detectFile('test/data/foobar', function(err, res) {
 				assert.instanceOf(err, Error);
@@ -31,7 +31,7 @@ describe('MIME library compliance tests', function() {
 
 	// mimeSniff tests
 	var testMimeSniff = function(type, mime) {
-		describe('MIME mimeSniff ' + type, function() {
+		describe('MIME: mimeSniff ' + type, function() {
 			it('should detect the MIME type ' + mime, function(done) {
 				client.mimeSniff('http://127.0.0.1:' + common.options.filePort + '/' + type + '.foo', function(err, res) {
 					assert.ifError(err);
@@ -43,7 +43,7 @@ describe('MIME library compliance tests', function() {
 			});
 		});
 
-		describe('MIME validate mimeSniff ' + type, function() {
+		describe('MIME: validate mimeSniff ' + type, function() {
 			it('should receive ' + mime + ' as content-type response header', function(done) {
 				client.get('http://127.0.0.1:' + common.options.filePort + '/' + type + '.foo', function(err, res) {
 					assert.ifError(err);
