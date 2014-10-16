@@ -831,22 +831,25 @@ describe('HTTP GET method tests', function() {
 		});
 	});
 
-	describe('GET: with invalid type for file', function() {
-		it('should throw a TypeError', function(done) {
-			var dom = domain.create();
-
-			dom.on('error', function(err) {
-				assert.instanceOf(err, TypeError, 'we got a TypeError');
-				assert.strictEqual(err.message, 'Parameter \'file\' must be a string, not number', 'we got the proper message');
-
-				done();
-			});
-
-			dom.run(function() {
-				client.get('http://127.0.0.1:' + common.options.port + '/save-to-file', 0, function() {});
+	// Catching TypeError in node.js v0.8.x is dodgy
+	if (process.version.substring(0, 5) !== 'v0.8.') {
+		describe('GET: with invalid type for file', function() {
+			it('should throw a TypeError', function(done) {
+				var dom = domain.create();
+	
+				dom.on('error', function(err) {
+					assert.instanceOf(err, TypeError, 'we got a TypeError');
+					assert.strictEqual(err.message, 'Parameter \'file\' must be a string, not number', 'we got the proper message');
+	
+					done();
+				});
+	
+				dom.run(function() {
+					client.get('http://127.0.0.1:' + common.options.port + '/save-to-file', 0, function() {});
+				});
 			});
 		});
-	});
+	}
 
 	describe('GET: with redirect and defined host header into the request', function() {
 		it('should keep the host header for relative redirects', function(done) {

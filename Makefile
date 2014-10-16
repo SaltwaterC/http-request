@@ -25,6 +25,13 @@ test: all lint
 	@rm -f foo.txt
 	@./node_modules/.bin/mocha --reporter $(REPORTER)
 
+test08:
+	@npm install mocha chai form-data mmmagic multiparty@3.3.2
+	@rm -f hello.txt
+	@rm -f world.txt
+	@rm -f foo.txt
+	@./node_modules/.bin/mocha --reporter $(REPORTER)
+
 beautify:
 	@tools/beautify.sh
 
