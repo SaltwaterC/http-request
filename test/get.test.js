@@ -836,14 +836,14 @@ describe('HTTP GET method tests', function() {
 		describe('GET: with invalid type for file', function() {
 			it('should throw a TypeError', function(done) {
 				var dom = domain.create();
-	
+
 				dom.on('error', function(err) {
 					assert.instanceOf(err, TypeError, 'we got a TypeError');
 					assert.strictEqual(err.message, 'Parameter \'file\' must be a string, not number', 'we got the proper message');
-	
+
 					done();
 				});
-	
+
 				dom.run(function() {
 					client.get('http://127.0.0.1:' + common.options.port + '/save-to-file', 0, function() {});
 				});
