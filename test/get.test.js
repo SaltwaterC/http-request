@@ -283,7 +283,7 @@ describe('HTTP GET method tests', function() {
 				assert.isNull(err, 'we have an error');
 
 				assert.strictEqual(res.code, 206, 'we have the proper status code');
-				assert.isDefined(res.headers['content-length'], 'we have a Content-Lenght');
+				assert.isDefined(res.headers['content-length'], 'we have a Content-Length');
 				assert.strictEqual(res.headers['content-range'], '0-5/11', 'we have the proper value for the Content-Range response header');
 				assert.strictEqual(res.headers['x-http-method'], 'GET', 'the method is GET');
 
