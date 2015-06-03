@@ -1,10 +1,10 @@
-# http-request [![build status](https://secure.travis-ci.org/SaltwaterC/http-request.png?branch=master)](https://travis-ci.org/SaltwaterC/http-request) [![NPM version](https://badge.fury.io/js/http-request.png)](http://badge.fury.io/js/http-request)
+# http-request [![build status](https://secure.travis-ci.org/SaltwaterC/http-request.png?branch=master)](https://travis-ci.org/SaltwaterC/http-request)Â [![NPM version](https://badge.fury.io/js/http-request.png)](http://badge.fury.io/js/http-request)
 
 General purpose HTTP / HTTPS client for node.js. Supports transparent gzip / deflate decoding. Successor of http-get.
 
 ## Installation
 
-> npm install http-request
+    npm install http-request
 
 ## Reference
 
