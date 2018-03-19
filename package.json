@@ -23,18 +23,22 @@
 		"url": "http://www.saltwaterc.eu/"
 	},
 	"contributors": [{
-		"name": "cmtt",
-		"url": "https://github.com/cmtt"
-	}, {
-		"name": "elarcent",
-		"url": "https://github.com/elarcent"
-	}, {
-		"name": "Gil Pedersen",
-		"url": "https://github.com/kanongil"
-	}, {
-		"name": "Stefan Klug",
-		"url": "https://github.com/stefanklug"
-	}],
+			"name": "cmtt",
+			"url": "https://github.com/cmtt"
+		},
+		{
+			"name": "elarcent",
+			"url": "https://github.com/elarcent"
+		},
+		{
+			"name": "Gil Pedersen",
+			"url": "https://github.com/kanongil"
+		},
+		{
+			"name": "Stefan Klug",
+			"url": "https://github.com/stefanklug"
+		}
+	],
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/SaltwaterC/http-get.git"

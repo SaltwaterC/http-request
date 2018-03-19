@@ -6,3 +6,4 @@ test/hello.txt
 test/world.txt
 test/foo.txt
 npm-debug.log
+package-lock.json
